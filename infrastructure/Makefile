@@ -45,7 +45,8 @@ bootstrap-destroy: bootstrap-init
 
 bootstrap: bootstrap-apply
 
-get-kubeconfig: init
+get-kubeconfig:
+	@ENV=$(ENV) $(MAKE) init > /dev/null 2>&1
 	$(eval NAME=$(shell ENV=$(ENV) $(MAKE) output | jq .name.value))
 	$(eval REGION=$(shell ENV=$(ENV) $(MAKE) output | jq .region.value))
 	gcloud container clusters get-credentials $(NAME) --region=$(REGION)

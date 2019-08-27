@@ -1,4 +1,4 @@
-.PHONY: infra-plan infra-apply
+.PHONY: fmt infra-plan infra-apply infra-destroy infra-output deploy-validate deploy-dry-run deploy get-kubeconfig
 
 ifndef ENV
 $(error ENV is not set)
@@ -13,17 +13,18 @@ infra-plan:
 infra-apply:
 	@ENV=$(ENV) $(MAKE) -C infrastructure apply
 
+infra-destroy:
+	@ENV=$(ENV) $(MAKE) -C infrastructure destroy	
+
 infra-output:
 	@ENV=$(ENV) $(MAKE) -C infrastructure output	
 
-deploy-validate:
-	@cd ./prow/scripts; ENV=$(ENV) ./validate-config.sh
+install: infra-apply get-kubeconfig 
+	@ENV=$(ENV) $(MAKE) -C hack install
 
-deploy-dry-run: get-kubeconfig
-	@cd ./prow/scripts; ENV=$(ENV) ./apply-manifests.sh -d
-
-deploy: get-kubeconfig 
-	@cd ./prow/scripts; ENV=$(ENV) ./apply-manifests.sh
+uninstall: get-kubeconfig
+	@ENV=$(ENV) $(MAKE) -C hack uninstall
+	@ENV=$(ENV) $(MAKE) infra-destroy
 
 get-kubeconfig:
 	@ENV=$(ENV) $(MAKE) -C infrastructure get-kubeconfig	

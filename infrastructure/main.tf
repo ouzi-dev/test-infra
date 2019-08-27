@@ -86,3 +86,9 @@ resource "kubernetes_secret" "gcs-bucket-credentials" {
     "service-account.json" = base64decode(google_service_account_key.prow-bucket-editor_key.private_key)
   }
 }
+
+resource "google_dns_managed_zone" "cluster-zone" {
+  name = "${var.name}-zone"
+  dns_name = "${var.name}.ouzi.io."
+  description = "${var.name} zone"
+}
