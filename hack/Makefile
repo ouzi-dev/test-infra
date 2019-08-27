@@ -14,7 +14,7 @@ helm-install: helm-init
 	helm upgrade --install onion stable/external-dns -f env/$(ENV)/helm/nginx-ingress.yaml --namespace external-dns 
 	helm upgrade --install potato stable/prometheus-operator --namespace monitoring
 
-helm-uninstall:
+helm-uninstall: get-kubeconfig
 	helm delete peach --purge
 	helm delete onion --purge
 	helm delete potato --purge
@@ -25,6 +25,7 @@ prow-uninstall: get-kubeconfig
 	kubectl delete -f prow/manifests/init -R
 
 install: helm-install prow-install
+
 uninstall: helm-uninstall prow-uninstall
 
 get-kubeconfig:
