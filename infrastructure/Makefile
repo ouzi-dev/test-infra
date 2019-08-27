@@ -1,6 +1,8 @@
 .PHONY: clean init plan apply destroy format validate bootstrap-init bootstrap-plan bootstrap-apply bootstrap-destroy
 
-ENV ?= ouzi-unicorn
+ifndef ENV
+$(error ENV is not set)
+endif
 
 clean:
 	@rm -rf .terraform
@@ -8,9 +10,8 @@ clean:
 fmt:
 	@terraform fmt --recursive
 	@cd bootstrap; terraform fmt --recursive
+	@cd env/$(ENV); terraform fmt --recursive
 	
-format: fmt	
-
 validate:
 	@terraform validate .
 
@@ -22,6 +23,10 @@ plan: init
 
 apply: init 
 	@terraform apply --var-file=env/$(ENV)/terraform.tfvars
+
+output:
+	@ENV=$(ENV) $(MAKE) init > /dev/null 2>&1
+	@terraform output --json -no-color
 
 destroy: init
 	@terraform destroy --var-file=env/$(ENV)/terraform.tfvars
@@ -39,3 +44,8 @@ bootstrap-destroy: bootstrap-init
 	@cd bootstrap; terraform destroy
 
 bootstrap: bootstrap-apply
+
+get-kubeconfig: init
+	$(eval NAME=$(shell ENV=$(ENV) $(MAKE) output | jq .name.value))
+	$(eval REGION=$(shell ENV=$(ENV) $(MAKE) output | jq .region.value))
+	gcloud container clusters get-credentials $(NAME) --region=$(REGION)

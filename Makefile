@@ -4,17 +4,26 @@ ifndef ENV
 $(error ENV is not set)
 endif
 
+fmt:
+	@ENV=$(ENV) $(MAKE) -C infrastructure fmt
+
 infra-plan:
-	ENV=$(ENV) $(MAKE) -C infrastructure plan
+	@ENV=$(ENV) $(MAKE) -C infrastructure plan
 
 infra-apply:
-	ENV=$(ENV) $(MAKE) -C infrastructure apply
+	@ENV=$(ENV) $(MAKE) -C infrastructure apply
+
+infra-output:
+	@ENV=$(ENV) $(MAKE) -C infrastructure output	
 
 deploy-validate:
-	./prow/scripts/validate-config.sh
+	@cd ./prow/scripts; ENV=$(ENV) ./validate-config.sh
 
-deploy-dry-run:
-	./prow/scripts/apply-manifests.sh -d
+deploy-dry-run: get-kubeconfig
+	@cd ./prow/scripts; ENV=$(ENV) ./apply-manifests.sh -d
 
-deploy:
-	./prow/scripts/apply-manifests.sh
+deploy: get-kubeconfig 
+	@cd ./prow/scripts; ENV=$(ENV) ./apply-manifests.sh
+
+get-kubeconfig:
+	@ENV=$(ENV) $(MAKE) -C infrastructure get-kubeconfig	
