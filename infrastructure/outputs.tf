@@ -6,5 +6,5 @@ output "name" {
   value = var.name
 }
 output "region" {
-  value = var.region
+  value = var.gke_region
 }

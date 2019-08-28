@@ -4,6 +4,25 @@ ifndef ENV
 $(error ENV is not set)
 endif
 
+# Get OS
+UNAME := $(shell uname)
+
+# Credstash version and dowload locations
+CREDSTASH_VERSION := 0.4.0
+CREDSTASH_DOWNLOAD_LINUX_URL := https://github.com/sspinc/terraform-provider-credstash/releases/download/$(CREDSTASH_VERSION)/terraform-provider-credstash_linux_amd64
+CREDSTASH_DOWNLOAD_DARWIN_URL := https://github.com/sspinc/terraform-provider-credstash/releases/download/$(CREDSTASH_VERSION)/terraform-provider-credstash_darwin_amd64
+CREDSTASH_FILEPATH := ~/.terraform.d/plugins/terraform-provider-credstash_v$(CREDSTASH_VERSION)
+
+setup:
+	@mkdir -p ~/.terraform.d/plugins
+ifeq ($(UNAME),Linux)
+	curl -L "$(CREDSTASH_DOWNLOAD_LINUX_URL)" -o $(CREDSTASH_FILEPATH) -z $(CREDSTASH_FILEPATH)
+endif
+ifeq ($(UNAME),Darwin)
+	curl -L "$(CREDSTASH_DOWNLOAD_DARWIN_URL)" -o $(CREDSTASH_FILEPATH) -z $(CREDSTASH_FILEPATH)
+endif
+	chmod +x ~/.terraform.d/plugins/terraform-provider-credstash_v$(CREDSTASH_VERSION)
+
 clean:
 	@rm -rf .terraform
 

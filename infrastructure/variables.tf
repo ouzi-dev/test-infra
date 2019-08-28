@@ -1,5 +1,9 @@
-variable "region" {
+variable "gke_region" {
   description = "GKE cluster region"
+}
+
+variable "aws_region" {
+  description = "AWS region"
 }
 
 variable "project" {
@@ -102,4 +106,12 @@ variable "gke_init_nodes" {
 
 variable "prow_artefact_bucket_location" {
   type = string
+}
+
+variable "ouzibot_credstash_key" {
+  type = string  
+}
+
+variable "credstash_region" {
+  type = string  
 }

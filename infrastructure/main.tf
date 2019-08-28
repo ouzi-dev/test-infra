@@ -3,18 +3,32 @@ terraform {
 }
 
 provider "google" {
-  region  = var.region
+  region  = var.gke_region
   project = var.project
 }
 
 provider "google-beta" {
-  region  = var.region
+  region  = var.gke_region
   project = var.project
+}
+
+provider "aws" {
+  region  = var.aws_region
+  version = "2.24.0"
+}
+
+provider "credstash" {
+  region  = var.credstash_region
+  version = "0.4.0"
+}
+
+data "credstash_secret" "bot_token" {
+  name = var.ouzibot_credstash_key
 }
 
 module "gke-cluster" {
   source  = "../../gke-terraform"
-  region  = var.region
+  region  = var.gke_region
   project = var.project
 
   cluster_name       = var.name
@@ -84,6 +98,31 @@ resource "kubernetes_secret" "gcs-bucket-credentials" {
 
   data = {
     "service-account.json" = base64decode(google_service_account_key.prow-bucket-editor_key.private_key)
+  }
+}
+
+resource "random_string" "hmac-token" {
+  length = 30
+  special = false
+}
+
+resource "kubernetes_secret" "hmac-token" {
+  metadata {
+    name = "hmac-token"
+  }
+
+  data = {
+    secret = random_string.hmac-token.result
+  }
+}
+
+resource "kubernetes_secret" "oauth-token" {
+  metadata {
+    name = "oauth-token"
+  }
+
+  data = {
+    secret = data.credstash_secret.bot_token.value
   }
 }
 

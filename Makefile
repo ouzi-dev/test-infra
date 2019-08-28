@@ -7,6 +7,9 @@ endif
 fmt:
 	@ENV=$(ENV) $(MAKE) -C infrastructure fmt
 
+infra-setup:
+	@ENV=$(ENV) $(MAKE) -C infrastructure setup
+
 infra-plan:
 	@ENV=$(ENV) $(MAKE) -C infrastructure plan
 

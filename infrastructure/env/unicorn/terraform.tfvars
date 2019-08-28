@@ -1,6 +1,7 @@
-region  = "europe-west2"
+gke_region  = "europe-west2"
+aws_region = "eu-west-1"
 project = "testinfra-251013"
-name    = "ouzi-unicorn"
+name    = "unicorn"
 
 gke_zones              = ["europe-west2-a", "europe-west2-b", "europe-west2-c"]
 gke_kubernetes_version = "1.13.7-gke.24"
@@ -34,3 +35,6 @@ gke_disable_network_policy = true
 gke_disable_hpa            = true
 
 prow_artefact_bucket_location = "EU"
+
+ouzibot_credstash_key = "github_bot_personal_access_token_prow"
+credstash_region = "eu-west-1"
