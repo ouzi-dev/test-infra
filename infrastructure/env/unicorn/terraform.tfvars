@@ -1,9 +1,9 @@
-gke_region  = "europe-west2"
+gke_region = "us-east1"
 aws_region = "eu-west-1"
-project = "testinfra-251013"
-name    = "unicorn"
+project    = "testinfra-251013"
+name       = "unicorn"
 
-gke_zones              = ["europe-west2-a", "europe-west2-b", "europe-west2-c"]
+gke_zones              = ["us-east1-b", "us-east1-c", "us-east1-d"]
 gke_kubernetes_version = "1.13.7-gke.24"
 gke_node_cidr_range    = "10.101.0.0/22"
 gke_pod_cidr_range     = "172.20.0.0/14"
@@ -25,16 +25,16 @@ gke_auth_cidr_blocks = [
     display_name = "everyone"
   }
 ]
-gke_min_nodes              = 0
-gke_max_nodes              = 4
-gke_init_nodes             = 1
-gke_disable_lb             = true
-gke_disable_dashboard      = true
-gke_enable_calico          = false
-gke_disable_network_policy = true
-gke_disable_hpa            = true
-
-prow_artefact_bucket_location = "EU"
+gke_min_nodes                           = 0
+gke_max_nodes                           = 4
+gke_init_nodes                          = 1
+gke_disable_lb                          = true
+gke_disable_dashboard                   = true
+gke_enable_calico                       = true
+gke_disable_network_policy              = false
+gke_disable_hpa                         = true
+gke_authenticator_groups_security_group = "gke-security-groups@ouzi.dev"
+prow_artefact_bucket_location           = "us"
 
 ouzibot_credstash_key = "github_bot_personal_access_token_prow"
-credstash_region = "eu-west-1"
+credstash_region      = "eu-west-1"

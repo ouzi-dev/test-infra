@@ -223,7 +223,7 @@ controller:
 
   service:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: unicorn.prow.ouzi.io.
+      external-dns.alpha.kubernetes.io/hostname: prow.unicorn.ouzi.io.
 
     labels: {}
     omitClusterIP: false

@@ -104,14 +104,17 @@ variable "gke_enable_calico" {
 variable "gke_init_nodes" {
 }
 
+variable "gke_authenticator_groups_security_group" {
+}
+
 variable "prow_artefact_bucket_location" {
   type = string
 }
 
 variable "ouzibot_credstash_key" {
-  type = string  
+  type = string
 }
 
 variable "credstash_region" {
-  type = string  
+  type = string
 }

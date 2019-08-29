@@ -6,19 +6,22 @@ endif
 
 helm-init: get-kubeconfig
 	kubectl apply -f env/$(ENV)/helm/helm-init.yaml
-	helm init --service-account tiller --history-max 200 --upgrade 
+	helm init --service-account tiller --history-max 200 --upgrade --wait
 
 helm-install: helm-init
 	kubectl apply -f env/$(ENV)/helm/helm-init.yaml
-	helm upgrade --install peach stable/nginx-ingress -f env/$(ENV)/helm/nginx-ingress.yaml --namespace nginx 
-	helm upgrade --install onion stable/external-dns -f env/$(ENV)/helm/nginx-ingress.yaml --namespace external-dns 
-	helm upgrade --install potato stable/prometheus-operator --namespace monitoring
+	helm upgrade --install onion stable/external-dns -f env/$(ENV)/external-dns/helm.yaml --namespace external-dns --wait
+	kubectl apply -f env/$(ENV)/cert-manager/crds.yaml
+	helm upgrade --install raisin stable/cert-manager -f env/$(ENV)/cert-manager/helm.yaml --namespace cert-manager   --wait
+	kubectl apply -f env/$(ENV)/cert-manager/cluster-issuer-letsencrypt.yaml
+	helm upgrade --install peach stable/nginx-ingress -f env/$(ENV)/nginx-ingress/helm.yaml --namespace nginx  --wait
+#	helm upgrade --install potato stable/prometheus-operator --namespace monitoring --wait
 
 helm-uninstall: get-kubeconfig
 	helm delete peach --purge
 	helm delete onion --purge
 	helm delete potato --purge
-	kubectl delete -f env/$(ENV)/helm/helm-init.yaml
+	#kubectl delete -f env/$(ENV)/helm/helm-init.yaml
 
 prow-uninstall: get-kubeconfig
 	kubectl delete -f prow/manifests/resources -R

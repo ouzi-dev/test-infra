@@ -2,30 +2,50 @@ terraform {
   backend "gcs" {}
 }
 
+## Providers
 provider "google" {
   region  = var.gke_region
   project = var.project
+  version = "2.13"
 }
 
 provider "google-beta" {
   region  = var.gke_region
   project = var.project
+  version = "2.13"
 }
 
 provider "aws" {
   region  = var.aws_region
-  version = "2.24.0"
+  version = "2.24"
 }
 
 provider "credstash" {
   region  = var.credstash_region
-  version = "0.4.0"
+  version = "0.4"
 }
 
+provider "kubernetes" {
+  host                   = module.gke-cluster.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.gke-cluster.cluster_ca_certificate)
+  token                  = data.google_client_config.current.access_token
+  load_config_file       = false
+  version                = "1.9"
+}
+
+provider "random" {
+  version = "2.2"
+}
+
+## Data
 data "credstash_secret" "bot_token" {
   name = var.ouzibot_credstash_key
 }
 
+data "google_client_config" "current" {
+}
+
+## Modules
 module "gke-cluster" {
   source  = "../../gke-terraform"
   region  = var.gke_region
@@ -47,15 +67,19 @@ module "gke-cluster" {
   min_nodes              = var.gke_min_nodes
   max_nodes              = var.gke_max_nodes
 
-  daily_maintenance      = var.gke_daily_maintenance
-  disable_hpa            = var.gke_disable_hpa
-  disable_lb             = var.gke_disable_lb
-  disable_dashboard      = var.gke_disable_dashboard
-  disable_network_policy = var.gke_disable_network_policy
-  enable_calico          = var.gke_enable_calico
-  init_nodes             = var.gke_init_nodes
+  daily_maintenance                   = var.gke_daily_maintenance
+  disable_hpa                         = var.gke_disable_hpa
+  disable_lb                          = var.gke_disable_lb
+  disable_dashboard                   = var.gke_disable_dashboard
+  disable_network_policy              = var.gke_disable_network_policy
+  enable_calico                       = var.gke_enable_calico
+  authenticator_groups_security_group = var.gke_authenticator_groups_security_group
+  init_nodes                          = var.gke_init_nodes
 }
 
+## Extra resources
+
+### Google Cloud Storage for prow artefacts
 resource "google_storage_bucket" "prow-bucket" {
   name          = "${var.name}_prow-artifacts"
   location      = var.prow_artefact_bucket_location
@@ -66,29 +90,20 @@ resource "google_storage_bucket" "prow-bucket" {
   }
 }
 
+### Google Service Account for Prow to write/read the artefacts in the bucket
 resource "google_service_account" "prow-bucket-editor" {
   account_id   = "${var.name}-prow-bucket"
   display_name = "service account for the prow bucket"
 }
 
 resource "google_storage_bucket_iam_member" "prow-bucket-editor" {
-  bucket      = google_storage_bucket.prow-bucket.name
-  role        = "roles/storage.objectAdmin"
-  member      = "serviceAccount:${google_service_account.prow-bucket-editor.email}"
+  bucket = google_storage_bucket.prow-bucket.name
+  role   = "roles/storage.objectAdmin"
+  member = "serviceAccount:${google_service_account.prow-bucket-editor.email}"
 }
 
 resource "google_service_account_key" "prow-bucket-editor_key" {
   service_account_id = google_service_account.prow-bucket-editor.name
-}
-
-data "google_client_config" "current" {
-}
-
-provider "kubernetes" {
-  host                   = module.gke-cluster.cluster_endpoint
-  cluster_ca_certificate = base64decode(module.gke-cluster.cluster_ca_certificate)
-  token                  = data.google_client_config.current.access_token
-  load_config_file       = false
 }
 
 resource "kubernetes_secret" "gcs-bucket-credentials" {
@@ -101,8 +116,35 @@ resource "kubernetes_secret" "gcs-bucket-credentials" {
   }
 }
 
+### Google Service Account for CertManager to create DNS entries
+resource "google_service_account" "certmanager-dns-editor" {
+  account_id   = "${var.name}-certmanager-dns-editor"
+  display_name = "service account for certmanager to edit dns entries"
+}
+
+resource "google_project_iam_binding" "certmanager-dns-editor_role" {
+  role = "roles/dns.admin"
+  members = [
+    "serviceAccount:${google_service_account.certmanager-dns-editor.email}",
+  ]
+}
+
+resource "google_service_account_key" "certmanager-dns-editor_key" {
+  service_account_id = google_service_account.certmanager-dns-editor.name
+}
+
+resource "kubernetes_secret" "certmanager-dns-editor" {
+  metadata {
+    name = "clouddns-dns01-solver-svc-accs"
+  }
+
+  data = {
+    "key.json" = base64decode(google_service_account_key.certmanager-dns-editor_key.private_key)
+  }
+}
+
 resource "random_string" "hmac-token" {
-  length = 30
+  length  = 30
   special = false
 }
 
@@ -127,7 +169,16 @@ resource "kubernetes_secret" "oauth-token" {
 }
 
 resource "google_dns_managed_zone" "cluster-zone" {
-  name = "${var.name}-zone"
-  dns_name = "${var.name}.ouzi.io."
+  name        = "${var.name}-zone"
+  dns_name    = "${var.name}.ouzi.io."
   description = "${var.name} zone"
+}
+
+resource "google_bigquery_dataset" "metering_dataset" {
+  dataset_id                  = "${var.name}_gke_metering_dataset"
+  friendly_name               = "${var.name}_gke_metering_dataset"
+  description                 = "GKE metering usage for cluster ${var.name}"
+  location                    = "EU"
+  default_table_expiration_ms = 3600000
+  delete_contents_on_destroy = true
 }
