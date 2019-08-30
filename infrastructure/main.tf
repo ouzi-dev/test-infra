@@ -135,7 +135,7 @@ resource "google_service_account_key" "certmanager-dns-editor_key" {
 
 resource "kubernetes_secret" "certmanager-dns-editor" {
   metadata {
-    name = "clouddns-dns01-solver-svc-accs"
+    name = "clouddns-dns01-solver-svc-acct"
   }
 
   data = {
