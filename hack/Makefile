@@ -4,11 +4,12 @@ ifndef ENV
 $(error ENV is not set)
 endif
 
-helm-init: get-kubeconfig
+cluster-init: get-kubeconfig
 	kubectl apply -f env/$(ENV)/helm/helm-init.yaml
 	helm init --service-account tiller --history-max 200 --upgrade --wait
 
-helm-install: helm-init
+cluster-install: cluster-init
+	kubectl apply -f env/$(ENV)/pdbs/
 	kubectl apply -f env/$(ENV)/helm/helm-init.yaml
 	helm upgrade --install onion stable/external-dns -f env/$(ENV)/external-dns/helm.yaml --namespace external-dns --wait
 	kubectl apply -f env/$(ENV)/cert-manager/crds.yaml
@@ -17,7 +18,7 @@ helm-install: helm-init
 	helm upgrade --install peach stable/nginx-ingress -f env/$(ENV)/nginx-ingress/helm.yaml --namespace nginx  --wait
 #	helm upgrade --install potato stable/prometheus-operator --namespace monitoring --wait
 
-helm-uninstall: get-kubeconfig
+cluster-uninstall: get-kubeconfig
 	helm delete peach --purge
 	helm delete onion --purge
 	helm delete potato --purge
@@ -27,9 +28,9 @@ prow-uninstall: get-kubeconfig
 	kubectl delete -f prow/manifests/resources -R
 	kubectl delete -f prow/manifests/init -R
 
-install: helm-install prow-install
+install: cluster-install prow-install
 
-uninstall: helm-uninstall prow-uninstall
+uninstall: cluster-uninstall prow-uninstall
 
 get-kubeconfig:
 	@ENV=$(ENV) $(MAKE) -C ../infrastructure get-kubeconfig
