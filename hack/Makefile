@@ -9,6 +9,7 @@ cluster-init: get-kubeconfig
 	helm init --service-account tiller --history-max 200 --upgrade --wait
 
 cluster-install: cluster-init
+	kubectl apply -f env/$(ENV)/rbac/
 	kubectl apply -f env/$(ENV)/pdbs/
 	kubectl apply -f env/$(ENV)/helm/helm-init.yaml
 	helm upgrade --install onion stable/external-dns -f env/$(ENV)/external-dns/helm.yaml --namespace external-dns --wait
