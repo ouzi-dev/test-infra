@@ -1,9 +1,5 @@
 .PHONY: clean init plan apply destroy format validate bootstrap-init bootstrap-plan bootstrap-apply bootstrap-destroy
 
-ifndef ENV
-$(error ENV is not set)
-endif
-
 # Get OS
 UNAME := $(shell uname)
 
@@ -35,20 +31,20 @@ validate:
 	@terraform validate .
 
 init:
-	@terraform init -backend-config=env/$(ENV)/backend.tfvars
+	@terraform init -backend-config=backend.tfvars
 
 plan: init 
-	@terraform plan --var-file=env/$(ENV)/terraform.tfvars
+	@terraform plan --var-file=terraform.tfvars
 
 apply: init 
-	@terraform apply --var-file=env/$(ENV)/terraform.tfvars
+	@terraform apply --var-file=terraform.tfvars
 
 output:
-	@ENV=$(ENV) $(MAKE) init > /dev/null 2>&1
+	@$(MAKE) init > /dev/null 2>&1
 	@terraform output --json -no-color
 
 destroy: init
-	@terraform destroy --var-file=env/$(ENV)/terraform.tfvars
+	@terraform destroy --var-file=terraform.tfvars
 
 bootstrap-init:
 	@cd bootstrap; terraform init
@@ -65,7 +61,7 @@ bootstrap-destroy: bootstrap-init
 bootstrap: bootstrap-apply
 
 get-cluster-credentials:
-	@ENV=$(ENV) $(MAKE) init > /dev/null 2>&1
+	@$(MAKE) init > /dev/null 2>&1
 	$(eval NAME=$(shell ENV=$(ENV) $(MAKE) output | jq .name.value))
 	$(eval REGION=$(shell ENV=$(ENV) $(MAKE) output | jq .region.value))
 	gcloud container clusters get-credentials $(NAME) --region=$(REGION)

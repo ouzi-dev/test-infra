@@ -9,7 +9,7 @@ plugins:
     - dog # /bark replies with dog pictures
     - help  # Support /help and /good-first-issue
     - hold  # Support /hold to delay merge
-    - lgtm  # Allow /lgtm
+    - lgtm  # Allow /lgtm 
     - lifecycle  # Allow /lifecycle stale
     - override
     - size  # Auto-label size of PR
