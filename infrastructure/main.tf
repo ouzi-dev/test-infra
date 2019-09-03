@@ -38,8 +38,8 @@ provider "random" {
 }
 
 ## Data
-data "credstash_secret" "bot_token" {
-  name = var.ouzibot_credstash_key
+data "credstash_secret" "github_bot_token" {
+  name = var.github_token_credstash_key
 }
 
 data "credstash_secret" "prow-github-oauth-client-secret" {
@@ -190,7 +190,7 @@ resource "kubernetes_secret" "oauth-token" {
   }
 
   data = {
-    oauth = data.credstash_secret.bot_token.value
+    oauth = data.credstash_secret.github_bot_token.value
   }
 }
 
@@ -222,8 +222,8 @@ resource "kubernetes_secret" "prow-github-oauth-config" {
         redirect_url       = "https://${local.prow_base_url}/github-login/redirect",
         final_redirect_url = "https://${local.prow_base_url}/pr",
       }
-  )
- } 
+    )
+  }
 }
 
 resource "kubernetes_secret" "prow-cookie" {

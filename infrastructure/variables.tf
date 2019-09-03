@@ -111,7 +111,7 @@ variable "prow_artefact_bucket_location" {
   type = string
 }
 
-variable "ouzibot_credstash_key" {
+variable "github_bot_token_credstash_key" {
   type = string
 }
 
