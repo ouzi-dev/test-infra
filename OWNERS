@@ -1,8 +1,12 @@
 # See the OWNERS docs at https://go.k8s.io/owners
 approvers:
-  - ouzi-team      
+  - belitre
+  - givanov
+  - alexouzounis    
 reviewers:
-  - ouzi-team 
+  - belitre
+  - givanov
+  - alexouzounis 
 aliases:
   ouzi-team:
     - belitre
