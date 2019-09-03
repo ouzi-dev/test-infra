@@ -2,6 +2,7 @@ gke_region = "us-east1"
 aws_region = "eu-west-1"
 project    = "testinfra-251013"
 name       = "unicorn"
+base_domain = "ouzi.io"
 
 gke_zones              = ["us-east1-b", "us-east1-c", "us-east1-d"]
 gke_kubernetes_version = "1.13.7-gke.24"
@@ -37,4 +38,9 @@ gke_authenticator_groups_security_group = "gke-security-groups@ouzi.dev"
 prow_artefact_bucket_location           = "us"
 
 ouzibot_credstash_key = "github_bot_personal_access_token_prow"
+prow-github-oauth-client-id_credstash_key = "prow-github-oauth-client-id"
+prow-github-oauth-client-secret_credstash_key = "prow-github-oauth-client-secret"
+prow-github-oauth-cookie-secret_credstash_key = "prow-github-oauth-cookie-secret"
+prow-cookie-secret_credstash_key = "prow-cookie-secret"
 credstash_region      = "eu-west-1"
+

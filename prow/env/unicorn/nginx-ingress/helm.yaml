@@ -72,7 +72,7 @@ controller:
   ## Allows customization of the external service
   ## the ingress will be bound to via DNS
   publishService:
-    enabled: false
+    enabled: true
     ## Allows overriding of the publish service to bind to
     ## Must be <namespace>/<service_name>
     ##
@@ -223,7 +223,7 @@ controller:
 
   service:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: prow.unicorn.ouzi.io.
+      external-dns.alpha.kubernetes.io/hostname: "prow.unicorn.ouzi.io"
 
     labels: {}
     omitClusterIP: false

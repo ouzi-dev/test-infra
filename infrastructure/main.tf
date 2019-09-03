@@ -42,8 +42,30 @@ data "credstash_secret" "bot_token" {
   name = var.ouzibot_credstash_key
 }
 
+data "credstash_secret" "prow-github-oauth-client-secret" {
+  name = var.prow-github-oauth-client-secret_credstash_key
+}
+
+data "credstash_secret" "prow-github-oauth-client-id" {
+  name = var.prow-github-oauth-client-id_credstash_key
+}
+
+data "credstash_secret" "prow-github-oauth-cookie-secret" {
+  name = var.prow-github-oauth-cookie-secret_credstash_key
+}
+
+data "credstash_secret" "prow-cookie-secret" {
+  name = var.prow-cookie-secret_credstash_key
+}
+
 data "google_client_config" "current" {
 }
+
+## locals
+locals {
+  prow_base_url = "prow.${var.name}.${var.base_domain}"
+}
+
 
 ## Modules
 module "gke-cluster" {
@@ -106,9 +128,10 @@ resource "google_service_account_key" "prow-bucket-editor_key" {
   service_account_id = google_service_account.prow-bucket-editor.name
 }
 
-resource "kubernetes_secret" "gcs-bucket-credentials" {
+resource "kubernetes_secret" "gcs-credentials" {
   metadata {
-    name = "gcs-bucket-credentials"
+    name      = "gcs-credentials"
+    namespace = "prow"
   }
 
   data = {
@@ -135,7 +158,8 @@ resource "google_service_account_key" "certmanager-dns-editor_key" {
 
 resource "kubernetes_secret" "certmanager-dns-editor" {
   metadata {
-    name = "clouddns-dns01-solver-svc-acct"
+    name      = "clouddns-dns01-solver-svc-acct"
+    namespace = "cert-manager"
   }
 
   data = {
@@ -150,21 +174,66 @@ resource "random_string" "hmac-token" {
 
 resource "kubernetes_secret" "hmac-token" {
   metadata {
-    name = "hmac-token"
+    name      = "hmac-token"
+    namespace = "prow"
   }
 
   data = {
-    secret = random_string.hmac-token.result
+    hmac = random_string.hmac-token.result
   }
 }
 
 resource "kubernetes_secret" "oauth-token" {
   metadata {
-    name = "oauth-token"
+    name      = "oauth-token"
+    namespace = "prow"
   }
 
   data = {
-    secret = data.credstash_secret.bot_token.value
+    oauth = data.credstash_secret.bot_token.value
+  }
+}
+
+resource "kubernetes_secret" "oauth2proxy-github-oauth-config" {
+  metadata {
+    name      = "github-oauth-secret"
+    namespace = "oauth2-proxy"
+  }
+
+  data = {
+    client-id     = data.credstash_secret.prow-github-oauth-client-id.value
+    client-secret = data.credstash_secret.prow-github-oauth-client-secret.value
+    cookie-secret = data.credstash_secret.prow-github-oauth-cookie-secret.value
+  }
+}
+
+resource "kubernetes_secret" "prow-github-oauth-config" {
+  metadata {
+    name      = "github-oauth-config"
+    namespace = "prow"
+  }
+
+  data = {
+    secret = templatefile(
+      "${path.module}//templates/_prow_github_oauth_config.yaml",
+      {
+        client_id          = data.credstash_secret.prow-github-oauth-client-id.value,
+        client_secret      = data.credstash_secret.prow-github-oauth-client-secret.value,
+        redirect_url       = "https://${local.prow_base_url}/github-login/redirect",
+        final_redirect_url = "https://${local.prow_base_url}/pr",
+      }
+  )
+ } 
+}
+
+resource "kubernetes_secret" "prow-cookie" {
+  metadata {
+    name      = "cookie"
+    namespace = "prow"
+  }
+
+  data = {
+    secret = data.credstash_secret.prow-cookie-secret.value
   }
 }
 
@@ -180,5 +249,5 @@ resource "google_bigquery_dataset" "metering_dataset" {
   description                 = "GKE metering usage for cluster ${var.name}"
   location                    = "EU"
   default_table_expiration_ms = 3600000
-  delete_contents_on_destroy = true
+  delete_contents_on_destroy  = true
 }

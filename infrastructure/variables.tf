@@ -115,6 +115,26 @@ variable "ouzibot_credstash_key" {
   type = string
 }
 
+variable "prow-github-oauth-client-id_credstash_key" {
+  type = string
+}
+
+variable "prow-github-oauth-client-secret_credstash_key" {
+  type = string
+}
+
+variable "prow-github-oauth-cookie-secret_credstash_key" {
+  type = string
+}
+
+variable "prow-cookie-secret_credstash_key" {
+  type = string
+}
+
 variable "credstash_region" {
+  type = string
+}
+
+variable "base_domain" {
   type = string
 }

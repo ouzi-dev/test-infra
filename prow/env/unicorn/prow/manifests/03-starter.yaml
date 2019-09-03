@@ -93,7 +93,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: prow
   name: hook
   labels:
     app: hook
@@ -175,7 +175,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: prow
   name: hook
 spec:
   selector:
@@ -190,7 +190,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: prow
   name: plank
   labels:
     app: plank
@@ -241,7 +241,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: prow
   name: plank
 spec:
   selector:
@@ -254,7 +254,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: prow
   name: sinker
   labels:
     app: sinker
@@ -294,7 +294,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: prow
   name: deck
   labels:
     app: deck
@@ -319,7 +319,7 @@ spec:
         - --config-path=/etc/config/config.yaml
         - --tide-url=http://tide/
         - --hook-url=http://hook:8888/plugin-help
-        - --redirect-http-to=prow.coolcluster.belitre.com
+        - --redirect-http-to=prow.unicorn.ouzi.io
         - --config-path=/etc/config/config.yaml
         - --job-config-path=/etc/job-config
         - --oauth-url=/github-login
@@ -372,7 +372,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: prow
   name: deck
 spec:
   selector:
@@ -388,7 +388,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: prow
   name: horologium
   labels:
     app: horologium
@@ -428,7 +428,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: prow
   name: tide
   labels:
     app: tide
@@ -451,8 +451,8 @@ spec:
         - --github-endpoint=http://ghproxy
 #        - --github-endpoint=https://api.github.com
         - --gcs-credentials-file=/etc/service-account/service-account.json
-        - --history-uri=gs://belitradas-prow-artifacts/tide-history.json
-        - --status-path=gs://belitradas-prow-artifacts/tide-status-checkpoint.yaml
+        - --history-uri=gs://unicorn-prow-artifacts/tide-history.json
+        - --status-path=gs://unicorn-prow-artifacts/tide-status-checkpoint.yaml
         - --config-path=/etc/config/config.yaml
         - --job-config-path=/etc/job-config
         ports:
@@ -490,7 +490,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: prow
   name: tide
 spec:
   selector:
@@ -507,7 +507,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: statusreconciler
-  namespace: default
+  namespace: prow
   labels:
     app: statusreconciler
 spec:
@@ -559,13 +559,13 @@ spec:
 kind: ServiceAccount
 apiVersion: v1
 metadata:
-  namespace: default
+  namespace: prow
   name: "deck"
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "deck"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -578,7 +578,7 @@ subjects:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: test-pods
+  namespace: prow-test-pods
   name: "deck"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -587,12 +587,12 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: "deck"
-  namespace: default
+  namespace: prow
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "deck"
 rules:
   - apiGroups:
@@ -606,7 +606,7 @@ rules:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: test-pods
+  namespace: prow-test-pods
   name: "deck"
 rules:
   - apiGroups:
@@ -619,13 +619,13 @@ rules:
 kind: ServiceAccount
 apiVersion: v1
 metadata:
-  namespace: default
+  namespace: prow
   name: "horologium"
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "horologium"
 rules:
   - apiGroups:
@@ -639,7 +639,7 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "horologium"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -652,13 +652,13 @@ subjects:
 kind: ServiceAccount
 apiVersion: v1
 metadata:
-  namespace: default
+  namespace: prow
   name: "plank"
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "plank"
 rules:
   - apiGroups:
@@ -674,7 +674,7 @@ rules:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: test-pods
+  namespace: prow-test-pods
   name: "plank"
 rules:
   - apiGroups:
@@ -689,7 +689,7 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "plank"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -702,7 +702,7 @@ subjects:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: test-pods
+  namespace: prow-test-pods
   name: "plank"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -711,18 +711,18 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: "plank"
-  namespace: default
+  namespace: prow
 ---
 kind: ServiceAccount
 apiVersion: v1
 metadata:
-  namespace: default
+  namespace: prow
   name: "sinker"
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "sinker"
 rules:
   - apiGroups:
@@ -736,7 +736,7 @@ rules:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: test-pods
+  namespace: prow-test-pods
   name: "sinker"
 rules:
   - apiGroups:
@@ -750,7 +750,7 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "sinker"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -763,7 +763,7 @@ subjects:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: test-pods
+  namespace: prow-test-pods
   name: "sinker"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -772,18 +772,18 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: "sinker"
-  namespace: default
+  namespace: prow
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: default
+  namespace: prow
   name: "hook"
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "hook"
 rules:
   - apiGroups:
@@ -805,7 +805,7 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "hook"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -818,13 +818,13 @@ subjects:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: default
+  namespace: prow
   name: "tide"
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "tide"
 rules:
   - apiGroups:
@@ -838,7 +838,7 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "tide"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -851,13 +851,13 @@ subjects:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: default
+  namespace: prow
   name: "statusreconciler"
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "statusreconciler"
 rules:
   - apiGroups:
@@ -870,7 +870,7 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: default
+  namespace: prow
   name: "statusreconciler"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -883,7 +883,7 @@ subjects:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: prow
   name: needs-rebase
   labels:
     app: needs-rebase
@@ -930,7 +930,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: prow
   name: needs-rebase
 spec:
   selector:
@@ -944,7 +944,7 @@ spec:
 #apiVersion: batch/v1beta1
 #kind: CronJob
 #metadata:
-#  namespace: default
+#  namespace: prow
 #  name: branchprotector
 #spec:
 #  schedule: "54 * * * *"  # Every hour at 54 minutes past the hour
@@ -991,7 +991,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: prow
   name: pushgateway
   labels:
     app: pushgateway
@@ -1012,7 +1012,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: prow
   name: pushgateway
   labels:
     app: pushgateway
@@ -1028,7 +1028,7 @@ spec:
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  namespace: default
+  namespace: prow
   name: pushgateway-proxy-config
 data:
   nginx.conf: |-
@@ -1055,7 +1055,7 @@ data:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: prow
   name: pushgateway-proxy
   labels:
     app: pushgateway-proxy
@@ -1083,7 +1083,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: prow
   name: pushgateway-external
   labels:
     app: pushgateway-external
@@ -1099,7 +1099,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: prow
   name: ghproxy
   labels:
     app: ghproxy
@@ -1133,7 +1133,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: default
+  namespace: prow
   labels:
     app: ghproxy
   name: ghproxy
@@ -1153,7 +1153,7 @@ kind: ServiceAccount
 apiVersion: v1
 metadata:
   name: "crier"
-  namespace: default
+  namespace: prow
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
@@ -1175,7 +1175,7 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: "crier"
-  namespace: "default"
+  namespace: "prow"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1183,13 +1183,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: "crier"
-  namespace: "default"
+  namespace: "prow"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: crier
-  namespace: default
+  namespace: prow
   labels:
     app: crier
 spec:
@@ -1236,7 +1236,7 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: label-sync
-  namespace: default
+  namespace: prow
 spec:
   schedule: "0 5 * * *" 
   concurrencyPolicy: Forbid
@@ -1253,7 +1253,7 @@ spec:
               args:
               - --config=/etc/config/labels.yaml
               - --confirm=true
-              - --orgs=belitradas
+              - --orgs=ouzi-dev
               - --token=/etc/github/oauth
               volumeMounts:
               - name: oauth
@@ -1279,10 +1279,10 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx
   name: prow
-  namespace: default
+  namespace: prow
 spec:
   rules:
-  - host: prow.coolcluster.belitre.com
+  - host: prow.unicorn.ouzi.io
     http:
       paths:
       - backend:
@@ -1295,5 +1295,5 @@ spec:
         path: /hook
   tls:
   - hosts:
-    - prow.coolcluster.belitre.com
-    secretName: prow-coolcluster-tls
+    - prow.unicorn.ouzi.io
+    secretName: prow-unicorn-tls

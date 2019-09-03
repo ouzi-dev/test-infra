@@ -1,4 +1,4 @@
-.PHONY: fmt infra-plan infra-apply infra-destroy infra-output deploy-validate deploy-dry-run deploy get-kubeconfig
+.PHONY: fmt infra-plan infra-apply infra-destroy infra-output deploy-validate deploy-dry-run deploy get-cluster-credentials
 
 ifndef ENV
 $(error ENV is not set)
@@ -22,12 +22,12 @@ infra-destroy:
 infra-output:
 	@ENV=$(ENV) $(MAKE) -C infrastructure output	
 
-install: infra-apply get-kubeconfig 
-	@ENV=$(ENV) $(MAKE) -C hack install
+install: infra-apply get-cluster-credentials
+	@ENV=$(ENV) $(MAKE) -C prow install
 
-uninstall: get-kubeconfig
-	@ENV=$(ENV) $(MAKE) -C hack uninstall
+uninstall: get-cluster-credentials
+	@ENV=$(ENV) $(MAKE) -C prow uninstall
 	@ENV=$(ENV) $(MAKE) infra-destroy
 
-get-kubeconfig:
-	@ENV=$(ENV) $(MAKE) -C infrastructure get-kubeconfig	
+get-cluster-credentials:
+	@ENV=$(ENV) $(MAKE) -C infrastructure get-cluster-credentials

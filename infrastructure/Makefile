@@ -64,7 +64,7 @@ bootstrap-destroy: bootstrap-init
 
 bootstrap: bootstrap-apply
 
-get-kubeconfig:
+get-cluster-credentials:
 	@ENV=$(ENV) $(MAKE) init > /dev/null 2>&1
 	$(eval NAME=$(shell ENV=$(ENV) $(MAKE) output | jq .name.value))
 	$(eval REGION=$(shell ENV=$(ENV) $(MAKE) output | jq .region.value))

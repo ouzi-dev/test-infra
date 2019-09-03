@@ -49,116 +49,6 @@ provider: google
 ##
 publishInternalServices: false
 
-## AWS configuration to be set via arguments/env. variables
-##
-aws:
-  ## AWS credentials
-  ##
-  credentials:
-    secretKey: ""
-    accessKey: ""
-    ## pre external-dns 0.5.9 home dir should be `/root/.aws`
-    ##
-    mountPath: "/.aws"
-  ## AWS region
-  ##
-  region: "us-east-1"
-  ## Zone Filter. Available values are: public, private
-  ##
-  zoneType: ""
-  ## AWS Role to assume
-  ##
-  assumeRoleArn: ""
-  ## Maximum number of changes that will be applied in each batch
-  ##
-  batchChangeSize: 1000
-  ## AWS Zone tags
-  ##
-  zoneTags: []
-
-## Azure configuration to be set via arguments/env. variables
-##
-azure:
-  ## When a secret to load azure.json is not specified,
-  ## the host's /etc/kubernetes/azure.json will be used
-  ##
-  secretName: ""
-  ## Azure resource group to use
-  ##
-  resourceGroup: ""
-
-## Cloudflare configuration to be set via arguments/env. variables
-##
-cloudflare:
-  ## `CF_API_KEY` to set in the environment
-  ##
-  apiKey: ""
-  ## `CF_API_EMAIL` to set in the environment
-  ##
-  email: ""
-  ## Enable the proxy feature of Cloudflare
-  ##
-  proxied: true
-
-## CoreDNS configuration to be set via arguments/env variables
-##
-coredns:
-  ## Comma-separated list of the etcd endpoints
-  ## Secure (https) endpoints can be used as well, in that case `etcdTLS` section
-  ## should be filled in accordingly
-  ##
-  etcdEndpoints: "http://etcd-extdns:2379"
-  ## Configuration of the secure communication and client authentication to the etcd cluster
-  ## If enabled all the values under this key must hold a valid data
-  ##
-  etcdTLS:
-    ## Enable or disable secure communication and client authentication to the etcd cluster
-    ##
-    enabled: false
-    ## Name of the existing secret containing cert files for client communication
-    ## ref: https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/security.md
-    ## ref (secret creation):
-    ##  https://github.com/bitnami/charts/tree/master/bitnami/etcd#configure-certificates-for-client-communication
-    ##
-    secretName: "etcd-client-certs"
-    ## Location of the mounted certificates inside external-dns pod
-    ##
-    mountPath: "/etc/coredns/tls/etcd"
-    ## CA PEM file used to sign etcd TLS cert, should exist in the secret provided above
-    ##
-    caFilename: "ca.crt"
-    ## Certificate PEM file, should exist in the secret provided above
-    ## Will be used by external-dns to authenticate against etcd
-    ##
-    certFilename: "cert.pem"
-    ## Private key PEM file, should exist in the secret provided above
-    ## Will be used by external-dns to authenticate against etcd
-    ##
-    keyFilename: "key.pem"
-
-## OpenStack Designate provider configuration to be set via arguments/env. variables
-##
-designate:
-  ## Use a custom CA (optional)
-  ##
-  customCA:
-    enabled: false
-    ## The content of the custom CA file
-    ##
-    content: ""
-    ## Location to mount custom CA
-    ##
-    mountPath: "/config/designate"
-    ## Custom CA filename
-    ##
-    filename: "designate-ca.pem"
-
-## DigitalOcean configuration to be set via arguments/env. variables
-##
-digitalocean:
-  ## `DO_TOKEN` to set in the environment
-  ##
-  apiToken: ""
 
 ## Google configuration to be set via arguments/env. variables
 ##
@@ -170,41 +60,6 @@ google:
   ##
   ## serviceAccountSecret: ""
   ## serviceAccountKey: ""
-
-## Infoblox configuration to be set via arguments/env. variables
-##
-infoblox:
-  ## Required keys
-  ##
-  wapiUsername: "admin"
-  wapiPassword: ""
-  gridHost: ""
-  ## Optional keys
-  ##
-  domainFilter: ""
-  noSslVerify: false
-  wapiPort: ""
-  wapiVersion: ""
-  wapiConnectionPoolSize: ""
-  wapiHttpTimeout: ""
-
-## RFC 2136 configuration to be set via arguments/env. variables
-##
-rfc2136:
-  host: ""
-  port: 53
-  zone: ""
-  tsigSecret: ""
-  tsigSecretAlg: hmac-sha256
-  tsigKeyname: externaldns-key
-  tsigAxfr: true
-
-## PowerDNS configuration to be set via arguments/env. variables
-##
-pdns:
-  apiUrl: ""
-  apiPort: "8081"
-  apiKey: ""
 
 ## Limit possible target zones by domain suffixes (optional)
 ##
@@ -224,10 +79,10 @@ interval: "1m"
 ## Verbosity of the ExternalDNS logs. Available values are:
 ## - panic, debug, info, warn, error, fatal
 ##
-logLevel: info
+logLevel: debug
 ## Modify how DNS records are sychronized between sources and providers (options: sync, upsert-only)
 ##
-policy: upsert-only
+policy: sync
 ## Registry Type. Available types are: txt, noop
 ## ref: https://github.com/kubernetes-incubator/external-dns/blob/master/docs/proposal/registry.md
 ##

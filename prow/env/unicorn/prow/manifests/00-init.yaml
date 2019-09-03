@@ -1,44 +1,44 @@
-apiVersion: v1
-data:
-  config.yaml: |-
-    prowjob_namespace: default
-    pod_namespace: test-pods
-kind: ConfigMap
-metadata:
-  name: config
-  namespace: default
----
-apiVersion: v1
-data:
-  plugins.yaml: |-
-    plugins:
-      belitradas/test-infra:
-      - config-updater
-    config_updater:
-      maps:
-        prow/config.yaml:
-          name: config
-        prow/plugins.yaml:
-          name: plugins
-        config/jobs/**/*.yaml:
-          name: job-config
-          gzip: true
-kind: ConfigMap
-metadata:
-  name: plugins
-  namespace: default
----
-apiVersion: v1
-data:
-kind: ConfigMap
-metadata:
-  name: job-config
-  namespace: default
+# apiVersion: v1
+# data:
+#   config.yaml: |-
+#     prowjob_namespace: prow
+#     pod_namespace: prow-test-pods
+# kind: ConfigMap
+# metadata:
+#   name: config
+#   namespace: prow
+# ---
+# apiVersion: v1
+# data:
+#   plugins.yaml: |-
+#     plugins:
+#       ouzi-dev/test-infra:
+#       - config-updater
+#     config_updater:
+#       maps:
+#         prow/config.yaml:
+#           name: config
+#         prow/plugins.yaml:
+#           name: plugins
+#         config/jobs/**/*.yaml:
+#           name: job-config
+#           gzip: true
+# kind: ConfigMap
+# metadata:
+#   name: plugins
+#   namespace: prow
+# ---
+# apiVersion: v1
+# data:
+# kind: ConfigMap
+# metadata:
+#   name: job-config
+#   namespace: prow
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  namespace: default
+  namespace: prow
   name: gce-ssd-retain
 provisioner: kubernetes.io/gce-pd
 parameters:
@@ -48,7 +48,7 @@ reclaimPolicy: Retain
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  namespace: default
+  namespace: prow
   labels:
     app: ghproxy
   name: ghproxy
@@ -70,12 +70,17 @@ spec:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: test-pods
+  name: prow-test-pods
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: prow
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: default
+  namespace: prow
   name: label-config
 data:
   labels.yaml: |-
@@ -320,7 +325,7 @@ data:
           name: lifecycle/rotten
           target: both
           prowPlugin: lifecycle
-          addedBy: anyone or [@belitre-ci-bot](https://github.com/belitre-ci-bot) 
+          addedBy: anyone or [@ouzibot](https://github.com/ouzibot) 
         - color: "795548"
           description: Denotes an issue or PR has remained open with no activity and has become stale.
           name: lifecycle/stale
@@ -328,7 +333,7 @@ data:
             - name: stale
           target: both
           prowPlugin: lifecycle
-          addedBy: anyone or [@belitre-ci-bot](https://github.com/belitre-ci-bot) 
+          addedBy: anyone or [@ouzibot](https://github.com/ouzibot) 
         - color: ededed
           description: Indicates a PR lacks a `kind/foo` label and requires one.
           name: needs-kind

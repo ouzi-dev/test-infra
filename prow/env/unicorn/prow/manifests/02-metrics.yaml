@@ -13,7 +13,7 @@ spec:
   jobLabel: app
   namespaceSelector:
     matchNames:
-    - default
+    - prow
   selector:
     matchLabels:
       app: pushgateway-external
@@ -33,7 +33,7 @@ spec:
   jobLabel: app
   namespaceSelector:
     matchNames:
-      - default
+      - prow
   selector:
     matchLabels:
       app: deck
@@ -53,7 +53,7 @@ spec:
   jobLabel: app
   namespaceSelector:
     matchNames:
-      - default
+      - prow
   selector:
     matchLabels:
       app: ghproxy
@@ -73,7 +73,7 @@ spec:
   jobLabel: app
   namespaceSelector:
     matchNames:
-      - default
+      - prow
   selector:
     matchLabels:
       app: hook
@@ -93,7 +93,7 @@ spec:
   jobLabel: app
   namespaceSelector:
     matchNames:
-      - default
+      - prow
   selector:
     matchLabels:
       app: plank
@@ -113,7 +113,7 @@ spec:
   jobLabel: app
   namespaceSelector:
     matchNames:
-      - default
+      - prow
   selector:
     matchLabels:
       app: sinker
@@ -133,7 +133,7 @@ spec:
   jobLabel: app
   namespaceSelector:
     matchNames:
-      - default
+      - prow
   selector:
     matchLabels:
       app: tide
