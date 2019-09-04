@@ -76,16 +76,6 @@ github_reporter:
 presets:
 # credential presets
 - labels:
-    preset-github-ouzidev: "true"
-  volumes:
-  - name: github-bot-ssh-key
-    secret:
-      secretName: github_bot_ssh_key
-  volumeMounts:
-  - name: github-bot-ssh-key
-    mountPath: /home/.ssh/id_rsa
-    readOnly: true
-- labels:
     preset-terraform: "true"
   env:
   - name: GOOGLE_APPLICATION_CREDENTIALS

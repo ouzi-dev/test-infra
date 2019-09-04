@@ -9,8 +9,10 @@ presubmits:
       trigger: "(?m)test-prow-config( please)?" 
       rerun_command: "test-prow-config"
       run_if_changed: '^(config/.*|prow/.*)$'
-      labels:
-        preset-github-ouzidev: "true"      
+      decoration_config:
+        ssh_key_secrets:
+        - github-ssh-key
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"  
       spec: 
         containers:
           - name: "test-config"
@@ -31,8 +33,10 @@ presubmits:
       trigger: "(?m)test-prow-manifests( please)?" 
       rerun_command: "test-prow-manifests"
       run_if_changed: 'prow/manifests/'
-      labels:
-        preset-github-ouzidev: "true"      
+      decoration_config:
+        ssh_key_secrets:
+        - github-ssh-key
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"      
       spec: 
         serviceAccountName: prow
         containers:
@@ -52,9 +56,12 @@ presubmits:
       trigger: "(?m)test-terraform-changes( please)?" 
       rerun_command: "test-terraform-changes"
       run_if_changed: 'infrastructure/'
+      decoration_config:
+        ssh_key_secrets:
+        - github-ssh-key
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"        
       labels:
         preset-terraform: "true"
-        preset-github-ouzidev: "true"
       spec: 
         serviceAccountName: prow
         containers:
@@ -73,8 +80,10 @@ postsubmits:
       run_if_changed: '^(config/.*|prow/.*)$'
       branches:
         - master
-      labels:
-        preset-github-ouzidev: "true"        
+      decoration_config:
+        ssh_key_secrets:
+        - github-ssh-key
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"      
       spec:
         containers:
           - name: "test-config"
@@ -92,8 +101,10 @@ postsubmits:
       run_if_changed: 'prow/manifests/'
       branches:
         - master
-      labels:
-        preset-github-ouzidev: "true"        
+      decoration_config:
+        ssh_key_secrets:
+        - github-ssh-key
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"       
       spec: 
         serviceAccountName: prow
         containers:
