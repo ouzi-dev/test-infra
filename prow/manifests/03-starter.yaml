@@ -116,6 +116,7 @@ spec:
         image: gcr.io/k8s-prow/hook:v20190625-9f02db3fe
         imagePullPolicy: IfNotPresent
         args:
+        - --slack-token-file=/etc/slack/token
         - --dry-run=false
         - --config-path=/etc/config/config.yaml
         - --github-endpoint=http://ghproxy
@@ -127,6 +128,8 @@ spec:
           - name: metrics
             containerPort: 9090
         volumeMounts:
+        - name: slack
+          mountPath: /etc/slack        
         - name: hmac
           mountPath: /etc/webhook
           readOnly: true
@@ -156,6 +159,9 @@ spec:
           periodSeconds: 3
           timeoutSeconds: 600
       volumes:
+      - name: slack
+        secret:
+          secretName: slack-token      
       - name: hmac
         secret:
           secretName: hmac-token

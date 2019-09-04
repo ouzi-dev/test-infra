@@ -58,6 +58,10 @@ data "credstash_secret" "prow-cookie-secret" {
   name = var.prow-cookie-secret_credstash_key
 }
 
+data "credstash_secret" "slack-token" {
+  name = var.slack-token_secret_credstash_key
+}
+
 data "google_client_config" "current" {
 }
 
@@ -236,6 +240,18 @@ resource "kubernetes_secret" "prow-cookie" {
     secret = data.credstash_secret.prow-cookie-secret.value
   }
 }
+
+resource "kubernetes_secret" "slack-token" {
+  metadata {
+    name      = "slack-token"
+    namespace = "prow"
+  }
+
+  data = {
+    token = data.credstash_secret.slack-token.value
+  }
+}
+
 
 resource "google_dns_managed_zone" "cluster-zone" {
   name        = "${var.name}-zone"
