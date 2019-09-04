@@ -6,11 +6,11 @@ endif
 
 BOOTSTRAP_MANIFESTS_PATH = cluster-bootstrap
 
-cluster-init: get-cluster-credentials
+init-cluster: 
 	kubectl apply -f $(BOOTSTRAP_MANIFESTS_PATH)/helm/00-init.yaml
 	helm init --service-account tiller --history-max 200 --upgrade --wait
 
-cluster-install: cluster-init
+deploy-cluster: init-cluster
 	helm repo update
 	kubectl apply -f $(BOOTSTRAP_MANIFESTS_PATH)/rbac/
 	kubectl apply -f $(BOOTSTRAP_MANIFESTS_PATH)/pdbs/
@@ -23,32 +23,19 @@ cluster-install: cluster-init
 	kubectl apply -f $(BOOTSTRAP_MANIFESTS_PATH)/oauth/resources.yaml
 #	helm upgrade --install potato stable/prometheus-operator --namespace monitoring --wait
 
-cluster-uninstall: get-cluster-credentials
-	helm delete peach --purge
-	helm delete onion --purge
-	helm delete potato --purge
-	#kubectl delete -f $(BOOTSTRAP_MANIFESTS_PATH)/helm/helm-init.yaml
-
-prow-install: get-cluster-credentials
+deploy-prow: 
 	kubectl apply -f manifests
-
-prow-update: prow-update-plugins prow-update-config prow-update-labels
-
-prow-update-plugins: get-cluster-credentials
 	kubectl create configmap plugins --from-file=plugins.yaml=plugins.yaml --dry-run -o yaml -n prow | kubectl replace configmap plugins -n prow -f -
-
-prow-update-config: get-cluster-credentials
 	kubectl create configmap config --from-file=config.yaml=config.yaml --dry-run -o yaml -n prow | kubectl replace configmap config -n prow -f -
-
-prow-update-labels: get-cluster-credentials
 	kubectl create configmap label-config --from-file=lebels.yaml=labels.yaml --dry-run -o yaml -n prow | kubectl replace configmap label-config -n prow -f -
 
-prow-uninstall: get-cluster-credentials
-	kubectl delete -f manifests
+deploy-prow-dry-run: 
+	kubectl apply -f manifests	--dry-run
+	kubectl create configmap plugins --from-file=plugins.yaml=plugins.yaml --dry-run -o yaml -n prow 
+	kubectl create configmap config --from-file=config.yaml=config.yaml --dry-run -o yaml -n prow 
+	kubectl create configmap label-config --from-file=lebels.yaml=labels.yaml --dry-run -o yaml -n prow
 
-install: cluster-install prow-install
-
-uninstall: cluster-uninstall prow-uninstall
+deploy: cluster-deploy prow-deploy
 
 get-cluster-credentials:
 	$(MAKE) -C ../infrastructure get-cluster-credentials

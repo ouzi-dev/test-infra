@@ -1,4 +1,4 @@
-.PHONY: fmt infra-plan infra-apply infra-destroy infra-output install uninstall deploy get-cluster-credentials
+.PHONY: fmt infra-plan infra-apply infra-destroy infra-output deploy deploy-prow deploy-prow-dry-run get-cluster-credentials
 
 fmt:
 	@$(MAKE) -C infrastructure fmt
@@ -18,12 +18,14 @@ infra-destroy:
 infra-output:
 	@$(MAKE) -C infrastructure output	
 
-install: infra-apply get-cluster-credentials
-	@$(MAKE) -C prow install
+deploy: infra-apply 
+	@$(MAKE) -C prow deploy
 
-uninstall: get-cluster-credentials
-	@$(MAKE) -C prow uninstall
-	@$(MAKE) infra-destroy
+deploy-prow: 
+	@$(MAKE) -C prow deploy-prow
+
+deploy-prow-dry-run: 
+	@$(MAKE) -C prow deploy-prow-dry-run	
 
 get-cluster-credentials:
 	@$(MAKE) -C infrastructure get-cluster-credentials

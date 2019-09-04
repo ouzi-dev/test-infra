@@ -34,7 +34,7 @@ init:
 	@terraform init -backend-config=backend.tfvars
 
 plan: init 
-	@terraform plan --var-file=terraform.tfvars
+	@terraform plan --var-file=terraform.tfvars -detailed-exitcode
 
 apply: init 
 	@terraform apply --var-file=terraform.tfvars
