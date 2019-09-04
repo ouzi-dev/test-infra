@@ -42,6 +42,10 @@ data "credstash_secret" "github_bot_token" {
   name = var.github_bot_token_credstash_key
 }
 
+data "credstash_secret" "github_bot_ssh_key" {
+  name = var.github_bot_ssh_key_credstash_key
+}
+
 data "credstash_secret" "prow-github-oauth-client-secret" {
   name = var.prow-github-oauth-client-secret_credstash_key
 }
@@ -143,6 +147,18 @@ resource "kubernetes_secret" "gcs-credentials" {
   }
 }
 
+resource "kubernetes_secret" "gcs-credentials-test-pods" {
+  metadata {
+    name      = "gcs-credentials"
+    namespace = "prow-test-pods"
+  }
+
+  data = {
+    "service-account.json" = base64decode(google_service_account_key.prow-bucket-editor_key.private_key)
+  }
+}
+
+
 ### Google Service Account for CertManager to create DNS entries
 resource "google_service_account" "certmanager-dns-editor" {
   account_id   = "${var.name}-certmanager-dns-editor"
@@ -197,6 +213,19 @@ resource "kubernetes_secret" "oauth-token" {
     oauth = data.credstash_secret.github_bot_token.value
   }
 }
+
+resource "kubernetes_secret" "github-ssh-key" {
+  metadata {
+    name      = "github-ssh-key"
+    namespace = "prow-test-pods"
+  }
+
+  data = {
+    oauth = data.credstash_secret.github_bot_ssh_key.value
+  }
+}
+
+
 
 resource "kubernetes_secret" "oauth2proxy-github-oauth-config" {
   metadata {

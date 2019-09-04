@@ -9,6 +9,8 @@ presubmits:
       trigger: "(?m)test-prow-config( please)?" 
       rerun_command: "test-prow-config"
       run_if_changed: '^(config/.*|prow/.*)$'
+      labels:
+        preset-github-ouzidev: "true"      
       spec: 
         containers:
           - name: "test-config"
@@ -29,6 +31,8 @@ presubmits:
       trigger: "(?m)test-prow-manifests( please)?" 
       rerun_command: "test-prow-manifests"
       run_if_changed: 'prow/manifests/'
+      labels:
+        preset-github-ouzidev: "true"      
       spec: 
         serviceAccountName: prow
         containers:
@@ -50,6 +54,7 @@ presubmits:
       run_if_changed: 'infrastructure/'
       labels:
         preset-terraform: "true"
+        preset-github-ouzidev: "true"
       spec: 
         serviceAccountName: prow
         containers:
@@ -68,6 +73,8 @@ postsubmits:
       run_if_changed: '^(config/.*|prow/.*)$'
       branches:
         - master
+      labels:
+        preset-github-ouzidev: "true"        
       spec:
         containers:
           - name: "test-config"
@@ -85,6 +92,8 @@ postsubmits:
       run_if_changed: 'prow/manifests/'
       branches:
         - master
+      labels:
+        preset-github-ouzidev: "true"        
       spec: 
         serviceAccountName: prow
         containers:
