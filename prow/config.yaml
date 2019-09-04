@@ -85,15 +85,15 @@ presets:
   - name: E2E_GOOGLE_APPLICATION_CREDENTIALS
     value: /etc/google-service-account/service-account.json
   - name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: terraform-ouzidev-aws-service-account
-          key: access_key_id
+    valueFrom:
+      secretKeyRef:
+        name: terraform-ouzidev-aws-service-account
+        key: access_key_id
   - name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: terraform-ouzidev-aws-service-account
-          key: secret_access_key
+    valueFrom:
+      secretKeyRef:
+        name: terraform-ouzidev-aws-service-account
+        key: secret_access_key
   volumes:
   - name: google-service-account
     secret:
