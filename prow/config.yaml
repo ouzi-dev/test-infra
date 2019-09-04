@@ -18,7 +18,7 @@ plank:
     gcs_configuration:
       bucket: "unicorn-prow-artifacts"
       path_strategy: "explicit"
-    gcs_credentials_secret: gcs-bucket-credentials
+    gcs_credentials_secret: gcs-credentials
 
 deck:
   spyglass:
