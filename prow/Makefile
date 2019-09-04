@@ -30,21 +30,21 @@ cluster-uninstall: get-cluster-credentials
 	#kubectl delete -f $(BOOTSTRAP_MANIFESTS_PATH)/helm/helm-init.yaml
 
 prow-install: get-cluster-credentials
-	kubectl apply -f $(BOOTSTRAP_MANIFESTS_PATH)/prow/manifests
+	kubectl apply -f manifests
 
 prow-update: prow-update-plugins prow-update-config prow-update-labels
 
 prow-update-plugins: get-cluster-credentials
-	kubectl create configmap plugins --from-file=plugins.yaml=prow/plugins.yaml --dry-run -o yaml -n prow | kubectl replace configmap plugins -n prow -f -
+	kubectl create configmap plugins --from-file=plugins.yaml=plugins.yaml --dry-run -o yaml -n prow | kubectl replace configmap plugins -n prow -f -
 
 prow-update-config: get-cluster-credentials
-	kubectl create configmap config --from-file=config.yaml=prow/config.yaml --dry-run -o yaml -n prow | kubectl replace configmap config -n prow -f -
+	kubectl create configmap config --from-file=config.yaml=config.yaml --dry-run -o yaml -n prow | kubectl replace configmap config -n prow -f -
 
 prow-update-labels: get-cluster-credentials
-	kubectl create configmap label-config --from-file=lebels.yaml=prow/labels.yaml --dry-run -o yaml -n prow | kubectl replace configmap label-config -n prow -f -
+	kubectl create configmap label-config --from-file=lebels.yaml=labels.yaml --dry-run -o yaml -n prow | kubectl replace configmap label-config -n prow -f -
 
 prow-uninstall: get-cluster-credentials
-	kubectl delete -f $(BOOTSTRAP_MANIFESTS_PATH)/prow/manifests
+	kubectl delete -f manifests
 
 install: cluster-install prow-install
 
