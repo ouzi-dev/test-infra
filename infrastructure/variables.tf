@@ -142,3 +142,7 @@ variable "base_domain" {
 variable "slack-token_secret_credstash_key" {
   type = string
 }
+
+variable "github_bot_ssh_key_credstash_key" {
+  type = string
+}

@@ -38,6 +38,7 @@ gke_authenticator_groups_security_group = "gke-security-groups@ouzi.dev"
 prow_artefact_bucket_location           = "us"
 
 github_bot_token_credstash_key                = "github_bot_personal_access_token_prow"
+github_bot_ssh_key_credstash_key              = "github_bot_ssh_private_key"
 prow-github-oauth-client-id_credstash_key     = "prow-github-oauth-client-id"
 prow-github-oauth-client-secret_credstash_key = "prow-github-oauth-client-secret"
 prow-github-oauth-cookie-secret_credstash_key = "prow-github-oauth-cookie-secret"
