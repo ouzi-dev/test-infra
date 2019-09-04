@@ -69,7 +69,7 @@ locals {
 
 ## Modules
 module "gke-cluster" {
-  source  = "../../gke-terraform"
+  source  = "git@github.com:ouzi-dev/gke-terraform.git?ref=v0.1"
   region  = var.gke_region
   project = var.project
 
