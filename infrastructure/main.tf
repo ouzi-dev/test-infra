@@ -39,7 +39,7 @@ provider "random" {
 
 ## Data
 data "credstash_secret" "github_bot_token" {
-  name = var.github_token_credstash_key
+  name = var.github_bot_token_credstash_key
 }
 
 data "credstash_secret" "prow-github-oauth-client-secret" {
