@@ -107,7 +107,7 @@ module "gke-cluster" {
 
 ### Google Cloud Storage for prow artefacts
 resource "google_storage_bucket" "prow-bucket" {
-  name          = "${var.name}_prow-artifacts"
+  name          = "${var.name}-prow-artifacts"
   location      = var.prow_artefact_bucket_location
   force_destroy = true
 
