@@ -58,6 +58,10 @@ data "credstash_secret" "prow-cookie-secret" {
   name = var.prow-cookie-secret_credstash_key
 }
 
+data "credstash_secret" "slack-token" {
+  name = var.slack-token_secret_credstash_key
+}
+
 data "google_client_config" "current" {
 }
 
@@ -236,6 +240,88 @@ resource "kubernetes_secret" "prow-cookie" {
     secret = data.credstash_secret.prow-cookie-secret.value
   }
 }
+
+### Google Service Account for terraform
+resource "google_service_account" "prow-terraform" {
+  account_id   = "${var.name}-prow-terraform"
+  display_name = "service account for terraform"
+}
+
+resource "google_project_iam_binding" "prow-terraform" {
+  role = "roles/editor"
+  members = [
+    "serviceAccount:${google_service_account.prow-terraform.email}",
+  ]
+}
+
+resource "google_service_account_key" "prow-terraform" {
+  service_account_id = google_service_account.prow-terraform.name
+}
+
+resource "kubernetes_secret" "prow-terraform-google" {
+  metadata {
+    name      = "terraform-ouzidev-google-service-account"
+    namespace = "prow"
+  }
+
+  data = {
+    "key.json" = base64decode(google_service_account_key.prow-terraform.private_key)
+  }
+}
+
+resource "aws_iam_user" "prow-terraform" {
+  name = "terraform-ouzidev-aws-service-account"
+
+  tags = {
+    SYSTEM = "prow"
+  }
+}
+
+resource "aws_iam_access_key" "prow-terraform" {
+  user = "${aws_iam_user.prow-terraform.name}"
+}
+
+resource "aws_iam_user_policy" "prow-terraform" {
+  name = "terraform-ouzidev-aws-service-account"
+  user = "${aws_iam_user.prow-terraform.name}"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "*",
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+}
+
+resource "kubernetes_secret" "terraform-ouzidev-aws-service-account" {
+  metadata {
+    name      = "terraform-ouzidev-aws-service-account"
+    namespace = "prow"
+  }
+
+  data = {
+    access_key_id = aws_iam_access_key.prow-terraform.id
+    secret_access_key = aws_iam_access_key.prow-terraform.secret
+  }
+}
+
+resource "kubernetes_secret" "slack-token" {
+  metadata {
+    name      = "slack-token"
+    namespace = "prow"
+  }
+
+  data = {
+    token = data.credstash_secret.slack-token.value
+  }
+}
+
 
 resource "google_dns_managed_zone" "cluster-zone" {
   name        = "${var.name}-zone"

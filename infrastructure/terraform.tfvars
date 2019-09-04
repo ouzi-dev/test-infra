@@ -42,5 +42,6 @@ prow-github-oauth-client-id_credstash_key     = "prow-github-oauth-client-id"
 prow-github-oauth-client-secret_credstash_key = "prow-github-oauth-client-secret"
 prow-github-oauth-cookie-secret_credstash_key = "prow-github-oauth-cookie-secret"
 prow-cookie-secret_credstash_key              = "prow-cookie-secret"
+slack-token_secret_credstash_key              = "slack_token"
 credstash_region                              = "eu-west-1"
 

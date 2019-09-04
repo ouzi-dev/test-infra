@@ -60,3 +60,24 @@ external_plugins:
 welcome:
 - repos:
   - ouzi-dev
+
+blunderbuss:
+  max_request_count: 2
+  use_status_availability: true  
+
+size:
+  s:   10
+  m:   30
+  l:   100
+  xl:  500
+  xxl: 1000
+
+slack:
+  mergewarnings:
+  - repos:
+    - ouzi-dev
+    channels:
+    - prs
+    whitelist:
+    - k8s-ci-robot
+

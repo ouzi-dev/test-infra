@@ -138,3 +138,7 @@ variable "credstash_region" {
 variable "base_domain" {
   type = string
 }
+
+variable "slack-token_secret_credstash_key" {
+  type = string
+}

@@ -38,6 +38,14 @@ Secrets expected in the cluster:
   Description: A randomly generated cookine for Prow oauth `openssl rand -out cookie.txt -base64 32`
   Credash Key: `prow-cookie-secret`
 
+## GitHub user - ouzibot
+
+Prow requires a user to interact with GitHub. We use the ouzibot and have created a personal access token which Prow uses from credstash
+
+## Configuring Org-wide webhooks
+
+Prow needs to be told when changes happen in GitHub. To do that, you should create an Org wide webhook with endpoint PROW_DOMAIN/hook, send all events and use `kubectl get secret hmac-token -n prow -o json | jq -r .data.hmac | base64 -D` as the secret.
+
 ## Cluster-Bootstrap
 
 This folder contains all the components required in the cluster in order to get:
