@@ -261,7 +261,7 @@ resource "google_service_account_key" "prow-terraform" {
 resource "kubernetes_secret" "prow-terraform-google" {
   metadata {
     name      = "terraform-ouzidev-google-service-account"
-    namespace = "prow"
+    namespace = "prow-test-pods"
   }
 
   data = {
@@ -302,7 +302,7 @@ EOF
 resource "kubernetes_secret" "terraform-ouzidev-aws-service-account" {
   metadata {
     name      = "terraform-ouzidev-aws-service-account"
-    namespace = "prow"
+    namespace = "prow-test-pods"
   }
 
   data = {
