@@ -84,7 +84,7 @@ spec:
           - --upstream=file:///dev/null
           - --upstream=http://localhost/redirect/
           - --http-address=0.0.0.0:4180
-          - --cookie-domain=.prow.unicorn.ouzi.io
+          - --cookie-domain=.prow.testinfra.ouzi.io
           - --footer=-
           # Register a new application
           # https://github.com/settings/applications/new
@@ -137,7 +137,7 @@ metadata:
   namespace: oauth2-proxy
 spec:
   rules:
-  - host: "oauth2.unicorn.ouzi.io"
+  - host: "oauth2.testinfra.ouzi.io"
     http:
       paths:
       - backend:
@@ -146,5 +146,5 @@ spec:
         path: /
   tls:
     - hosts:
-      - "oauth2.unicorn.ouzi.io"
-      secretName: oauth2-unicorn-tls
+      - "oauth2.testinfra.ouzi.io"
+      secretName: oauth2-testinfra-tls

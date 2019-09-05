@@ -325,7 +325,7 @@ spec:
         - --config-path=/etc/config/config.yaml
         - --tide-url=http://tide/
         - --hook-url=http://hook:8888/plugin-help
-        - --redirect-http-to=prow.unicorn.ouzi.io
+        - --redirect-http-to=prow.testinfra.ouzi.io
         - --config-path=/etc/config/config.yaml
         - --job-config-path=/etc/job-config
         - --oauth-url=/github-login
@@ -457,8 +457,8 @@ spec:
         - --github-endpoint=http://ghproxy
 #        - --github-endpoint=https://api.github.com
         - --gcs-credentials-file=/etc/service-account/service-account.json
-        - --history-uri=gs://unicorn-prow-artifacts/tide-history.json
-        - --status-path=gs://unicorn-prow-artifacts/tide-status-checkpoint.yaml
+        - --history-uri=gs://testinfra-testinfra-prow-artefacts/tide-history.json
+        - --status-path=gs://testinfra-testinfra-prow-artefacts/tide-status-checkpoint.yaml
         - --config-path=/etc/config/config.yaml
         - --job-config-path=/etc/job-config
         ports:
@@ -1288,7 +1288,7 @@ metadata:
   namespace: prow
 spec:
   rules:
-  - host: prow.unicorn.ouzi.io
+  - host: prow.testinfra.ouzi.io
     http:
       paths:
       - backend:
@@ -1301,5 +1301,5 @@ spec:
         path: /hook
   tls:
   - hosts:
-    - prow.unicorn.ouzi.io
-    secretName: prow-unicorn-tls
+    - prow.testinfra.ouzi.io
+    secretName: prow-testinfra-tls

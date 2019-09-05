@@ -1,10 +1,10 @@
-gke_region  = "us-east1"
+gke_region  = "europe-west4"
 aws_region  = "eu-west-1"
-project     = "testinfra-251013"
-name        = "unicorn"
+project     = "ouzidev-testinfra"
+name        = "testinfra"
 base_domain = "ouzi.io"
 
-gke_zones              = ["us-east1-b", "us-east1-c", "us-east1-d"]
+gke_zones              = ["europe-west4-a", "europe-west4-b", "europe-west4-c"]
 gke_kubernetes_version = "1.13.7-gke.24"
 gke_node_cidr_range    = "10.101.0.0/22"
 gke_pod_cidr_range     = "172.20.0.0/14"
@@ -17,7 +17,7 @@ gke_node_scopes = [
   "https://www.googleapis.com/auth/monitoring",
   "https://www.googleapis.com/auth/ndev.clouddns.readwrite"
 ]
-gke_machine_type           = "n1-standard-2"
+gke_machine_type           = "n2-standard-2"
 gke_machine_disk_size      = 50
 gke_machine_is_preemptible = true
 gke_auth_cidr_blocks = [
@@ -35,7 +35,7 @@ gke_enable_calico                       = true
 gke_disable_network_policy              = false
 gke_disable_hpa                         = true
 gke_authenticator_groups_security_group = "gke-security-groups@ouzi.dev"
-prow_artefact_bucket_location           = "us"
+prow_artefact_bucket_location           = "eu"
 
 github_bot_token_credstash_key                = "github_bot_personal_access_token_prow"
 github_bot_ssh_key_credstash_key              = "github_bot_ssh_private_key"

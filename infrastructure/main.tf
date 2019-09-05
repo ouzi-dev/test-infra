@@ -74,14 +74,13 @@ locals {
   prow_base_url = "prow.${var.name}.${var.base_domain}"
 }
 
-
 ## Modules
 module "gke-cluster" {
   source  = "git@github.com:ouzi-dev/gke-terraform.git?ref=v0.1"
   region  = var.gke_region
   project = var.project
 
-  cluster_name       = var.name
+  cluster_name       = "prow"
   zones              = var.gke_zones
   node_cidr_range    = var.gke_node_cidr_range
   pod_cidr_range     = var.gke_pod_cidr_range
@@ -111,7 +110,7 @@ module "gke-cluster" {
 
 ### Google Cloud Storage for prow artefacts
 resource "google_storage_bucket" "prow-bucket" {
-  name          = "${var.name}-prow-artifacts"
+  name          = "${var.name}-prow-artefacts"
   location      = var.prow_artefact_bucket_location
   force_destroy = true
 
@@ -161,7 +160,7 @@ resource "kubernetes_secret" "gcs-credentials-test-pods" {
 
 ### Google Service Account for CertManager to create DNS entries
 resource "google_service_account" "certmanager-dns-editor" {
-  account_id   = "${var.name}-certmanager-dns-editor"
+  account_id   = "${var.name}-certmanager"
   display_name = "service account for certmanager to edit dns entries"
 }
 
@@ -224,8 +223,6 @@ resource "kubernetes_secret" "github-ssh-key" {
     oauth = data.credstash_secret.github_bot_ssh_key.value
   }
 }
-
-
 
 resource "kubernetes_secret" "oauth2proxy-github-oauth-config" {
   metadata {
@@ -350,7 +347,6 @@ resource "kubernetes_secret" "slack-token" {
     token = data.credstash_secret.slack-token.value
   }
 }
-
 
 resource "google_dns_managed_zone" "cluster-zone" {
   name        = "${var.name}-zone"
