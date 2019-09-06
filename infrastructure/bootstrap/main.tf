@@ -1,3 +1,7 @@
+terraform {
+  backend "gcs" {}
+}
+
 provider "google" {
   region  = var.tf_state_region
   project = var.gke_project
@@ -49,9 +53,28 @@ resource "google_project_services" "main" {
     "datastore.googleapis.com",
     "clouddebugger.googleapis.com",
     "cloudtrace.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "deploymentmanager.googleapis.com"
   ]
 
   depends_on = [
     google_project.project,
   ]
+}
+
+### Google Service Account for terraform
+resource "google_service_account" "terraform" {
+  account_id   = "terraform"
+  display_name = "service account for terraform"
+}
+
+resource "google_project_iam_binding" "terraform" {
+  role = "roles/owner"
+  members = [
+    "serviceAccount:${google_service_account.terraform.email}",
+  ]
+}
+
+resource "google_service_account_key" "terraform" {
+  service_account_id = google_service_account.terraform.name
 }
