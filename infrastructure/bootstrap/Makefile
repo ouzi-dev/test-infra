@@ -19,6 +19,7 @@ apply: init
 	@terraform apply --var-file=terraform.tfvars
 
 output:
+	@$(MAKE) init > /dev/null 2>&1
 	@terraform output --json -no-color
 
 destroy: init

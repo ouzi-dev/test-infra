@@ -146,3 +146,8 @@ variable "slack-token_secret_credstash_key" {
 variable "github_bot_ssh_key_credstash_key" {
   type = string
 }
+
+variable "google_credentials_file_path" {
+  type = string
+  
+}

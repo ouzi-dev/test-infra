@@ -1,2 +1,2 @@
 .terraform
-.terraform-account.json
+.terraform-account*.json

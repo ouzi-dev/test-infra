@@ -7,12 +7,14 @@ provider "google" {
   region  = var.gke_region
   project = var.project
   version = "2.13"
+  credentials = "${file("${var.google_credentials_file_path}")}"
 }
 
 provider "google-beta" {
   region  = var.gke_region
   project = var.project
   version = "2.13"
+  credentials = "${file("${var.google_credentials_file_path}")}"
 }
 
 provider "aws" {
@@ -76,7 +78,7 @@ locals {
 
 ## Modules
 module "gke-cluster" {
-  source  = "git@github.com:ouzi-dev/gke-terraform.git?ref=v0.1"
+  source  = "git@github.com:ouzi-dev/gke-terraform.git?ref=v0.2"
   region  = var.gke_region
   project = var.project
 
@@ -122,7 +124,7 @@ resource "google_storage_bucket" "prow-bucket" {
 ### Google Service Account for Prow to write/read the artefacts in the bucket
 resource "google_service_account" "prow-bucket-editor" {
   account_id   = "${var.name}-prow-bucket"
-  display_name = "service account for the prow bucket"
+  display_name = "service account for the prow artefact bucket"
 }
 
 resource "google_storage_bucket_iam_member" "prow-bucket-editor" {
@@ -156,7 +158,6 @@ resource "kubernetes_secret" "gcs-credentials-test-pods" {
     "service-account.json" = base64decode(google_service_account_key.prow-bucket-editor_key.private_key)
   }
 }
-
 
 ### Google Service Account for CertManager to create DNS entries
 resource "google_service_account" "certmanager-dns-editor" {
@@ -270,7 +271,7 @@ resource "kubernetes_secret" "prow-cookie" {
 ### Google Service Account for terraform
 resource "google_service_account" "prow-terraform" {
   account_id   = "${var.name}-prow-terraform"
-  display_name = "service account for terraform"
+  display_name = "Service account for Prow to execute Terraform Google Provider Resources"
 }
 
 resource "google_project_iam_binding" "prow-terraform" {

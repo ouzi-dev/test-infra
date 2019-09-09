@@ -1,6 +1,6 @@
 gke_region  = "europe-west4"
 aws_region  = "eu-west-1"
-project     = "ouzidev-testinfra"
+project     = "ouzidev-prow-252415"
 name        = "testinfra"
 base_domain = "ouzi.io"
 
