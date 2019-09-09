@@ -14,11 +14,6 @@ CREDSTASH_FILEPATH := ~/.terraform.d/plugins/terraform-provider-credstash_v$(CRE
 
 GOOGLE_APPLICATION_CREDENTIALS_PATH := $(DIR)/.terraform-account.json
 
-# get outputs from bootstrap 
-TF_BUCKET_NAME := $(shell $(MAKE) -C bootstrap output | jq -r .gke_backend_bucket.value)
-PROJECT_NAME=$(shell $(MAKE) -C bootstrap output | jq -r .gke_project.value)
-
-
 setup: get-google-service-account
 	@mkdir -p ~/.terraform.d/plugins
 ifeq ($(UNAME),Linux)
@@ -39,20 +34,20 @@ validate:
 	@terraform validate .
 
 init: get-google-service-account
-	@terraform init -backend-config=backend.tfvars -backend-config=bucket=$(TF_BUCKET_NAME)  -backend-config=credentials=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
+	@terraform init -backend-config=backend.tfvars  -backend-config=credentials=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
 	
 plan: init 
-	@terraform plan --var-file=terraform.tfvars  -detailed-exitcode  -var project=$(PROJECT_NAME) -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
+	@terraform plan --var-file=terraform.tfvars  -detailed-exitcode -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
 
 apply: init 
-	@terraform apply --var-file=terraform.tfvars -var project=$(PROJECT_NAME) -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
+	@terraform apply --var-file=terraform.tfvars -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
 
 output:
 	@$(MAKE) init > /dev/null 2>&1
 	@terraform output --json -no-color
 
 destroy: init
-	@terraform destroy --var-file=terraform.tfvars -var project=$(PROJECT_NAME) -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH)
+	@terraform destroy --var-file=terraform.tfvars -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH)
 
 get-cluster-credentials:
 	@$(MAKE) init > /dev/null 2>&1
@@ -61,4 +56,4 @@ get-cluster-credentials:
 	gcloud container clusters get-credentials $(NAME) --region=$(REGION)
 
 get-google-service-account: 
-	@$(MAKE) -C bootstrap output | jq -r .service_account_key.value | base64 -D > $(GOOGLE_APPLICATION_CREDENTIALS_PATH)
+	@credstash get ouzidev-prow-serviceaccount > $(GOOGLE_APPLICATION_CREDENTIALS_PATH)
