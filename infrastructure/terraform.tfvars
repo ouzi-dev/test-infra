@@ -1,8 +1,11 @@
 gke_region  = "europe-west4"
-aws_region  = "eu-west-1"
-project     = "ouzi-testinfra-252508"
-name        = "testinfra"
-base_domain = "ouzi.io"
+gke_project = "ouzidev-testinfra-252513"
+
+aws_region = "eu-west-1"
+
+base_domain = "test-infra.ouzi.io"
+
+credstash_region = "eu-west-1"
 
 gke_zones              = ["europe-west4-a", "europe-west4-b", "europe-west4-c"]
 gke_kubernetes_version = "1.13.7-gke.24"
@@ -18,6 +21,7 @@ gke_node_scopes = [
   "https://www.googleapis.com/auth/ndev.clouddns.readwrite"
 ]
 gke_machine_type           = "n2-standard-2"
+gke_big_machine_type       = "n2-standard-4"
 gke_machine_disk_size      = 50
 gke_machine_is_preemptible = true
 gke_auth_cidr_blocks = [
@@ -37,12 +41,10 @@ gke_disable_hpa                         = true
 gke_authenticator_groups_security_group = "gke-security-groups@ouzi.dev"
 prow_artefact_bucket_location           = "eu"
 
-github_bot_token_credstash_key                = "github_bot_personal_access_token_prow"
-github_bot_ssh_key_credstash_key              = "github_bot_ssh_private_key"
-prow-github-oauth-client-id_credstash_key     = "prow-github-oauth-client-id"
-prow-github-oauth-client-secret_credstash_key = "prow-github-oauth-client-secret"
-prow-github-oauth-cookie-secret_credstash_key = "prow-github-oauth-cookie-secret"
-prow-cookie-secret_credstash_key              = "prow-cookie-secret"
-slack-token_secret_credstash_key              = "slack_token"
-credstash_region                              = "eu-west-1"
+github_bot_token_credstash_key   = "github_bot_personal_access_token_prow"
+github_bot_ssh_key_credstash_key = "github_bot_ssh_private_key"
 
+prow_github_oauth_client_id_credstash_key     = "prow-github-oauth-client-id"
+prow_github_oauth_client_secret_credstash_key = "prow-github-oauth-client-secret"
+prow_github_oauth_cookie_secret_credstash_key = "prow-github-oauth-cookie-secret"
+prow_cookie_secret_credstash_key              = "prow-cookie-secret"

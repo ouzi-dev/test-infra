@@ -1,19 +1,20 @@
+## Backend
 terraform {
   backend "gcs" {}
 }
 
 ## Providers
 provider "google" {
-  region  = var.gke_region
-  project = var.project
-  version = "2.13"
+  region      = var.gke_region
+  project     = var.gke_project
+  version     = "2.13"
   credentials = "${file("${var.google_credentials_file_path}")}"
 }
 
 provider "google-beta" {
-  region  = var.gke_region
-  project = var.project
-  version = "2.13"
+  region      = var.gke_region
+  project     = var.gke_project
+  version     = "2.13"
   credentials = "${file("${var.google_credentials_file_path}")}"
 }
 
@@ -48,39 +49,46 @@ data "credstash_secret" "github_bot_ssh_key" {
   name = var.github_bot_ssh_key_credstash_key
 }
 
-data "credstash_secret" "prow-github-oauth-client-secret" {
-  name = var.prow-github-oauth-client-secret_credstash_key
+data "credstash_secret" "prow_github_oauth_client_secret" {
+  name = var.prow_github_oauth_client_secret_credstash_key
 }
 
-data "credstash_secret" "prow-github-oauth-client-id" {
-  name = var.prow-github-oauth-client-id_credstash_key
+data "credstash_secret" "prow_github_oauth_client_id" {
+  name = var.prow_github_oauth_client_id_credstash_key
 }
 
-data "credstash_secret" "prow-github-oauth-cookie-secret" {
-  name = var.prow-github-oauth-cookie-secret_credstash_key
+data "credstash_secret" "prow_github_oauth_cookie_secret" {
+  name = var.prow_github_oauth_cookie_secret_credstash_key
 }
 
-data "credstash_secret" "prow-cookie-secret" {
-  name = var.prow-cookie-secret_credstash_key
-}
-
-data "credstash_secret" "slack-token" {
-  name = var.slack-token_secret_credstash_key
+data "credstash_secret" "prow_cookie_secret" {
+  name = var.prow_cookie_secret_credstash_key
 }
 
 data "google_client_config" "current" {
 }
 
+## ID of this infrastructure - we use this for uniquness and tracking resources
+resource "random_string" "id" {
+  length  = 8
+  special = false
+}
+
 ## locals
 locals {
-  prow_base_url = "prow.${var.name}.${var.base_domain}"
+  infra_id      = random_string.id.result
+  prow_base_url = "https://prow.${var.base_domain}"
+  tags = {
+    SYSTEM = var.system
+    UUID   = random_string.id.result
+  }
 }
 
 ## Modules
 module "gke-cluster" {
-  source  = "git@github.com:ouzi-dev/gke-terraform.git?ref=v0.2"
+  source  = "git@github.com:ouzi-dev/gke-terraform.git?ref=v0.3"
   region  = var.gke_region
-  project = var.project
+  project = var.gke_project
 
   cluster_name       = "prow"
   zones              = var.gke_zones
@@ -93,6 +101,7 @@ module "gke-cluster" {
   kubernetes_version = var.gke_kubernetes_version
 
   machine_type           = var.gke_machine_type
+  big_machine_type       = var.gke_big_machine_type
   machine_disk_size      = var.gke_machine_disk_size
   machine_is_preemptible = var.gke_machine_is_preemptible
   min_nodes              = var.gke_min_nodes
@@ -110,9 +119,9 @@ module "gke-cluster" {
 
 ## Extra resources
 
-### Google Cloud Storage for prow artefacts
-resource "google_storage_bucket" "prow-bucket" {
-  name          = "${var.name}-prow-artefacts"
+### Bucket for Prow
+resource "google_storage_bucket" "prow_bucket" {
+  name          = "${var.gke_project}-prow-artefacts"
   location      = var.prow_artefact_bucket_location
   force_destroy = true
 
@@ -121,196 +130,74 @@ resource "google_storage_bucket" "prow-bucket" {
   }
 }
 
-### Google Service Account for Prow to write/read the artefacts in the bucket
-resource "google_service_account" "prow-bucket-editor" {
-  account_id   = "${var.name}-prow-bucket"
-  display_name = "service account for the prow artefact bucket"
+### Service Account for Prow to write/read the artefacts in the bucket
+resource "google_service_account" "prow_bucket_editor" {
+  account_id   = "prow-bucket"
+  display_name = "Service Account for the Prow artefact bucket"
 }
 
-resource "google_storage_bucket_iam_member" "prow-bucket-editor" {
-  bucket = google_storage_bucket.prow-bucket.name
+resource "google_storage_bucket_iam_member" "prow_bucket_editor" {
+  bucket = google_storage_bucket.prow_bucket.name
   role   = "roles/storage.objectAdmin"
-  member = "serviceAccount:${google_service_account.prow-bucket-editor.email}"
+  member = "serviceAccount:${google_service_account.prow_bucket_editor.email}"
 }
 
-resource "google_service_account_key" "prow-bucket-editor_key" {
-  service_account_id = google_service_account.prow-bucket-editor.name
+### Key for the Prow bucket service account
+resource "google_service_account_key" "prow_bucket_editor_key" {
+  service_account_id = google_service_account.prow_bucket_editor.name
 }
 
-resource "kubernetes_secret" "gcs-credentials" {
-  metadata {
-    name      = "gcs-credentials"
-    namespace = "prow"
-  }
-
-  data = {
-    "service-account.json" = base64decode(google_service_account_key.prow-bucket-editor_key.private_key)
-  }
+### Service Account for CertManager to create DNS entries
+resource "google_service_account" "certmanager_dns_editor" {
+  account_id   = "certmanager"
+  display_name = "Service Account for CertManager to manage dns entries"
 }
 
-resource "kubernetes_secret" "gcs-credentials-test-pods" {
-  metadata {
-    name      = "gcs-credentials"
-    namespace = "prow-test-pods"
-  }
-
-  data = {
-    "service-account.json" = base64decode(google_service_account_key.prow-bucket-editor_key.private_key)
-  }
+resource "google_project_iam_member" "certmanager_dns_editor_role" {
+  role   = "roles/dns.admin"
+  member = "serviceAccount:${google_service_account.certmanager_dns_editor.email}"
 }
 
-### Google Service Account for CertManager to create DNS entries
-resource "google_service_account" "certmanager-dns-editor" {
-  account_id   = "${var.name}-certmanager"
-  display_name = "service account for certmanager to edit dns entries"
+### Key for the Cert-Manager Service Account
+resource "google_service_account_key" "certmanager_dns_editor_key" {
+  service_account_id = google_service_account.certmanager_dns_editor.name
 }
 
-resource "google_project_iam_binding" "certmanager-dns-editor_role" {
-  role = "roles/dns.admin"
-  members = [
-    "serviceAccount:${google_service_account.certmanager-dns-editor.email}",
-  ]
-}
-
-resource "google_service_account_key" "certmanager-dns-editor_key" {
-  service_account_id = google_service_account.certmanager-dns-editor.name
-}
-
-resource "kubernetes_secret" "certmanager-dns-editor" {
-  metadata {
-    name      = "clouddns-dns01-solver-svc-acct"
-    namespace = "cert-manager"
-  }
-
-  data = {
-    "key.json" = base64decode(google_service_account_key.certmanager-dns-editor_key.private_key)
-  }
-}
-
-resource "random_string" "hmac-token" {
+### Token for Prow Webhook secret
+resource "random_string" "hmac_token" {
   length  = 30
   special = false
 }
 
-resource "kubernetes_secret" "hmac-token" {
-  metadata {
-    name      = "hmac-token"
-    namespace = "prow"
-  }
-
-  data = {
-    hmac = random_string.hmac-token.result
-  }
-}
-
-resource "kubernetes_secret" "oauth-token" {
-  metadata {
-    name      = "oauth-token"
-    namespace = "prow"
-  }
-
-  data = {
-    oauth = data.credstash_secret.github_bot_token.value
-  }
-}
-
-resource "kubernetes_secret" "github-ssh-key" {
-  metadata {
-    name      = "github-ssh-key"
-    namespace = "prow-test-pods"
-  }
-
-  data = {
-    oauth = data.credstash_secret.github_bot_ssh_key.value
-  }
-}
-
-resource "kubernetes_secret" "oauth2proxy-github-oauth-config" {
-  metadata {
-    name      = "github-oauth-secret"
-    namespace = "oauth2-proxy"
-  }
-
-  data = {
-    client-id     = data.credstash_secret.prow-github-oauth-client-id.value
-    client-secret = data.credstash_secret.prow-github-oauth-client-secret.value
-    cookie-secret = data.credstash_secret.prow-github-oauth-cookie-secret.value
-  }
-}
-
-resource "kubernetes_secret" "prow-github-oauth-config" {
-  metadata {
-    name      = "github-oauth-config"
-    namespace = "prow"
-  }
-
-  data = {
-    secret = templatefile(
-      "${path.module}//templates/_prow_github_oauth_config.yaml",
-      {
-        client_id          = data.credstash_secret.prow-github-oauth-client-id.value,
-        client_secret      = data.credstash_secret.prow-github-oauth-client-secret.value,
-        redirect_url       = "https://${local.prow_base_url}/github-login/redirect",
-        final_redirect_url = "https://${local.prow_base_url}/pr",
-      }
-    )
-  }
-}
-
-resource "kubernetes_secret" "prow-cookie" {
-  metadata {
-    name      = "cookie"
-    namespace = "prow"
-  }
-
-  data = {
-    secret = data.credstash_secret.prow-cookie-secret.value
-  }
-}
-
-### Google Service Account for terraform
-resource "google_service_account" "prow-terraform" {
-  account_id   = "${var.name}-prow-terraform"
+### Service Account for Terraform
+resource "google_service_account" "prow_terraform" {
+  account_id   = "prow-tf"
   display_name = "Service account for Prow to execute Terraform Google Provider Resources"
 }
 
-resource "google_project_iam_binding" "prow-terraform" {
-  role = "roles/editor"
-  members = [
-    "serviceAccount:${google_service_account.prow-terraform.email}",
-  ]
+resource "google_project_iam_member" "prow_terraform" {
+  role   = "roles/editor"
+  member = "serviceAccount:${google_service_account.prow_terraform.email}"
 }
 
-resource "google_service_account_key" "prow-terraform" {
-  service_account_id = google_service_account.prow-terraform.name
+### Key for the Cert-Manager Service Account
+resource "google_service_account_key" "prow_terraform" {
+  service_account_id = google_service_account.prow_terraform.name
 }
 
-resource "kubernetes_secret" "prow-terraform-google" {
-  metadata {
-    name      = "terraform-ouzidev-google-service-account"
-    namespace = "prow-test-pods"
-  }
-
-  data = {
-    "key.json" = base64decode(google_service_account_key.prow-terraform.private_key)
-  }
+### AWS Service Account for terraform 
+resource "aws_iam_user" "prow_terraform" {
+  name = "tf_ouzidev_aws_service_account_${local.infra_id}"
+  tags = local.tags
 }
 
-resource "aws_iam_user" "prow-terraform" {
-  name = "terraform-ouzidev-aws-service-account"
-
-  tags = {
-    SYSTEM = "prow"
-  }
+resource "aws_iam_access_key" "prow_terraform" {
+  user = "${aws_iam_user.prow_terraform.name}"
 }
 
-resource "aws_iam_access_key" "prow-terraform" {
-  user = "${aws_iam_user.prow-terraform.name}"
-}
-
-resource "aws_iam_user_policy" "prow-terraform" {
-  name = "terraform-ouzidev-aws-service-account"
-  user = "${aws_iam_user.prow-terraform.name}"
+resource "aws_iam_user_policy" "prow_terraform" {
+  name = "tf_ouzidev_aws_service_account_${local.infra_id}"
+  user = "${aws_iam_user.prow_terraform.name}"
 
   policy = <<EOF
 {
@@ -326,40 +213,18 @@ resource "aws_iam_user_policy" "prow-terraform" {
 EOF
 }
 
-resource "kubernetes_secret" "terraform-ouzidev-aws-service-account" {
-  metadata {
-    name      = "terraform-ouzidev-aws-service-account"
-    namespace = "prow-test-pods"
-  }
-
-  data = {
-    access_key_id = aws_iam_access_key.prow-terraform.id
-    secret_access_key = aws_iam_access_key.prow-terraform.secret
-  }
+### DNS Zone for the Base Domain we are using
+resource "google_dns_managed_zone" "cluster_zone" {
+  name        = replace(var.base_domain, ".", "-")
+  dns_name    = "${var.base_domain}."
+  description = "${var.system} zone"
 }
 
-resource "kubernetes_secret" "slack-token" {
-  metadata {
-    name      = "slack-token"
-    namespace = "prow"
-  }
-
-  data = {
-    token = data.credstash_secret.slack-token.value
-  }
-}
-
-resource "google_dns_managed_zone" "cluster-zone" {
-  name        = "${var.name}-zone"
-  dns_name    = "${var.name}.ouzi.io."
-  description = "${var.name} zone"
-}
-
-resource "google_bigquery_dataset" "metering_dataset" {
-  dataset_id                  = "${var.name}_gke_metering_dataset"
-  friendly_name               = "${var.name}_gke_metering_dataset"
-  description                 = "GKE metering usage for cluster ${var.name}"
-  location                    = "EU"
-  default_table_expiration_ms = 3600000
-  delete_contents_on_destroy  = true
-}
+# resource "google_bigquery_dataset" "metering_dataset" {
+#   dataset_id                  = "${var.name}_gke_metering_dataset"
+#   friendly_name               = "${var.name}_gke_metering_dataset"
+#   description                 = "GKE metering usage for cluster ${var.name}"
+#   location                    = "EU"
+#   default_table_expiration_ms = 3600000
+#   delete_contents_on_destroy  = true
+# }

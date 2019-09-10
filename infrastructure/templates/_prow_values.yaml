@@ -1,0 +1,26 @@
+gke:
+  region: ${gke_region}
+  project: ${gke_project}
+  authenticator_groups_security_group: ${gke_authenticator_groups_security_group}
+  prowterraform_gke_svc_account_key: ${prow_terraform_gcloud_svc_account_key}
+aws:
+  terraform_user_access_key_id: ${prow_terraform_aws_svc_account_access_key_id}
+  terraform_user_secret_access_key: ${prow_terraform_aws_svc_account_secret_access_key}
+prow:
+  baseurl: ${prow_base_url}
+  bucket_svc_account_key: ${prow_bucket_svc_account_key}
+  webhook_hmac_token: ${prow_webhook_hmac_token}
+  cookie_secret: ${prow_cookie_secret}
+  bucket_name: ${prow_artefacts_bucket_name}
+  redirect_url: ${prow_redirect_url}
+  final_redirect_url: ${prow_final_redirect_url}
+github:
+  bot:
+    token: ${prow_github_bot_token}
+    ssh_key: ${prow_github_bot_ssh_key}
+  oauth:
+    client_id: ${prow_github_oauth_client_id}
+    client_secret: ${prow_github_oauth_client_secret}
+    cookie_secret: ${prow_github_oauth_cookie_secret}
+certmanager:
+  gke_svc_account_key: ${certmanager_svc_account_key}

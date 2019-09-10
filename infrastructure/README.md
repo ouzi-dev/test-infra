@@ -14,4 +14,20 @@ This folder contains all the infra needed to stand up a k8s cluster for prow
 
 ## Project setup
 
-The project in GCloud has been setup manually, the bucket for terraform created manually and the service account for terraform also manually. The key of hte service account is in credstash AWS.
+The project in GCloud is setup manually.
+
+Manual steps:
+- the bucket for terraform
+- the service account for terraform. The key of the service account must be in credstash AWS.
+
+## Google DNS
+
+Terraform creates a subdomain - we manually link it to the root ouzi.io domain by creating an NS record.
+
+## Google APIs
+
+Manually enable the:
+- Google Cloud DNS API,
+- Kubernetes API,
+- IAM API,
+- Cloud Resource Manager API 

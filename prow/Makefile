@@ -1,10 +1,20 @@
 .PHONY: cluster-init cluster-install cluster-uninstall prow-install prow-update prow-update-plugins prow-update-config prow-update-labels prow-uninstall install uninstall get-cluster-credentials
 
-ifndef ENV
-$(error ENV is not set)
-endif
+# Get current directory
+DIR := ${CURDIR}
+
+# GoTPL version and dowload locations
+GOTPL_VERSION := v0.7
+GOTPL_DOWNLOAD_DARWIN_URL := https://github.com/belitre/gotpl/releases/download/v0.7/gotpl-$(GOTPL_VERSION)-darwin-amd64.zip
+GOTPL_FILEPATH := $(DIR)/.bin/gotpl_v$(GOTPL_VERSION)
+
 
 BOOTSTRAP_MANIFESTS_PATH = cluster-bootstrap
+
+setup:
+	@mkdir -p $(DIR)/.bin/
+	@curl -SL $(GOTPL_DOWNLOAD_DARWIN_URL) | tar -xf - -C $(GOTPL_FILEPATH)
+	@chmod +x $(GOTPL_FILEPATH)
 
 init-cluster: 
 	kubectl apply -f $(BOOTSTRAP_MANIFESTS_PATH)/helm/00-init.yaml

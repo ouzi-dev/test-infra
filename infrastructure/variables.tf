@@ -6,12 +6,13 @@ variable "aws_region" {
   description = "AWS region"
 }
 
-variable "project" {
-  description = "Name of the project"
+variable "gke_project" {
+  description = "Name of the GKE project"
 }
 
-variable "name" {
-  description = "Name of the environment"
+variable "system" {
+  description = "The system name"
+  default     = "testinfra"
 }
 
 # See: https://cloud.google.com/kubernetes-engine/docs/how-to/ip-aliases
@@ -58,6 +59,10 @@ variable "gke_kubernetes_version" {
 
 variable "gke_machine_type" {
   description = "Instance type for the primary pool of workers"
+}
+
+variable "gke_big_machine_type" {
+  description = "Instance type for the beefier pool of workers"
 }
 
 variable "gke_machine_disk_size" {
@@ -115,19 +120,19 @@ variable "github_bot_token_credstash_key" {
   type = string
 }
 
-variable "prow-github-oauth-client-id_credstash_key" {
+variable "prow_github_oauth_client_id_credstash_key" {
   type = string
 }
 
-variable "prow-github-oauth-client-secret_credstash_key" {
+variable "prow_github_oauth_client_secret_credstash_key" {
   type = string
 }
 
-variable "prow-github-oauth-cookie-secret_credstash_key" {
+variable "prow_github_oauth_cookie_secret_credstash_key" {
   type = string
 }
 
-variable "prow-cookie-secret_credstash_key" {
+variable "prow_cookie_secret_credstash_key" {
   type = string
 }
 
@@ -139,15 +144,11 @@ variable "base_domain" {
   type = string
 }
 
-variable "slack-token_secret_credstash_key" {
-  type = string
-}
-
 variable "github_bot_ssh_key_credstash_key" {
   type = string
 }
 
 variable "google_credentials_file_path" {
   type = string
-  
+
 }
