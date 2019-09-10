@@ -1,2 +1,2 @@
-bucket = "ouzidev-prow-terraform"
+bucket = "ouzidev-testinfra-terraform"
 prefix = "testinfra.state"

@@ -56,4 +56,4 @@ get-cluster-credentials:
 	gcloud container clusters get-credentials $(NAME) --region=$(REGION)
 
 get-google-service-account: 
-	@credstash get ouzidev-prow-serviceaccount > $(GOOGLE_APPLICATION_CREDENTIALS_PATH)
+	@credstash get ouzidev-testinfra-terraform-svcaccount > $(GOOGLE_APPLICATION_CREDENTIALS_PATH)

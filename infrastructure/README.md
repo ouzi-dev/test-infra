@@ -12,6 +12,6 @@ This folder contains all the infra needed to stand up a k8s cluster for prow
 - get-cluster-credentials: Get credentials (kubeconfig) to access the k8s cluster
 - get-google-service-account: Get the service account used to interact with Google Cloud
 
-## Bootstrap
+## Project setup
 
-Bootstrap contains any infra we need to get the project up and running. The project and bucket was created manually and then imported. Then we used terraform to enable the apis needed and create the service account we will use to interact with Google cloud.
+The project in GCloud has been setup manually, the bucket for terraform created manually and the service account for terraform also manually. The key of hte service account is in credstash AWS.
