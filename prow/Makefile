@@ -16,7 +16,7 @@ setup:
 	@curl -SL $(GOTPL_DOWNLOAD_DARWIN_URL) | tar -xf - -C $(GOTPL_FILEPATH)
 	@chmod +x $(GOTPL_FILEPATH)
 
-init-cluster: 
+init-cluster:  get-values
 	kubectl apply -f $(BOOTSTRAP_MANIFESTS_PATH)/helm/00-init.yaml
 	helm init --service-account tiller --history-max 200 --upgrade --wait
 
@@ -33,13 +33,13 @@ deploy-cluster: init-cluster
 	kubectl apply -f $(BOOTSTRAP_MANIFESTS_PATH)/oauth/resources.yaml
 #	helm upgrade --install potato stable/prometheus-operator --namespace monitoring --wait
 
-deploy-prow: 
+deploy-prow: get-values
 	kubectl apply -f manifests
 	kubectl create configmap plugins --from-file=plugins.yaml=plugins.yaml --dry-run -o yaml -n prow | kubectl replace configmap plugins -n prow -f -
 	kubectl create configmap config --from-file=config.yaml=config.yaml --dry-run -o yaml -n prow | kubectl replace configmap config -n prow -f -
 	kubectl create configmap label-config --from-file=lebels.yaml=labels.yaml --dry-run -o yaml -n prow | kubectl replace configmap label-config -n prow -f -
 
-deploy-prow-dry-run: 
+deploy-prow-dry-run: get-values
 	kubectl apply -f manifests	--dry-run
 	kubectl create configmap plugins --from-file=plugins.yaml=plugins.yaml --dry-run -o yaml -n prow 
 	kubectl create configmap config --from-file=config.yaml=config.yaml --dry-run -o yaml -n prow 
@@ -49,3 +49,6 @@ deploy: cluster-deploy prow-deploy
 
 get-cluster-credentials:
 	$(MAKE) -C ../infrastructure get-cluster-credentials
+
+get-values:
+	$(MAKE) -C ../infrastructure output | jq -r .valuesyaml.value | base64 -D > .values.yaml

@@ -78,7 +78,7 @@ output "certmanager_svc_account_key" {
 }
 
 output "valuesyaml" {
-  value = templatefile(
+  value = base64encode(templatefile(
     "${path.module}/templates/_prow_values.yaml",
     {
       gke_region                                       = var.gke_region,
@@ -93,7 +93,7 @@ output "valuesyaml" {
       prow_cookie_secret                               = data.credstash_secret.prow_cookie_secret.value,
       prow_artefacts_bucket_name                       = google_storage_bucket.prow_bucket.name,
       prow_github_bot_token                            = data.credstash_secret.github_bot_token.value,
-      prow_github_bot_ssh_key                          = data.credstash_secret.github_bot_ssh_key.value,
+      prow_github_bot_ssh_key                          = base64encode(data.credstash_secret.github_bot_ssh_key.value),
       prow_github_oauth_client_id                      = data.credstash_secret.prow_github_oauth_client_id.value,
       prow_github_oauth_client_secret                  = data.credstash_secret.prow_github_oauth_client_secret.value,
       prow_github_oauth_cookie_secret                  = data.credstash_secret.prow_github_oauth_cookie_secret.value,
@@ -101,6 +101,6 @@ output "valuesyaml" {
       prow_final_redirect_url                          = "${local.prow_base_url}/pr",
       certmanager_svc_account_key                      = base64encode(google_service_account_key.certmanager_dns_editor_key.private_key)
     }
-  )
+  ))
   sensitive = true
 }
