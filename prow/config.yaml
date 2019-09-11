@@ -3,9 +3,9 @@ pod_namespace: prow-test-pods
 
 plank:
   allow_cancellations: true
-  job_url_prefix: 'https://prow.testinfra.ouzi.io/view/gcs'
-  job_url_template: 'https://prow.testinfra.ouzi.io/view/gcs/testinfra-testinfra-prow-artefacts/pr-logs/pull/{{.Spec.Refs.Repo}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}'
-  report_template: '[Full PR test history](https://prow.testinfra.ouzi.io/pr-history?org={{.Spec.Refs.Org}}&repo={{.Spec.Refs.Repo}}&pr={{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}})'
+  job_url_prefix: 'https://{{.prow.baseurl}}/view/gcs'
+  job_url_template: '{{.prow.job_url_template}}'
+  report_template: '{{.prow.report_template}}'
   pod_pending_timeout: 60m
   default_decoration_config:
     timeout: 2h
@@ -16,9 +16,11 @@ plank:
       entrypoint: "gcr.io/k8s-prow/entrypoint:v20190517-95ef25d87"
       sidecar: "gcr.io/k8s-prow/sidecar:v20190517-95ef25d87"
     gcs_configuration:
-      bucket: "testinfra-testinfra-prow-artefacts"
+      bucket: "{{.prow.bucket_name}}"
       path_strategy: "explicit"
     gcs_credentials_secret: gcs-credentials
+    ssh_key_secrets:
+      - github-ssh-key # name of the secret that stores the bot's ssh keys for GitHub, doesn't matter what the key of the map is and it will just uses the values    
 
 deck:
   spyglass:
@@ -44,8 +46,8 @@ push_gateway:
 tide:
   sync_period: 1m
   merge_method:
-    ouzi-dev: squash
-  pr_status_base_url: https://prow.testinfra.ouzi.io/pr
+    {{.github.org}}: squash
+  pr_status_base_url: https://{{.prow.baseurl}}/pr
   blocker_label: tide/merge-blocker
   squash_label: tide/merge-method-squash
   rebase_label: tide/merge-method-rebase
@@ -57,7 +59,7 @@ tide:
     skip-unknown-contexts: false
   queries:
   - orgs:
-    - ouzi-dev
+    - {{.github.org}}
     labels:
     - lgtm
     - approved

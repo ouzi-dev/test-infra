@@ -1,7 +1,7 @@
 plugins:
-  ouzi-dev/test-infra:
+  {{.github.org}}/test-infra:
   - config-updater
-  ouzi-dev:
+  {{.github.org}}:
     - approve  # Allow OWNERS to /approve
     - assign  # Allow /assign and /cc
     - blunderbuss  # Auto-assign people
@@ -38,28 +38,28 @@ config_updater:
 
 triggers:
 - repos:
-  - ouzi-dev
+  - {{.github.org}}
 
 approve:
 - repos:
-  - ouzi-dev
+  - {{.github.org}}
   require_self_approval: false
   lgtm_acts_as_approve: true
 
 lgtm:
 - repos:
-  - ouzi-dev
+  - {{.github.org}}
   review_acts_as_lgtm: true
 
 external_plugins:
-  ouzi-dev:
+  {{.github.org}}:
   - name: needs-rebase
     events:
       - pull_request
 
 welcome:
 - repos:
-  - ouzi-dev
+  - {{.github.org}}
 
 blunderbuss:
   max_request_count: 2
@@ -75,7 +75,7 @@ size:
 slack:
   mergewarnings:
   - repos:
-    - ouzi-dev
+    - {{.github.org}}
     channels:
     - prs
     whitelist:

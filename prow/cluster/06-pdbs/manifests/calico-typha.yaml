@@ -1,10 +1,11 @@
+---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: glbc
+  name: calico-typha
   namespace: kube-system
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      k8s-app: glbc
+      k8s-app: calico-typha

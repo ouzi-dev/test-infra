@@ -5,15 +5,15 @@ terraform {
 
 ## Providers
 provider "google" {
-  region      = var.gke_region
-  project     = var.gke_project
+  region      = var.gcloud_region
+  project     = var.gcloud_project
   version     = "2.13"
   credentials = "${file("${var.google_credentials_file_path}")}"
 }
 
 provider "google-beta" {
-  region      = var.gke_region
-  project     = var.gke_project
+  region      = var.gcloud_region
+  project     = var.gcloud_project
   version     = "2.13"
   credentials = "${file("${var.google_credentials_file_path}")}"
 }
@@ -77,7 +77,8 @@ resource "random_string" "id" {
 ## locals
 locals {
   infra_id      = random_string.id.result
-  prow_base_url = "https://prow.${var.base_domain}"
+  prow_base_url = "prow.${var.base_domain}"
+  gke_name      = "prow"
   tags = {
     SYSTEM = var.system
     UUID   = random_string.id.result
@@ -87,10 +88,10 @@ locals {
 ## Modules
 module "gke-cluster" {
   source  = "git@github.com:ouzi-dev/gke-terraform.git?ref=v0.3"
-  region  = var.gke_region
-  project = var.gke_project
+  region  = var.gcloud_region
+  project = var.gcloud_project
 
-  cluster_name       = "prow"
+  cluster_name       = local.gke_name
   zones              = var.gke_zones
   node_cidr_range    = var.gke_node_cidr_range
   pod_cidr_range     = var.gke_pod_cidr_range
@@ -121,7 +122,7 @@ module "gke-cluster" {
 
 ### Bucket for Prow
 resource "google_storage_bucket" "prow_bucket" {
-  name          = "${var.gke_project}-prow-artefacts"
+  name          = "${var.gcloud_project}-prow-artefacts"
   location      = var.prow_artefact_bucket_location
   force_destroy = true
 

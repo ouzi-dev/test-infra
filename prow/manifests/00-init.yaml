@@ -1,3 +1,4 @@
+# ---
 # apiVersion: v1
 # data:
 #   config.yaml: |-
@@ -12,7 +13,7 @@
 # data:
 #   plugins.yaml: |-
 #     plugins:
-#       ouzi-dev/test-infra:
+#       {{.github.org}}/test-infra:
 #       - config-updater
 #     config_updater:
 #       maps:
@@ -76,6 +77,116 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: prow
+---  
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prow
+  namespace: prow-test-pods
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prow-test-pods
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: prow
+    namespace: prow-test-pods
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gcs-credentials
+  namespace: prow
+type: Opaque
+data:
+  service-account.json: {{.prow.bucket_svc_account_key}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gcs-credentials
+  namespace: prow-test-pods
+type: Opaque
+data:
+  service-account.json: {{.prow.bucket_svc_account_key}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hmac-token
+  namespace: prow
+type: Opaque
+data:
+  hmac: {{.prow.webhook_hmac_token}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oauth-token
+  namespace: prow
+type: Opaque
+data:
+  oauth: {{.github.bot.token}}  
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-ssh-key
+  namespace: prow-test-pods
+type: Opaque
+data:
+  key: {{.github.bot.ssh_key}}  
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-ssh-key
+  namespace: prow
+type: Opaque
+data:
+  key: {{.github.bot.ssh_key}}  
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-oauth-config
+  namespace: prow
+type: Opaque
+data:
+  secret: {{.prow.oauth_config}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cookie
+  namespace: prow
+type: Opaque
+data:
+  secret: {{.prow.cookie_secret}}  
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: terraform-ouzidev-google-service-account
+  namespace: prow-test-pods
+type: Opaque
+data:
+  key.json: {{.gcloud.prowterraform_gke_svc_account_key}}  
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: terraform-ouzidev-aws-service-account
+  namespace: prow-test-pods
+type: Opaque
+data:
+  access_key_id: {{.aws.terraform_user_access_key_id}}  
+  secret_access_key: {{.aws.terraform_user_secret_access_key}}
 ---
 apiVersion: v1
 kind: ConfigMap

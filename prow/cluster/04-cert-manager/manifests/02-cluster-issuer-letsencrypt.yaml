@@ -17,7 +17,7 @@ spec:
     - dns01:
         clouddns:
           # The ID of the GCP project
-          project: testinfra-251013
+          project: {{.gcloud.project}}
           # This is the secret used to access the service account
           serviceAccountSecretRef:
             name: clouddns-dns01-solver-svc-acct

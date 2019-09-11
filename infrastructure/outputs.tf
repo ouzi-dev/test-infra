@@ -1,10 +1,16 @@
-# GKE outputs
-output "gke_region" {
-  value = var.gke_region
+# GCloud outputs
+output "gcloud_region" {
+  value = var.gcloud_region
 }
 
-output "gke_project" {
-  value = var.gke_project
+output "gcloud_project" {
+  value = var.gcloud_project
+}
+
+# GKE outputs
+
+output "gke_name" {
+  value = local.gke_name
 }
 
 ## Prow related outputs
@@ -43,6 +49,18 @@ output "prow_github_oauth_cookie_secret" {
   sensitive = true
 }
 
+output "prow_github_oauth_config" {
+  value = templatefile("${path.module}/templates/_prow_github_oauth_config.yaml",
+    {
+      client_id          = data.credstash_secret.prow_github_oauth_client_id.value,
+      client_secret      = data.credstash_secret.prow_github_oauth_client_secret.value,
+      redirect_url       = "https://${local.prow_base_url}/github-login/redirect",
+      final_redirect_url = "https://${local.prow_base_url}/pr",
+    }
+  )
+  sensitive = true
+}
+
 output "prow_cookie_secret" {
   value     = data.credstash_secret.prow_cookie_secret.value
   sensitive = true
@@ -71,6 +89,10 @@ output "prow_base_url" {
   value = local.prow_base_url
 }
 
+output "prow_github_org" {
+  value = var.github_org
+}
+
 ## Cert-Manager outputs
 output "certmanager_svc_account_key" {
   value     = google_service_account_key.certmanager_dns_editor_key.private_key
@@ -81,25 +103,37 @@ output "valuesyaml" {
   value = base64encode(templatefile(
     "${path.module}/templates/_prow_values.yaml",
     {
-      gke_region                                       = var.gke_region,
-      gke_project                                      = var.gke_project,
+      gcloud_region                                       = var.gcloud_region,
+      gcloud_project                                      = var.gcloud_project,
+      gke_name                                            = local.gke_name,
       gke_authenticator_groups_security_group          = var.gke_authenticator_groups_security_group,
       prow_terraform_gcloud_svc_account_key            = base64encode(google_service_account_key.prow_terraform.private_key),
-      prow_terraform_aws_svc_account_access_key_id     = aws_iam_access_key.prow_terraform.id,
-      prow_terraform_aws_svc_account_secret_access_key = aws_iam_access_key.prow_terraform.secret,
+      prow_terraform_aws_svc_account_access_key_id     = base64encode(aws_iam_access_key.prow_terraform.id),
+      prow_terraform_aws_svc_account_secret_access_key = base64encode(aws_iam_access_key.prow_terraform.secret),
       prow_base_url                                    = local.prow_base_url,
       prow_bucket_svc_account_key                      = base64encode(google_service_account_key.prow_bucket_editor_key.private_key),
-      prow_webhook_hmac_token                          = random_string.hmac_token.result,
-      prow_cookie_secret                               = data.credstash_secret.prow_cookie_secret.value,
+      prow_webhook_hmac_token                          = base64encode(random_string.hmac_token.result),
+      prow_cookie_secret                               = base64encode(data.credstash_secret.prow_cookie_secret.value),
       prow_artefacts_bucket_name                       = google_storage_bucket.prow_bucket.name,
-      prow_github_bot_token                            = data.credstash_secret.github_bot_token.value,
+      prow_github_bot_token                            = base64encode(data.credstash_secret.github_bot_token.value),
       prow_github_bot_ssh_key                          = base64encode(data.credstash_secret.github_bot_ssh_key.value),
-      prow_github_oauth_client_id                      = data.credstash_secret.prow_github_oauth_client_id.value,
-      prow_github_oauth_client_secret                  = data.credstash_secret.prow_github_oauth_client_secret.value,
-      prow_github_oauth_cookie_secret                  = data.credstash_secret.prow_github_oauth_cookie_secret.value,
-      prow_redirect_url                                = "${local.prow_base_url}/github-login/redirect",
-      prow_final_redirect_url                          = "${local.prow_base_url}/pr",
-      certmanager_svc_account_key                      = base64encode(google_service_account_key.certmanager_dns_editor_key.private_key)
+      prow_github_org                                  = var.github_org,
+      prow_github_oauth_client_id                      = base64encode(data.credstash_secret.prow_github_oauth_client_id.value),
+      prow_github_oauth_client_secret                  = base64encode(data.credstash_secret.prow_github_oauth_client_secret.value),
+      prow_github_oauth_cookie_secret                  = base64encode(data.credstash_secret.prow_github_oauth_cookie_secret.value),
+      prow_github_oauth_config = base64encode(
+        templatefile("${path.module}/templates/_prow_github_oauth_config.yaml",
+          {
+            client_id          = data.credstash_secret.prow_github_oauth_client_id.value,
+            client_secret      = data.credstash_secret.prow_github_oauth_client_secret.value,
+            redirect_url       = "https://${local.prow_base_url}/github-login/redirect",
+            final_redirect_url = "https://${local.prow_base_url}/pr",
+          }
+        )
+      ),
+      prow_redirect_url           = "${local.prow_base_url}/github-login/redirect",
+      prow_final_redirect_url     = "${local.prow_base_url}/pr",
+      certmanager_svc_account_key = base64encode(google_service_account_key.certmanager_dns_editor_key.private_key)
     }
   ))
   sensitive = true

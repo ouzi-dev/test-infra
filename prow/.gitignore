@@ -1,1 +1,3 @@
-.values.yaml
+.terraform-values.yaml
+.bin
+*.rendered

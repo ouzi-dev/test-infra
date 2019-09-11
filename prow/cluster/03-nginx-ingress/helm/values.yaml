@@ -223,7 +223,7 @@ controller:
 
   service:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: "prow.testinfra.ouzi.io"
+      external-dns.alpha.kubernetes.io/hostname: "{{.prow.baseurl}}"
 
     labels: {}
     omitClusterIP: false

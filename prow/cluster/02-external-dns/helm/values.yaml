@@ -55,7 +55,7 @@ publishInternalServices: false
 google:
   ## Google Project to use
   ##
-  project: "testinfra-251013"
+  project: "{{.gcloud.project}}"
   ## Google Application Credentials
   ##
   ## serviceAccountSecret: ""

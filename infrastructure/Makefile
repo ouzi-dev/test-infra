@@ -42,8 +42,8 @@ destroy: init
 
 get-cluster-credentials:
 	@$(MAKE) init > /dev/null 2>&1
-	$(eval NAME=$(shell $(MAKE) output | jq .name.value))
-	$(eval REGION=$(shell $(MAKE) output | jq .region.value))
+	$(eval NAME=$(shell $(MAKE) output | jq .gke_name.value))
+	$(eval REGION=$(shell $(MAKE) output | jq .gcloud_region.value))
 	gcloud container clusters get-credentials $(NAME) --region=$(REGION)
 
 get-google-service-account: 

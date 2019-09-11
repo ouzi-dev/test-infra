@@ -325,7 +325,7 @@ spec:
         - --config-path=/etc/config/config.yaml
         - --tide-url=http://tide/
         - --hook-url=http://hook:8888/plugin-help
-        - --redirect-http-to=prow.testinfra.ouzi.io
+        - --redirect-http-to={{.prow.baseurl}}
         - --config-path=/etc/config/config.yaml
         - --job-config-path=/etc/job-config
         - --oauth-url=/github-login
@@ -1259,7 +1259,7 @@ spec:
               args:
               - --config=/etc/config/labels.yaml
               - --confirm=true
-              - --orgs=ouzi-dev
+              - --orgs={{.github.org}}
               - --token=/etc/github/oauth
               volumeMounts:
               - name: oauth
@@ -1288,7 +1288,7 @@ metadata:
   namespace: prow
 spec:
   rules:
-  - host: prow.testinfra.ouzi.io
+  - host: {{.prow.baseurl}}
     http:
       paths:
       - backend:

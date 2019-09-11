@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: clouddns-dns01-solver-svc-acct
+type: Opaque
+data:
+    key.json: {{.certmanager.gke_svc_account_key}}

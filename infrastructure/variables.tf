@@ -1,12 +1,12 @@
-variable "gke_region" {
-  description = "GKE cluster region"
+variable "gcloud_region" {
+  description = "Google Cloud region"
 }
 
 variable "aws_region" {
   description = "AWS region"
 }
 
-variable "gke_project" {
+variable "gcloud_project" {
   description = "Name of the GKE project"
 }
 
@@ -120,6 +120,14 @@ variable "github_bot_token_credstash_key" {
   type = string
 }
 
+variable "github_bot_ssh_key_credstash_key" {
+  type = string
+}
+
+variable "github_org" {
+  type = string
+}
+
 variable "prow_github_oauth_client_id_credstash_key" {
   type = string
 }
@@ -144,9 +152,7 @@ variable "base_domain" {
   type = string
 }
 
-variable "github_bot_ssh_key_credstash_key" {
-  type = string
-}
+
 
 variable "google_credentials_file_path" {
   type = string

@@ -12,7 +12,7 @@ This folder contains all the infra needed to stand up a k8s cluster for prow
 - get-cluster-credentials: Get credentials (kubeconfig) to access the k8s cluster
 - get-google-service-account: Get the service account used to interact with Google Cloud
 
-## Project setup
+## GCloud Project setup
 
 The project in GCloud is setup manually.
 
