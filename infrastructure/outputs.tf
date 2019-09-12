@@ -107,11 +107,11 @@ output "valuesyaml" {
       gcloud_project                                      = var.gcloud_project,
       gke_name                                            = local.gke_name,
       gke_authenticator_groups_security_group          = var.gke_authenticator_groups_security_group,
-      prow_terraform_gcloud_svc_account_key            = base64encode(google_service_account_key.prow_terraform.private_key),
+      prow_terraform_gcloud_svc_account_key            = google_service_account_key.prow_terraform.private_key,
       prow_terraform_aws_svc_account_access_key_id     = base64encode(aws_iam_access_key.prow_terraform.id),
       prow_terraform_aws_svc_account_secret_access_key = base64encode(aws_iam_access_key.prow_terraform.secret),
       prow_base_url                                    = local.prow_base_url,
-      prow_bucket_svc_account_key                      = base64encode(google_service_account_key.prow_bucket_editor_key.private_key),
+      prow_bucket_svc_account_key                      = google_service_account_key.prow_bucket_editor_key.private_key,
       prow_webhook_hmac_token                          = base64encode(random_string.hmac_token.result),
       prow_cookie_secret                               = base64encode(data.credstash_secret.prow_cookie_secret.value),
       prow_artefacts_bucket_name                       = google_storage_bucket.prow_bucket.name,
@@ -133,7 +133,8 @@ output "valuesyaml" {
       ),
       prow_redirect_url           = "${local.prow_base_url}/github-login/redirect",
       prow_final_redirect_url     = "${local.prow_base_url}/pr",
-      certmanager_svc_account_key = base64encode(google_service_account_key.certmanager_dns_editor_key.private_key)
+      certmanager_svc_account_key = google_service_account_key.certmanager_dns_editor_key.private_key
+      slack_token                 = base64encode(data.credstash_secret.slack_ouzibot_token.value)
     }
   ))
   sensitive = true

@@ -65,6 +65,11 @@ data "credstash_secret" "prow_cookie_secret" {
   name = var.prow_cookie_secret_credstash_key
 }
 
+data "credstash_secret" "slack_ouzibot_token" {
+  name = var.slack_ouzibot_token_credstash_key  
+}
+
+
 data "google_client_config" "current" {
 }
 

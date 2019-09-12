@@ -44,7 +44,7 @@ deploy-cluster: init-cluster
 	@$(GOTPL) $(CLUSTER_MANIFESTS_NGINXINGRESS_PATH)/helm -f $(TERRAFORM_VALUES_FILEPATH) | helm upgrade --install peach stable/nginx-ingress --namespace nginx --wait -f -
 	@$(GOTPL) $(CLUSTER_MANIFESTS_OAUTH_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f -
 	@$(GOTPL) $(CLUSTER_MANIFESTS_PDBS_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f -
-	helm upgrade --install potato stable/prometheus-operator --namespace monitoring --wait
+	#helm upgrade --install potato stable/prometheus-operator --namespace monitoring --wait
 
 deploy-prow: get-values
 	$(GOTPL) $(PROW_MANIFESTS_PATH) -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f - 

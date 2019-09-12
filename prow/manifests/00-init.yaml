@@ -28,13 +28,13 @@
 # metadata:
 #   name: plugins
 #   namespace: prow
-# ---
-# apiVersion: v1
-# data:
-# kind: ConfigMap
-# metadata:
-#   name: job-config
-#   namespace: prow
+---
+apiVersion: v1
+data:
+kind: ConfigMap
+metadata:
+  name: job-config
+  namespace: prow
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
@@ -123,6 +123,15 @@ metadata:
 type: Opaque
 data:
   hmac: {{.prow.webhook_hmac_token}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: slack-token
+  namespace: prow
+type: Opaque
+data:
+  token: {{.slack.token}}
 ---
 apiVersion: v1
 kind: Secret

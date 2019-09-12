@@ -144,6 +144,11 @@ variable "prow_cookie_secret_credstash_key" {
   type = string
 }
 
+variable "slack_ouzibot_token_credstash_key" {
+  type = string
+}
+
+
 variable "credstash_region" {
   type = string
 }
