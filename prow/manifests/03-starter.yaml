@@ -458,8 +458,8 @@ spec:
         - --github-endpoint=http://ghproxy
 #        - --github-endpoint=https://api.github.com
         - --gcs-credentials-file=/etc/service-account/service-account.json
-        - --history-uri=gs://testinfra-testinfra-prow-artefacts/tide-history.json
-        - --status-path=gs://testinfra-testinfra-prow-artefacts/tide-status-checkpoint.yaml
+        - --history-uri=gs://{{.prow.bucket_name}}/tide-history.json
+        - --status-path=gs://{{.prow.bucket_name}}/tide-status-checkpoint.yaml
         - --config-path=/etc/config/config.yaml
         - --job-config-path=/etc/job-config
         ports:
