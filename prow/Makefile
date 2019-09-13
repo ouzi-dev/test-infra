@@ -61,7 +61,7 @@ deploy: cluster-deploy prow-deploy
 
 test-job: template-prow-config get-values
 	$(MAKE) -C ../infrastructure output | jq -r .prow_github_bot_token.value > .github_token
-	go run k8s.io/test-infra/prow/cmd/mkpj --job=test-prow-config --config-path=config.yaml --job-config-path=../config/jobs/ouzi-dev/test-infra/jobs.yaml -github-token-path=.github_token | kubectl apply -n prow -f -
+	go run k8s.io/test-infra/prow/cmd/mkpj --job=$(PROW_JOB) --config-path=config.yaml --job-config-path=../config/jobs/ouzi-dev/test-infra/jobs.yaml -github-token-path=.github_token | kubectl apply -n prow -f -
 
 get-cluster-credentials:
 	@$(MAKE) -C ../infrastructure get-cluster-credentials
