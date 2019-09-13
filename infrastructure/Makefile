@@ -1,67 +1,50 @@
 .PHONY: clean init plan apply destroy format validate bootstrap-init bootstrap-plan bootstrap-apply bootstrap-destroy
 
-# Get OS
-UNAME := $(shell uname)
+# Get current directory
+DIR := ${CURDIR}
 
 # Credstash version and dowload locations
 CREDSTASH_VERSION := 0.4.0
-CREDSTASH_DOWNLOAD_LINUX_URL := https://github.com/sspinc/terraform-provider-credstash/releases/download/$(CREDSTASH_VERSION)/terraform-provider-credstash_linux_amd64
 CREDSTASH_DOWNLOAD_DARWIN_URL := https://github.com/sspinc/terraform-provider-credstash/releases/download/$(CREDSTASH_VERSION)/terraform-provider-credstash_darwin_amd64
 CREDSTASH_FILEPATH := ~/.terraform.d/plugins/terraform-provider-credstash_v$(CREDSTASH_VERSION)
 
-setup:
+GOOGLE_APPLICATION_CREDENTIALS_PATH := $(DIR)/.terraform-account.json
+
+setup: get-google-service-account
 	@mkdir -p ~/.terraform.d/plugins
-ifeq ($(UNAME),Linux)
-	curl -L "$(CREDSTASH_DOWNLOAD_LINUX_URL)" -o $(CREDSTASH_FILEPATH) -z $(CREDSTASH_FILEPATH)
-endif
-ifeq ($(UNAME),Darwin)
-	curl -L "$(CREDSTASH_DOWNLOAD_DARWIN_URL)" -o $(CREDSTASH_FILEPATH) -z $(CREDSTASH_FILEPATH)
-endif
-	chmod +x ~/.terraform.d/plugins/terraform-provider-credstash_v$(CREDSTASH_VERSION)
+	@curl -L "$(CREDSTASH_DOWNLOAD_DARWIN_URL)" -o $(CREDSTASH_FILEPATH) -z $(CREDSTASH_FILEPATH)
+	@chmod +x ~/.terraform.d/plugins/terraform-provider-credstash_v$(CREDSTASH_VERSION)
 
 clean:
 	@rm -rf .terraform
 
 fmt:
 	@terraform fmt --recursive
-	@cd bootstrap; terraform fmt --recursive
-	@cd env/$(ENV); terraform fmt --recursive
 	
 validate:
 	@terraform validate .
 
-init:
-	@terraform init -backend-config=backend.tfvars
-
+init: get-google-service-account
+	@terraform init -backend-config=backend.tfvars  -backend-config=credentials=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
+	
 plan: init 
-	@terraform plan --var-file=terraform.tfvars -detailed-exitcode
+	@terraform plan --var-file=terraform.tfvars  -detailed-exitcode -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
 
 apply: init 
-	@terraform apply --var-file=terraform.tfvars
+	@terraform apply --var-file=terraform.tfvars -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
 
 output:
 	@$(MAKE) init > /dev/null 2>&1
 	@terraform output --json -no-color
 
 destroy: init
-	@terraform destroy --var-file=terraform.tfvars
-
-bootstrap-init:
-	@cd bootstrap; terraform init
-
-bootstrap-plan: bootstrap-init
-	@cd bootstrap; terraform plan 
-
-bootstrap-apply: bootstrap-init
-	@cd bootstrap; terraform apply
-
-bootstrap-destroy: bootstrap-init
-	@cd bootstrap; terraform destroy
-
-bootstrap: bootstrap-apply
+	@terraform destroy --var-file=terraform.tfvars -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH)
 
 get-cluster-credentials:
 	@$(MAKE) init > /dev/null 2>&1
-	$(eval NAME=$(shell ENV=$(ENV) $(MAKE) output | jq .name.value))
-	$(eval REGION=$(shell ENV=$(ENV) $(MAKE) output | jq .region.value))
+	$(eval NAME=$(shell $(MAKE) output | jq .gke_name.value))
+	$(eval REGION=$(shell $(MAKE) output | jq .gcloud_region.value))
 	gcloud container clusters get-credentials $(NAME) --region=$(REGION)
+
+get-google-service-account: 
+	@credstash get ouzidev-testinfra-terraform-svcaccount > $(GOOGLE_APPLICATION_CREDENTIALS_PATH)

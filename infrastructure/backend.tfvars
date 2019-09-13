@@ -1,2 +1,2 @@
-bucket = "ouzi-terraform"
-prefix = "terraform/unicorn.state"
+bucket = "ouzidev-testinfra-terraform"
+prefix = "testinfra.state"

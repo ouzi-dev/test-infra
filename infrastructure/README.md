@@ -1,18 +1,33 @@
 # Infrastructure
 
-## Terraform 
+## Summary
 
-We use Terraform to manage infrastructure with the following setup:
+This folder contains all the infra needed to stand up a k8s cluster for prow
 
+## Makefile
 
+- init: Initialise the infra
+- plan: Execute a plan for the infrastructure
+- apply:  Apply the infrastructure 
+- get-cluster-credentials: Get credentials (kubeconfig) to access the k8s cluster
+- get-google-service-account: Get the service account used to interact with Google Cloud
 
-## Google Credential setup 
+## GCloud Project setup
 
-Generate SDK creds via `gcloud auth application-default login` such that terraform can interract with GCloud on your behalf.
+The project in GCloud is setup manually.
 
-## Getting a kubeconfig
+Manual steps:
+- the bucket for terraform
+- the service account for terraform. The key of the service account must be in credstash AWS.
 
-```
-gcloud container clusters get-credentials CLUSTER_NAME --region=REGION
-```
+## Google DNS
 
+Terraform creates a subdomain - we manually link it to the root ouzi.io domain by creating an NS record.
+
+## Google APIs
+
+Manually enable the:
+- Google Cloud DNS API,
+- Kubernetes API,
+- IAM API,
+- Cloud Resource Manager API 
