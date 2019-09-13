@@ -3,6 +3,7 @@ presubmits:
     - name: test-prow-config
       context: test-prow-config
       decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"
       always_run: false 
       skip_report: false 
       max_concurrency: 1 
