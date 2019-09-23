@@ -1,0 +1,43 @@
+presubmits:
+  ouzi-dev/test-infra:
+    - name: test-prow-config
+      context: test-prow-config
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1 
+      trigger: "(?m)test-prow-config( please)?" 
+      rerun_command: "test-prow-config"
+      run_if_changed: '^(config/.*|prow/.*)$'
+      spec: 
+        containers:
+          - name: "test-config"
+            imagePullPolicy: IfNotPresent
+            command:
+              - checkconfig
+            args:
+              - --config-path=prow/config.yaml
+              - --plugin-config=prow/plugins.yaml
+              - --job-config-path=config/jobs
+            image: belitre/checkconfig:latest    
+postsubmits:
+  ouzi-dev/test-infra:
+    - name: test-config-postsubmit
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"
+      decorate: true
+      max_concurrency: 1 
+      run_if_changed: '^(config/.*|prow/.*)$'
+      branches:
+        - master
+      spec:
+        containers:
+          - name: "test-config"
+            imagePullPolicy: IfNotPresent
+            command:
+              - checkconfig
+            args:
+              - --config-path=prow/config.yaml
+              - --plugin-config=prow/plugins.yaml
+              - --job-config-path=config/jobs
+            image: belitre/checkconfig:latest

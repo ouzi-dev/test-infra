@@ -46,13 +46,22 @@ deploy-cluster: init-cluster
 	@$(GOTPL) $(CLUSTER_MANIFESTS_PDBS_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f -
 	#helm upgrade --install potato stable/prometheus-operator --namespace monitoring --wait
 
-deploy-prow: get-values
+template-prow-config: get-values
+	$(GOTPL) plugins.yaml.template -f $(TERRAFORM_VALUES_FILEPATH) > plugins.yaml
+	$(GOTPL) labels.yaml.template -f $(TERRAFORM_VALUES_FILEPATH) > labels.yaml 
+	$(GOTPL) config.yaml.template -f $(TERRAFORM_VALUES_FILEPATH) > config.yaml
+
+deploy-prow: template-prow-config get-values
 	$(GOTPL) $(PROW_MANIFESTS_PATH) -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f - 
-	$(GOTPL) plugins.yaml -f $(TERRAFORM_VALUES_FILEPATH) > plugins.yaml.rendered && kubectl create configmap plugins --from-file=plugins.yaml=plugins.yaml.rendered --dry-run -o yaml -n prow | kubectl apply -f - && rm plugins.yaml.rendered
-	$(GOTPL) labels.yaml -f $(TERRAFORM_VALUES_FILEPATH) > labels.yaml.rendered && kubectl create configmap label-config --from-file=labels.yaml=labels.yaml.rendered --dry-run -o yaml -n prow | kubectl apply -f - && rm labels.yaml.rendered
-	$(GOTPL) config.yaml -f $(TERRAFORM_VALUES_FILEPATH) > config.yaml.rendered && kubectl create configmap config --from-file=config.yaml=config.yaml.rendered --dry-run -o yaml -n prow | kubectl apply -f - && rm config.yaml.rendered
+	kubectl create configmap plugins --from-file=plugins.yaml=plugins.yaml --dry-run -o yaml -n prow | kubectl apply -f - 
+	kubectl create configmap label-config --from-file=labels.yaml=labels.yaml --dry-run -o yaml -n prow | kubectl apply -f -
+	kubectl create configmap config --from-file=config.yaml=config.yaml --dry-run -o yaml -n prow | kubectl apply -f - 
 
 deploy: cluster-deploy prow-deploy
+
+test-job: template-prow-config get-values
+	$(MAKE) -C ../infrastructure output | jq -r .prow_github_bot_token.value > .github_token
+	go run k8s.io/test-infra/prow/cmd/mkpj --job=$(PROW_JOB) --config-path=config.yaml --job-config-path=../config/jobs/ouzi-dev/test-infra/jobs.yaml -github-token-path=.github_token | kubectl apply -n prow -f -
 
 get-cluster-credentials:
 	@$(MAKE) -C ../infrastructure get-cluster-credentials

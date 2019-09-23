@@ -3,9 +3,9 @@ pod_namespace: prow-test-pods
 
 plank:
   allow_cancellations: true
-  job_url_prefix: 'https://prow.test-infra.ouzi.io/view/gcs'
-  job_url_template: 'https://prow.test-infra.ouzi.io/view/gcs/ouzidev-testinfra-252513-prow-artefacts/pr-logs/pull/{{.Spec.Refs.Repo}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}'
-  report_template: '[Full PR test history](https://prow.test-infra.ouzi.io/pr-history?org={{.Spec.Refs.Org}}&repo={{.Spec.Refs.Repo}}&pr={{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}})'
+  job_url_prefix: 'https://{{.prow.baseurl}}/view/gcs'
+  job_url_template: '{{.prow.job_url_template}}'
+  report_template: '{{.prow.report_template}}'
   pod_pending_timeout: 60m
   default_decoration_config:
     timeout: 2h
@@ -16,7 +16,7 @@ plank:
       entrypoint: "gcr.io/k8s-prow/entrypoint:v20190517-95ef25d87"
       sidecar: "gcr.io/k8s-prow/sidecar:v20190517-95ef25d87"
     gcs_configuration:
-      bucket: "ouzidev-testinfra-252513-prow-artefacts"
+      bucket: "{{.prow.bucket_name}}"
       path_strategy: "explicit"
     gcs_credentials_secret: gcs-credentials
     ssh_key_secrets:
@@ -47,8 +47,8 @@ push_gateway:
 tide:
   sync_period: 1m
   merge_method:
-    ouzi-dev: squash
-  pr_status_base_url: https://prow.test-infra.ouzi.io/pr
+    {{.github.org}}: squash
+  pr_status_base_url: https://{{.prow.baseurl}}/pr
   blocker_label: tide/merge-blocker
   squash_label: tide/merge-method-squash
   rebase_label: tide/merge-method-rebase
@@ -60,7 +60,7 @@ tide:
     skip-unknown-contexts: false
   queries:
   - orgs:
-    - ouzi-dev
+    - {{.github.org}}
     labels:
     - lgtm
     - approved
@@ -93,7 +93,7 @@ slack_reporter:
   - error
   channel: cicd-job-status
   # The template shown below is the default
-  report_template: 'Job {{.Spec.Job}} of type {{.Spec.Type}} ended with state {{.Status.State}}. <{{.Status.URL}}|View logs>'
+  report_template: '{{.slack.report_template}}'
 
 presets:
 # credential presets
