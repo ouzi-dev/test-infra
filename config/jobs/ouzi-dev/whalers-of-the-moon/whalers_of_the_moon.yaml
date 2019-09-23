@@ -1,0 +1,74 @@
+presubmits:
+  ouzi-dev/whalers-of-the-moon:
+    - name: build-kube-dind-image
+      labels:
+        preset-docker: "true"
+      context: build-kube-dind-image
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1 
+      trigger: "(?m)build-kube-dind-image( please)?" 
+      rerun_command: "build-kube-dind-image"
+      run_if_changed: 'kube-dind/'
+      spec: 
+        containers:
+          - name: "build-kube-dind-image"
+            imagePullPolicy: IfNotPresent
+            image: belitre/kube-dind
+            command:
+              - runner.sh
+            args:
+              - make
+              - kube-dind-push
+            securityContext:
+              privileged: true
+    - name: build-dind-image
+      labels:
+        preset-docker: "true"
+      context: build-dind-image
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1 
+      trigger: "(?m)build-dind-image( please)?" 
+      rerun_command: "build-dind-image"
+      run_if_changed: 'dind/'
+      spec: 
+        containers:
+          - name: "build-dind-image"
+            imagePullPolicy: IfNotPresent
+            image: belitre/kube-dind
+            command:
+              - runner.sh
+            args:
+              - make
+              - dind-push
+            securityContext:
+              privileged: true
+    - name: build-go-builder-image
+      labels:
+        preset-docker: "true"
+      context: build-go-builder-image
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1 
+      trigger: "(?m)build-go-builder-image( please)?" 
+      rerun_command: "build-go-builder-image"
+      run_if_changed: 'go-builder/'
+      spec: 
+        containers:
+          - name: "build-go-builder-image"
+            imagePullPolicy: IfNotPresent
+            image: belitre/kube-dind
+            command:
+              - runner.sh
+            args:
+              - make
+              - go-builder-push
+            securityContext:
+              privileged: true     
