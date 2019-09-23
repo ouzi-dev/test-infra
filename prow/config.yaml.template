@@ -124,3 +124,20 @@ presets:
   - name: google-service-account
     mountPath: /etc/google-service-account
     readOnly: true
+- labels:
+    preset-docker: "true"
+  env:
+    - name: DOCKER_CONFIG
+      value: "/kaniko/.docker"
+  volumes:
+  - name: kaniko-config
+    projected:
+      sources:
+      - secret:
+          name: ouzi-bot-pull-push-secret
+          items:
+          - key: .dockerconfigjson
+            path: config.json      
+  volumeMounts:
+  - name: kaniko-config
+    mountPath: /kaniko/.docker
