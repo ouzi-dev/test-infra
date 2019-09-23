@@ -50,3 +50,4 @@ prow_github_oauth_client_secret_credstash_key = "prow-github-oauth-client-secret
 prow_github_oauth_cookie_secret_credstash_key = "prow-github-oauth-cookie-secret"
 prow_cookie_secret_credstash_key              = "prow-cookie-secret"
 slack_ouzibot_token_credstash_key             = "ouzibot_slack_legacytoken"
+quay_bot_dockerconfig_credstash_key           = "quay_bot_dockerconfig"
