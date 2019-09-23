@@ -198,6 +198,15 @@ data:
   secret_access_key: {{.aws.terraform_user_secret_access_key}}
 ---
 apiVersion: v1
+kind: Secret
+metadata:
+  name: ouzi-bot-pull-push-secret
+  namespace: prow-test-pods
+data:
+  .dockerconfigjson: {{.docker.config}}
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: prow
