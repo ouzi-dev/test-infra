@@ -56,7 +56,7 @@ branch-protection:
       exclude:
         - "^revert-" # don't protect revert branches
         - "^dependabot/" # don't protect branches created by dependabot
-        - "^feat|patch|major|minor/" # dont match working branches
+        - "^feat|fix|docs" # dont match working branches
 
 tide:
   sync_period: 1m
