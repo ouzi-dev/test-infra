@@ -2,7 +2,8 @@
 
 This repo contains all the configuration needed to run Prow for the ouzi-dev GitHub org. 
 
-Short summary:
+## Short summary
+
 - **Enforces branch protection in all branches of all of our repos with some exclusions ( you can see them in the [confgi.yaml](prow/config.yaml) )**
 - **Automatically merges all PRs if they have been aproved by the OWNERS of the repo and all checks have passed**
 - **Any PRs to this repo also trigger a config reload of Prow automatically**
@@ -12,6 +13,8 @@ Short summary:
 - **Support WIP PRs by blocking merging if the PR is in draft mode or title starts with WIP:**
 - **Supports PR approvals by /approve** 
 - **Supports /lgtm with automatic approval** 
+
+To see the current running jobs, visit [Deck](https://prow.test-infra.ouzi.io/)
 
 ## OWNERS
 
