@@ -954,7 +954,7 @@ metadata:
  namespace: prow
  name: branchprotector
 spec:
- schedule: "54 * * * *"  # Every hour at 54 minutes past the hour
+ schedule: "12 * * * *"  # Every hour at 12 minutes past the hour
  concurrencyPolicy: Forbid
  jobTemplate:
    metadata:
