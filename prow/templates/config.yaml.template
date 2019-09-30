@@ -43,6 +43,27 @@ push_gateway:
   endpoint: pushgateway
   serve_metrics: true
 
+branch-protection:
+  orgs:
+    {.github.org}:
+      protect: true  # enable protection
+      enforce_admins: true  # rules apply to admins
+      required_pull_request_reviews:
+        dismiss_stale_reviews: false # automatically dismiss old reviews
+        dismissal_restrictions: # allow review dismissals
+          users:
+          - belitre
+          - givanov
+          - alexouzounis
+          teams:
+          - team # the ouzi team
+        require_code_owner_reviews: true  # require a code owner approval
+        required_approving_review_count: 1 # number of approvals
+      required_status_checks:
+        strict: true # require pr branch to be up to date
+      restrictions: # restrict who can push to the repo
+        users:
+        - ouzi-bot
 
 tide:
   sync_period: 1m
