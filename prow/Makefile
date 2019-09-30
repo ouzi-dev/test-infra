@@ -47,9 +47,9 @@ deploy-cluster: init-cluster
 	#helm upgrade --install potato stable/prometheus-operator --namespace monitoring --wait
 
 template-prow-config: get-values
-	$(GOTPL) plugins.yaml.template -f $(TERRAFORM_VALUES_FILEPATH) > plugins.yaml
-	$(GOTPL) labels.yaml.template -f $(TERRAFORM_VALUES_FILEPATH) > labels.yaml 
-	$(GOTPL) config.yaml.template -f $(TERRAFORM_VALUES_FILEPATH) > config.yaml
+	$(GOTPL) templates/plugins.yaml.template -f $(TERRAFORM_VALUES_FILEPATH) > plugins.yaml
+	$(GOTPL) templates/labels.yaml.template -f $(TERRAFORM_VALUES_FILEPATH) > labels.yaml 
+	$(GOTPL) templates/config.yaml.template -f $(TERRAFORM_VALUES_FILEPATH) > config.yaml
 
 deploy-prow: template-prow-config get-values
 	$(GOTPL) $(PROW_MANIFESTS_PATH) -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f - 

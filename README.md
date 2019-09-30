@@ -2,6 +2,12 @@
 
 This repo contains all the configuration needed to run Prow for the ouzi-dev GitHub org. 
 
+Short summary:
+- Enforces branch protection in all branches of all of our repos with some exclusions ( you can see them in the [confgi.yaml](prow/config.yaml) )
+- Automatically merges all PRs if they have been aproved by the OWNERS of the repo and all checks have passed
+- Any PRs to this repo also trigger a config reload of Prow automatically
+- Enabled [plugins](prow/plugins.yaml) to manage the lifecycle of PRs
+
 ## OWNERS
 
 The owners file defines who are the approvers and reviewers for ouzi-dev repos. For more info, see the OWNERS docs at https://go.k8s.io/owners
@@ -20,7 +26,7 @@ We list below the most useful targets
 
 ## Prow
 
-The Prow folder contains all the resources necessary to get Prow operational in a k8s cluster. We make some assumptions, that the cluster supports fully RBAC and that some secrets have been pre-seeded and also install various componenets that are not Prow specific necessarily.
+The Prow folder contains all the resources necessary to get [Prow](https://github.com/kubernetes/test-infra/tree/master/prow) operational in a k8s cluster. We make some assumptions, that the cluster supports fully RBAC and that some secrets have been pre-seeded and also install various componenets that are not Prow specific necessarily. Please note that this is not meant to be reusable by others, this is just how we manage Prow.
 
 See [prow/README.md](prow/README.md) for more details
 
