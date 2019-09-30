@@ -1,17 +1,20 @@
 # test-infra
 
-This repo contains all the configuration needed to run Prow for the ouzi-dev GitHub org. 
+This repo contains all the configuration needed to run Prow](https://github.com/kubernetes/test-infra/tree/master/prow) for the ouzi-dev GitHub org. 
 
-Short summary:
-- **Enforces branch protection in all branches of all of our repos with some exclusions ( you can see them in the [confgi.yaml](prow/config.yaml) )**
-- **Automatically merges all PRs if they have been aproved by the OWNERS of the repo and all checks have passed**
-- **Any PRs to this repo also trigger a config reload of Prow automatically**
-- **Ability to hold off a PR from being merged if an issue outside of checks is detected**
-- **Automatically assign a reviewer**
-- **Allow the ability re-run tests** 
-- **Support WIP PRs by blocking merging if the PR is in draft mode or title starts with WIP:**
-- **Supports PR approvals by /approve** 
-- **Supports /lgtm with automatic approval** 
+## Short summary
+
+- Enforce branch protection in all branches of all of our repos with some exclusions ( you can see them in the [config.yaml](prow/config.yaml) )
+- Automatically merge all PRs if they have been aproved by the OWNERS of the repo and all checks have passed
+- Trigger a config reload of Prow automatically if the PR has changed them
+- Ability to hold off a PR from being merged if an issue outside of checks is detected
+- Automatically assign a reviewer
+- Allow the ability re-run tests 
+- Support WIP PRs by blocking merging if the PR is in draft mode or title starts with WIP:
+- Supports PR approvals by /approve 
+- Supports /lgtm with automatic approval 
+
+To see the current running jobs, visit [Deck](https://prow.test-infra.ouzi.io/)
 
 ## OWNERS
 
