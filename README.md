@@ -19,13 +19,13 @@ The [owners](OWNERS) file defines who are the approvers and reviewers for ouzi-d
 
 ## Makefile
 
-The Makefile provides easy to run targets for creating the infrastructure and setting up Prow. 
+The [Makefile](Makefile) provides easy to run targets for creating the infrastructure and setting up Prow. 
 We list below the most useful targets
 
 - **infra-setup**: Setups all components needed to run the infrastracture 
 - **infra-plan**: Executes terraform plan on the infrastructure
 - **infra-apply**: Executes terraform apply on the infrastructure
-- **deploy**: Install all components needed in the cluster including Prow
+- **deploy**: Bring up a cluster, install all components needed in the cluster including Prow and set everything up
 - **get-cluster-credentials**: Returns a kubeconfg with the required credentials to connect to the cluster. 
 
 ## Prow
