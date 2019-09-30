@@ -50,13 +50,15 @@ branch-protection:
       enforce_admins: true  # rules apply to admins
       required_status_checks:
         strict: true # require pr branch to be up to date
+        contexts: # checks which must be green to merge
+        - tide
       restrictions: # restrict who can push to the repo
         users:
         - ouzibot
       exclude:
         - "^revert-" # don't protect revert branches
         - "^dependabot/" # don't protect branches created by dependabot
-        - "^feat|patch|major|minor/" # dont match working branches
+        - "^feat|fix|docs" # dont match working branches
 
 tide:
   sync_period: 1m
