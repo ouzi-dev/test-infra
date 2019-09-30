@@ -17,11 +17,11 @@ plugins:
     - verify-owners # Validates OWNERS file changes in PRs.
     - wip  # Auto-hold PRs with WIP in title
     - yuks # Let prow tell a /joke
-    - branchcleaner
+    - branchcleaner # deletes the branch post merge
     - pony
     - shrug
     - skip
-    - welcome
+    - welcome # gives a welcome message to new contributors
     - heart
 
 config_updater:
