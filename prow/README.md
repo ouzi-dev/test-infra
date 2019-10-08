@@ -23,7 +23,7 @@ Secrets expected in the cluster:
   Credash Key: `github_bot_*`
 - Name: github-oauth-config
   Namespace: prow
-  Description: The oauth config for Prow. Format is:
+  Description: The oauth config for Prow PR. Format is:
   ```
     client_id: ${client_id}
     client_secret: ${client_secret}
@@ -33,6 +33,15 @@ Secrets expected in the cluster:
       - repo  
   ```
   Credash Key: `prow-github-oauth-*`
+- Name: github-oauth-secret
+  Namespace: prow
+  Description: The oauth config for everything in Prow.
+  ```
+    client-id: {{.oauth.client_id}}
+    client-secret: {{.oauth.client_secret}}
+    cookie-secret:  {{.oauth.cookie_secret}}
+  ```
+  Credash Key: `prow-cluster-github-oauth-*`
 - Name: cookie
   Namespace: prow
   Description: A randomly generated cookine for Prow oauth `openssl rand -out cookie.txt -base64 32`

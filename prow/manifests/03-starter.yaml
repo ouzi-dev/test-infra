@@ -1292,6 +1292,8 @@ metadata:
     certmanager.k8s.io/cluster-issuer: letsencrypt-prod
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"    
   name: prow
   namespace: prow
 spec:
@@ -1303,6 +1305,25 @@ spec:
           serviceName: deck
           servicePort: 80
         path: /
+  tls:
+  - hosts:
+    - {{.prow.baseurl}}
+    secretName: prow-testinfra-tls
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+  name: hook
+  namespace: prow
+spec:
+  rules:
+  - host: {{.prow.baseurl}}
+    http:
+      paths:
       - backend:
           serviceName: hook
           servicePort: 8888
@@ -1310,4 +1331,4 @@ spec:
   tls:
   - hosts:
     - {{.prow.baseurl}}
-    secretName: prow-testinfra-tls
+    secretName: prow-testinfra-tls    

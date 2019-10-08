@@ -61,6 +61,18 @@ data "credstash_secret" "prow_github_oauth_cookie_secret" {
   name = var.prow_github_oauth_cookie_secret_credstash_key
 }
 
+data "credstash_secret" "prow_cluster_github_oauth_client_secret" {
+  name = var.prow_cluster_github_oauth_client_secret_credstash_key
+}
+
+data "credstash_secret" "prow_cluster_github_oauth_client_id" {
+  name = var.prow_cluster_github_oauth_client_id_credstash_key
+}
+
+data "credstash_secret" "prow_cluster_github_oauth_cookie_secret" {
+  name = var.prow_cluster_github_oauth_cookie_secret_credstash_key
+}
+
 data "credstash_secret" "prow_cookie_secret" {
   name = var.prow_cookie_secret_credstash_key
 }
