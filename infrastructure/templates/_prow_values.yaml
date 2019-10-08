@@ -26,10 +26,10 @@ github:
   bot:
     token: ${prow_github_bot_token}
     ssh_key: ${prow_github_bot_ssh_key}
-  oauth:
-    client_id: ${prow_github_oauth_client_id}
-    client_secret: ${prow_github_oauth_client_secret}
-    cookie_secret: ${prow_github_oauth_cookie_secret}
+oauth:
+  client_id: ${oauth_client_id}
+  client_secret: ${oauth_client_secret}
+  cookie_secret: ${oauth_cookie_secret}
 certmanager:
   gke_svc_account_key: ${certmanager_svc_account_key}
 slack:

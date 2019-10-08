@@ -45,9 +45,16 @@ github_bot_token_credstash_key   = "github_bot_personal_access_token_prow"
 github_bot_ssh_key_credstash_key = "github_bot_ssh_private_key"
 github_org                       = "ouzi-dev"
 
+# Prow oauth integration ( only for PR status )
 prow_github_oauth_client_id_credstash_key     = "prow-github-oauth-client-id"
 prow_github_oauth_client_secret_credstash_key = "prow-github-oauth-client-secret"
 prow_github_oauth_cookie_secret_credstash_key = "prow-github-oauth-cookie-secret"
+
+# Protect Prow's deck behind oauth 
+prow_cluster_github_oauth_client_id_credstash_key     = "prow-cluster-github-oauth-client-id"
+prow_cluster_github_oauth_client_secret_credstash_key = "prow-cluster-github-oauth-client-secret"
+prow_cluster_github_oauth_cookie_secret_credstash_key = "prow-cluster-github-oauth-cookie-secret"
+
 prow_cookie_secret_credstash_key              = "prow-cookie-secret"
 slack_ouzibot_token_credstash_key             = "ouzibot_slack_legacytoken"
 quay_bot_dockerconfig_credstash_key           = "quay_bot_dockerconfig"

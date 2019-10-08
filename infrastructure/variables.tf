@@ -140,6 +140,18 @@ variable "prow_github_oauth_cookie_secret_credstash_key" {
   type = string
 }
 
+variable "prow_cluster_github_oauth_client_id_credstash_key" {
+  type = string
+}
+
+variable "prow_cluster_github_oauth_client_secret_credstash_key" {
+  type = string
+}
+
+variable "prow_cluster_github_oauth_cookie_secret_credstash_key" {
+  type = string
+}
+
 variable "prow_cookie_secret_credstash_key" {
   type = string
 }

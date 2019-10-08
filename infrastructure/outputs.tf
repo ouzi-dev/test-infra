@@ -118,9 +118,9 @@ output "valuesyaml" {
       prow_github_bot_token                            = base64encode(data.credstash_secret.github_bot_token.value),
       prow_github_bot_ssh_key                          = base64encode(data.credstash_secret.github_bot_ssh_key.value),
       prow_github_org                                  = var.github_org,
-      prow_github_oauth_client_id                      = base64encode(data.credstash_secret.prow_github_oauth_client_id.value),
-      prow_github_oauth_client_secret                  = base64encode(data.credstash_secret.prow_github_oauth_client_secret.value),
-      prow_github_oauth_cookie_secret                  = base64encode(data.credstash_secret.prow_github_oauth_cookie_secret.value),
+      oauth_client_id                                  = base64encode(data.credstash_secret.prow_cluster_github_oauth_client_id.value),
+      oauth_client_secret                              = base64encode(data.credstash_secret.prow_cluster_github_oauth_client_secret.value),
+      oauth_cookie_secret                              = base64encode(data.credstash_secret.prow_cluster_github_oauth_cookie_secret.value),
       prow_github_oauth_config = base64encode(
         templatefile("${path.module}/templates/_prow_github_oauth_config.yaml",
           {
