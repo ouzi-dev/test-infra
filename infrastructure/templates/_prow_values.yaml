@@ -9,7 +9,7 @@ aws:
   terraform_user_access_key_id: ${prow_terraform_aws_svc_account_access_key_id}
   terraform_user_secret_access_key: ${prow_terraform_aws_svc_account_secret_access_key}
 docker:
-  config: ${quay_bot_dockerconfig}
+  config: ${dockerconfig}
 prow:
   baseurl: ${prow_base_url}
   bucket_svc_account_key: ${prow_bucket_svc_account_key}

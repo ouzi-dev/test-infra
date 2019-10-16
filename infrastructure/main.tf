@@ -69,8 +69,8 @@ data "credstash_secret" "slack_bot_token" {
   name = var.slack_bot_token_credstash_key  
 }
 
-data "credstash_secret" "quay_bot_dockerconfig"{
-  name = var.quay_bot_dockerconfig_credstash_key
+data "credstash_secret" "dockerconfig"{
+  name = var.dockerconfig_credstash_key
 }
 data "google_client_config" "current" {
 }
