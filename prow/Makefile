@@ -34,14 +34,14 @@ init-cluster:  get-values get-cluster-credentials
 	@$(GOTPL) $(CLUSTER_MANIFESTS_HELM_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f -
 	@helm init --service-account tiller --history-max 200 --upgrade --wait
 
-deploy-cluster: #init-cluster
+deploy-cluster: init-cluster
 	@helm repo update
 	@$(GOTPL) $(CLUSTER_MANIFESTS_RBAC_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f -
-	@$(GOTPL) $(CLUSTER_MANIFESTS_EXTERNALDNS_PATH)/helm -f $(TERRAFORM_VALUES_FILEPATH) | helm upgrade --install onion stable/external-dns --namespace external-dns --wait -f -
+	@$(GOTPL) $(CLUSTER_MANIFESTS_EXTERNALDNS_PATH)/helm -f $(TERRAFORM_VALUES_FILEPATH) | helm upgrade --install onion stable/external-dns --version 2.9.0 --namespace external-dns --wait -f -
 	@helm repo add jetstack https://charts.jetstack.io
-	@$(GOTPL) $(CLUSTER_MANIFESTS_CERTMANAGER_PATH)/helm -f $(TERRAFORM_VALUES_FILEPATH) | helm upgrade --install raisin jetstack/cert-manager --namespace cert-manager --wait -f -
+	@$(GOTPL) $(CLUSTER_MANIFESTS_CERTMANAGER_PATH)/helm -f $(TERRAFORM_VALUES_FILEPATH) | helm upgrade --install raisin jetstack/cert-manager --version v0.11.0 --namespace cert-manager --wait -f -
 	@$(GOTPL) $(CLUSTER_MANIFESTS_CERTMANAGER_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply --validate=false -f -
-	@$(GOTPL) $(CLUSTER_MANIFESTS_NGINXINGRESS_PATH)/helm -f $(TERRAFORM_VALUES_FILEPATH) | helm upgrade --install peach stable/nginx-ingress --namespace nginx --wait -f -
+	@$(GOTPL) $(CLUSTER_MANIFESTS_NGINXINGRESS_PATH)/helm -f $(TERRAFORM_VALUES_FILEPATH) | helm upgrade --install peach stable/nginx-ingress --version 1.24.3 --namespace nginx --wait -f -
 	@$(GOTPL) $(CLUSTER_MANIFESTS_OAUTH_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f -
 	@$(GOTPL) $(CLUSTER_MANIFESTS_PDBS_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f -
 	#helm upgrade --install potato stable/prometheus-operator --namespace monitoring --wait
