@@ -144,7 +144,7 @@ variable "prow_cluster_github_oauth_client_secret_credstash_key" {
   type = string
 }
 
-variable "slack_ouzibot_token_credstash_key" {
+variable "slack_bot_token_credstash_key" {
   type = string
 }
 

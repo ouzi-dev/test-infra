@@ -9,7 +9,7 @@ CREDSTASH_DOWNLOAD_DARWIN_URL := https://github.com/sspinc/terraform-provider-cr
 CREDSTASH_FILEPATH := ~/.terraform.d/plugins/terraform-provider-credstash_v$(CREDSTASH_VERSION)
 
 GOOGLE_APPLICATION_CREDENTIALS_PATH := $(DIR)/.terraform-account.json
-
+GOOGLE_APPLICATION_CREDENTIALS_CREDSTASH_KEY := ouzidev-testinfra-terraform-svcaccount
 setup: get-google-service-account
 	@mkdir -p ~/.terraform.d/plugins
 	@curl -L "$(CREDSTASH_DOWNLOAD_DARWIN_URL)" -o $(CREDSTASH_FILEPATH) -z $(CREDSTASH_FILEPATH)
@@ -47,4 +47,4 @@ get-cluster-credentials:
 	gcloud container clusters get-credentials $(NAME) --region=$(REGION)
 
 get-google-service-account: 
-	@credstash get ouzidev-testinfra-terraform-svcaccount > $(GOOGLE_APPLICATION_CREDENTIALS_PATH)
+	@credstash get $(GOOGLE_APPLICATION_CREDENTIALS_CREDSTASH_KEY) > $(GOOGLE_APPLICATION_CREDENTIALS_PATH)

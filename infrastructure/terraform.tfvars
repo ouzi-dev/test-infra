@@ -53,5 +53,5 @@ prow_github_oauth_client_secret_credstash_key = "prow-github-oauth-client-secret
 prow_cluster_github_oauth_client_id_credstash_key     = "prow-cluster-github-oauth-client-id"
 prow_cluster_github_oauth_client_secret_credstash_key = "prow-cluster-github-oauth-client-secret"
 
-slack_ouzibot_token_credstash_key             = "ouzibot_slack_legacytoken"
+slack_bot_token_credstash_key                 = "ouzibot_slack_legacytoken"
 quay_bot_dockerconfig_credstash_key           = "quay_bot_dockerconfig"

@@ -65,8 +65,8 @@ data "credstash_secret" "prow_cluster_github_oauth_client_id" {
   name = var.prow_cluster_github_oauth_client_id_credstash_key
 }
 
-data "credstash_secret" "slack_ouzibot_token" {
-  name = var.slack_ouzibot_token_credstash_key  
+data "credstash_secret" "slack_bot_token" {
+  name = var.slack_bot_token_credstash_key  
 }
 
 data "credstash_secret" "quay_bot_dockerconfig"{
@@ -210,7 +210,7 @@ resource "google_service_account_key" "prow_terraform" {
 
 ### AWS Service Account for terraform 
 resource "aws_iam_user" "prow_terraform" {
-  name = "tf_ouzidev_aws_service_account_${local.infra_id}"
+  name = "tf_aws_service_account_${local.infra_id}"
   tags = local.tags
 }
 
@@ -219,7 +219,7 @@ resource "aws_iam_access_key" "prow_terraform" {
 }
 
 resource "aws_iam_user_policy" "prow_terraform" {
-  name = "tf_ouzidev_aws_service_account_${local.infra_id}"
+  name = "tf_aws_service_account_${local.infra_id}"
   user = "${aws_iam_user.prow_terraform.name}"
 
   policy = <<EOF
