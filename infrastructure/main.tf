@@ -210,7 +210,7 @@ resource "google_service_account_key" "prow_terraform" {
 
 ### AWS Service Account for terraform 
 resource "aws_iam_user" "prow_terraform" {
-  name = "tf_ouzidev_aws_service_account_${local.infra_id}"
+  name = "tf_aws_service_account_${local.infra_id}"
   tags = local.tags
 }
 
@@ -219,7 +219,7 @@ resource "aws_iam_access_key" "prow_terraform" {
 }
 
 resource "aws_iam_user_policy" "prow_terraform" {
-  name = "tf_ouzidev_aws_service_account_${local.infra_id}"
+  name = "tf_aws_service_account_${local.infra_id}"
   user = "${aws_iam_user.prow_terraform.name}"
 
   policy = <<EOF
