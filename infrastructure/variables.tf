@@ -148,7 +148,7 @@ variable "slack_bot_token_credstash_key" {
   type = string
 }
 
-variable "quay_bot_dockerconfig_credstash_key" {
+variable "dockerconfig_credstash_key" {
   type = string
 }
 

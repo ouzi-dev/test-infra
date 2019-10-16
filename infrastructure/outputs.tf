@@ -125,7 +125,7 @@ output "valuesyaml" {
       prow_final_redirect_url     = "${local.prow_base_url}/pr",
       certmanager_svc_account_key = google_service_account_key.certmanager_dns_editor_key.private_key
       slack_token                 = base64encode(data.credstash_secret.slack_bot_token.value)
-      quay_bot_dockerconfig       = base64encode(data.credstash_secret.quay_bot_dockerconfig.value)
+      dockerconfig                = base64encode(data.credstash_secret.dockerconfig.value)
     }
   ))
   sensitive = true
