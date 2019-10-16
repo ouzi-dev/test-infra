@@ -44,11 +44,6 @@ output "prow_github_oauth_client_secret" {
   sensitive = true
 }
 
-output "prow_github_oauth_cookie_secret" {
-  value     = data.credstash_secret.prow_github_oauth_cookie_secret.value
-  sensitive = true
-}
-
 output "prow_github_oauth_config" {
   value = templatefile("${path.module}/templates/_prow_github_oauth_config.yaml",
     {
@@ -58,11 +53,6 @@ output "prow_github_oauth_config" {
       final_redirect_url = "https://${local.prow_base_url}/pr",
     }
   )
-  sensitive = true
-}
-
-output "prow_cookie_secret" {
-  value     = data.credstash_secret.prow_cookie_secret.value
   sensitive = true
 }
 
@@ -113,14 +103,14 @@ output "valuesyaml" {
       prow_base_url                                    = local.prow_base_url,
       prow_bucket_svc_account_key                      = google_service_account_key.prow_bucket_editor_key.private_key,
       prow_webhook_hmac_token                          = base64encode(random_string.hmac_token.result),
-      prow_cookie_secret                               = base64encode(data.credstash_secret.prow_cookie_secret.value),
+      prow_cookie_secret                               = base64encode(random_string.prow_cookie_secret.result),
       prow_artefacts_bucket_name                       = google_storage_bucket.prow_bucket.name,
       prow_github_bot_token                            = base64encode(data.credstash_secret.github_bot_token.value),
       prow_github_bot_ssh_key                          = base64encode(data.credstash_secret.github_bot_ssh_key.value),
       prow_github_org                                  = var.github_org,
       oauth_client_id                                  = base64encode(data.credstash_secret.prow_cluster_github_oauth_client_id.value),
       oauth_client_secret                              = base64encode(data.credstash_secret.prow_cluster_github_oauth_client_secret.value),
-      oauth_cookie_secret                              = base64encode(data.credstash_secret.prow_cluster_github_oauth_cookie_secret.value),
+      oauth_cookie_secret                              = base64encode(random_string.prow_cluster_github_oauth_cookie_secret.result),
       prow_github_oauth_config = base64encode(
         templatefile("${path.module}/templates/_prow_github_oauth_config.yaml",
           {
