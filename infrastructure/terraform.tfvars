@@ -7,7 +7,6 @@ base_domain = "test-infra.ouzi.io"
 
 credstash_region = "eu-west-1"
 
-gke_zones              = ["europe-west4-a", "europe-west4-b", "europe-west4-c"]
 gke_kubernetes_version = "1.13.7-gke.24"
 gke_node_cidr_range    = "10.101.0.0/22"
 gke_pod_cidr_range     = "172.20.0.0/14"
