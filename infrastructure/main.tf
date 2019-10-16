@@ -57,24 +57,12 @@ data "credstash_secret" "prow_github_oauth_client_id" {
   name = var.prow_github_oauth_client_id_credstash_key
 }
 
-data "credstash_secret" "prow_github_oauth_cookie_secret" {
-  name = var.prow_github_oauth_cookie_secret_credstash_key
-}
-
 data "credstash_secret" "prow_cluster_github_oauth_client_secret" {
   name = var.prow_cluster_github_oauth_client_secret_credstash_key
 }
 
 data "credstash_secret" "prow_cluster_github_oauth_client_id" {
   name = var.prow_cluster_github_oauth_client_id_credstash_key
-}
-
-data "credstash_secret" "prow_cluster_github_oauth_cookie_secret" {
-  name = var.prow_cluster_github_oauth_cookie_secret_credstash_key
-}
-
-data "credstash_secret" "prow_cookie_secret" {
-  name = var.prow_cookie_secret_credstash_key
 }
 
 data "credstash_secret" "slack_ouzibot_token" {
@@ -89,6 +77,21 @@ data "google_client_config" "current" {
 
 ## ID of this infrastructure - we use this for uniquness and tracking resources
 resource "random_string" "id" {
+  length  = 8
+  special = false
+}
+
+resource "random_string" "prow_github_oauth_cookie_secret" {
+  length  = 8
+  special = false
+}
+
+resource "random_string" "prow_cluster_github_oauth_cookie_secret" {
+  length  = 8
+  special = false
+}
+
+resource "random_string" "prow_cookie_secret" {
   length  = 8
   special = false
 }
