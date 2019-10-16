@@ -7,7 +7,6 @@ base_domain = "test-infra.ouzi.io"
 
 credstash_region = "eu-west-1"
 
-gke_zones              = ["europe-west4-a", "europe-west4-b", "europe-west4-c"]
 gke_kubernetes_version = "1.13.7-gke.24"
 gke_node_cidr_range    = "10.101.0.0/22"
 gke_pod_cidr_range     = "172.20.0.0/14"
@@ -51,7 +50,7 @@ prow_github_oauth_client_secret_credstash_key = "prow-github-oauth-client-secret
 
 # Protect Prow's deck behind oauth 
 prow_cluster_github_oauth_client_id_credstash_key     = "prow-cluster-github-oauth-client-id"
-prow_cluster_github_oauth_client_secret_credstash_key = "prow-cluster-github-oauth-client-secret"
+prow_cluster_github_oauth_cligient_secret_credstash_key = "prow-cluster-github-oauth-client-secret"
 
 slack_bot_token_credstash_key                 = "ouzibot_slack_legacytoken"
 dockerconfig_credstash_key                    = "quay_bot_dockerconfig"

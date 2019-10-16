@@ -43,11 +43,6 @@ variable "gke_node_scopes" {
   ]
 }
 
-variable "gke_zones" {
-  description = "GKE Cluster zones"
-  type        = list(string)
-}
-
 variable "gke_auth_cidr_blocks" {
   type        = list
   description = "Authorized cidr blocks for the API"

@@ -41,6 +41,9 @@ provider "random" {
 }
 
 ## Data
+
+data "google_compute_zones" "available" {}
+
 data "credstash_secret" "github_bot_token" {
   name = var.github_bot_token_credstash_key
 }
@@ -114,7 +117,11 @@ module "gke-cluster" {
   project = var.gcloud_project
 
   cluster_name       = local.gke_name
-  zones              = var.gke_zones
+  zones              = [
+    data.google_compute_zones.available.names[0],
+    data.google_compute_zones.available.names[1],
+    data.google_compute_zones.available.names[2]
+  ]
   node_cidr_range    = var.gke_node_cidr_range
   pod_cidr_range     = var.gke_pod_cidr_range
   service_cidr_range = var.gke_service_cidr_range
