@@ -1,5 +1,5 @@
 postsubmits:
-  ouzi-dev/avro-kedavro:
+  ouzi-dev/prow-gke-terraform:
     - name: release-prow-gke-terraform
       decorate: true 
       max_concurrency: 1 
