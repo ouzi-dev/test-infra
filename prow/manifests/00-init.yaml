@@ -140,7 +140,16 @@ metadata:
   namespace: prow
 type: Opaque
 data:
-  oauth: {{.github.bot.token}}  
+  oauth: {{.github.bot.token}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-token
+  namespace: prow-test-pods
+type: Opaque
+data:
+  oauth: {{.github.bot.token}}
 ---
 apiVersion: v1
 kind: Secret
