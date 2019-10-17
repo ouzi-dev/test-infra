@@ -157,3 +157,11 @@ presets:
   volumeMounts:
   - name: kaniko-config
     mountPath: /kaniko/.docker
+- labels:
+    preset-semantic-release: "true"
+  env:
+    - name: GITHUB_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: github-token
+          key: oauth

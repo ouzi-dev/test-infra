@@ -1,0 +1,18 @@
+postsubmits:
+  ouzi-dev/avro-kedavro:
+    - name: release-gke-terraform
+      decorate: true 
+      max_concurrency: 1 
+      labels:
+        preset-semantic-release: "true"      
+      branches:
+        - master
+      spec: 
+        containers:
+          - name: "release-gke-terraform"
+            imagePullPolicy: IfNotPresent
+            image: quay.io/ouzi/go-builder:1.13.1
+            command:
+              - make
+            args:
+              - semantic-release
