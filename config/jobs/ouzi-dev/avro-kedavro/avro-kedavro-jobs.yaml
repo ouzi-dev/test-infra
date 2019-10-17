@@ -8,8 +8,6 @@ presubmits:
       max_concurrency: 1 
       trigger: "(?m)test( please)?" 
       rerun_command: "test"
-      skip_branches: 
-        - ^master$
       spec: 
         containers:
           - name: "test-avro-kedavro"

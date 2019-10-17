@@ -11,8 +11,6 @@ presubmits:
       trigger: "(?m)build-kube-dind-image( please)?" 
       rerun_command: "build-kube-dind-image"
       run_if_changed: 'kube-dind/'
-      skip_branches: 
-        - ^master$
       spec: 
         containers:
           - name: "build-kube-dind-image"
@@ -36,8 +34,6 @@ presubmits:
       trigger: "(?m)build-dind-image( please)?" 
       rerun_command: "build-dind-image"
       run_if_changed: 'dind/'
-      skip_branches: 
-        - ^master$
       spec: 
         containers:
           - name: "build-dind-image"
@@ -61,8 +57,6 @@ presubmits:
       trigger: "(?m)build-go-builder-image( please)?" 
       rerun_command: "build-go-builder-image"
       run_if_changed: 'go-builder/'
-      skip_branches: 
-        - ^master$
       spec: 
         containers:
           - name: "build-go-builder-image"
