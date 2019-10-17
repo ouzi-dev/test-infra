@@ -42,3 +42,22 @@ See [prow/README.md](prow/README.md) for more details
 The infrastructure folder contains all the infrastucture we need to stand up in order to install and get Prow operations. 
 
 See [infrastructure/README.md](infrastructure/README.md) for more details
+
+## Test Prow Jobs
+
+* First you need to get [mkpj](https://github.com/kubernetes/test-infra/tree/master/prow/cmd/mkpj)
+* Write your new job and add it to [config/jobs](config/jobs)
+* Generate a github token an create a file with your new token (you can use the token used by Prow as well)
+* Generate the manifest for you job with a command like this (from the root path of the test-infra repo):
+```
+$ mkpj -github-token-path ./token -config-path prow/config.yaml -job-config-path ./config/jobs/my_org/my_repo/my_repo_jobs.yaml -job job_name > prow_job_manifest.yaml
+```
+* Now you just need to apply that manifest in the Prow namespace:
+```
+$ kubectl apply -f prow_job_manifest.yaml -n prow
+prowjob.prow.k8s.io/377d3c1c-f0c1-11e9-959c-acde48001122 created
+```
+* You can check the logs for the job with:
+```
+kubectl logs -n prow-test-pods -f 377d3c1c-f0c1-11e9-959c-acde48001122 -c test
+```
