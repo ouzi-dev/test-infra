@@ -1,0 +1,37 @@
+presubmits:
+  ouzi-dev/avro-kedavro:
+    - name: test-avro-kedavro
+      context: test-avro-kedavro
+      decorate: true 
+      always_run: true 
+      skip_report: false 
+      max_concurrency: 1 
+      trigger: "(?m)test( please)?" 
+      rerun_command: "test"
+      skip_branches: 
+        - ^master$
+      spec: 
+        containers:
+          - name: "test-avro-kedavro"
+            imagePullPolicy: IfNotPresent
+            image: quay.io/ouzi/go-builder:1.13.1
+            command:
+              - make
+            args:
+              - test
+postsubmits:
+  ouzi-dev/avro-kedavro:
+    - name: release-avro-kedavro
+      decorate: true 
+      max_concurrency: 1 
+      branches:
+        - master
+      spec: 
+        containers:
+          - name: "release-avro-kedavro"
+            imagePullPolicy: IfNotPresent
+            image: quay.io/ouzi/go-builder:1.13.1
+            command:
+              - make
+            args:
+              - semantic-release
