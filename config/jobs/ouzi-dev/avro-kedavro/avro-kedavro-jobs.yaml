@@ -33,3 +33,9 @@ postsubmits:
               - make
             args:
               - semantic-release
+            env:
+              - name: GITHUB_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: github-token
+                    key: oauth
