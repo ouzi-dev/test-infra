@@ -41,7 +41,6 @@ sinker:
 
 push_gateway:
   endpoint: pushgateway
-  serve_metrics: true
 
 branch-protection:
   orgs:
