@@ -69,3 +69,26 @@ presubmits:
               - go-builder-push
             securityContext:
               privileged: true     
+    - name: build-helm-image
+      labels:
+        preset-docker: "true"
+      context: build-helm-image
+      decorate: true 
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1 
+      trigger: "(?m)build-helm-image( please)?" 
+      rerun_command: "build-helm-image"
+      run_if_changed: 'helm/'
+      spec: 
+        containers:
+          - name: "build-helm-image"
+            imagePullPolicy: IfNotPresent
+            image: quay.io/ouzi/kube-dind:18.09
+            command:
+              - runner.sh
+            args:
+              - make
+              - helm-push
+            securityContext:
+              privileged: true                   
