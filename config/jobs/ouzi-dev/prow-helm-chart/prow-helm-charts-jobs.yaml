@@ -7,7 +7,7 @@ presubmits:
       skip_report: false 
       max_concurrency: 1 
       trigger: "(?m)lint( please)?" 
-      rerun_command: "test"
+      rerun_command: "lint"
       spec: 
         containers:
           - name: "test-prow-helm-chart-lint"
@@ -24,7 +24,7 @@ presubmits:
       skip_report: false 
       max_concurrency: 1 
       trigger: "(?m)validate( please)?" 
-      rerun_command: "test"
+      rerun_command: "validate"
       spec: 
         containers:
           - name: "test-prow-helm-chart-validate"
