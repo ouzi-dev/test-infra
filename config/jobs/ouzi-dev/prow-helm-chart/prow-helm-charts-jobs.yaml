@@ -35,7 +35,7 @@ presubmits:
             args:
               - validate
 postsubmits:
-  ouzi-dev/prow-prow-helm-chart:
+  ouzi-dev/prow-helm-chart:
     - name: release-prow-helm-chart
       decorate: true 
       max_concurrency: 1 
