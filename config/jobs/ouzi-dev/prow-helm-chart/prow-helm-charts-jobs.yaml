@@ -47,7 +47,7 @@ postsubmits:
         containers:
           - name: "release-prow-helm-chart"
             imagePullPolicy: IfNotPresent
-            image: quay.io/ouzi/go-builder:1.13.1
+            image: quay.io/ouzi/toolbox:0.1
             command:
               - make
             args:
