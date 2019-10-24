@@ -34,6 +34,41 @@ presubmits:
               - make
             args:
               - validate
+    - name: test-prow-helm-chart-package
+      context: test-prow-helm-chart-package
+      decorate: true 
+      always_run: true 
+      skip_report: false 
+      max_concurrency: 1 
+      trigger: "(?m)package( please)?" 
+      rerun_command: "package"
+      spec: 
+        containers:
+          - name: "test-prow-helm-chart-package"
+            imagePullPolicy: IfNotPresent
+            image: quay.io/ouzi/helm:v3.0.0-beta.4
+            command:
+              - make
+            args:
+              - package 
+              - VERSION=0.0.0
+    - name: test-prow-helm-chart-semrelease-dryrun
+      context: test-prow-helm-chart-semrelease-dryrun
+      decorate: true 
+      always_run: true 
+      skip_report: false 
+      max_concurrency: 1 
+      trigger: "(?m)semrelease-dryrun( please)?" 
+      rerun_command: "semrelease-dryrun"
+      spec: 
+        containers:
+          - name: "test-prow-helm-chart-semrelease-dryrun"
+            imagePullPolicy: IfNotPresent
+            image: quay.io/ouzi/toolbox:0.1
+            command:
+              - make
+            args:
+              - semantic-release-dry-run 
 postsubmits:
   ouzi-dev/prow-helm-chart:
     - name: release-prow-helm-chart
