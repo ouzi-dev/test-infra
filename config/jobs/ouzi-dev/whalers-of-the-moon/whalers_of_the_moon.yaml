@@ -91,4 +91,27 @@ presubmits:
               - make
               - helm-push
             securityContext:
+              privileged: true
+    - name: build-tooloox-image
+      labels:
+        preset-docker: "true"
+      context: build-tooloox-image
+      decorate: true 
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1 
+      trigger: "(?m)build-tooloox-image( please)?" 
+      rerun_command: "build-tooloox-image"
+      run_if_changed: 'tooloox/'
+      spec: 
+        containers:
+          - name: "build-tooloox-image"
+            imagePullPolicy: IfNotPresent
+            image: quay.io/ouzi/kube-dind:18.09
+            command:
+              - runner.sh
+            args:
+              - make
+              - tooloox-push
+            securityContext:
               privileged: true                   
