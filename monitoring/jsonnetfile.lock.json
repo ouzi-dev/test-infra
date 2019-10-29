@@ -8,7 +8,7 @@
                     "subdir": "jsonnet/kube-prometheus"
                 }
             },
-            "version": "7f2e669d46d3563e128b2879a645214e8b5993ea"
+            "version": "a3b11215622c327462c617d3f2500670ea57a3df"
         },
         {
             "name": "ksonnet",
@@ -28,7 +28,7 @@
                     "subdir": ""
                 }
             },
-            "version": "3569ddd32d2bc3676d1a62125c20ece7a0f2b935"
+            "version": "ba15b2c4d5e5408f98b8479e18a99cfcec0e7704"
         },
         {
             "name": "grafonnet",
@@ -88,7 +88,7 @@
                     "subdir": "documentation/prometheus-mixin"
                 }
             },
-            "version": "e0443e6fa38d6f309b4d91e53233b7c1f705d3ac"
+            "version": "7c039a6b3b4b2a9d7c613ac8bd3fc16e8ca79684"
         },
         {
             "name": "node-mixin",
@@ -108,7 +108,7 @@
                     "subdir": "lib/promgrafonnet"
                 }
             },
-            "version": "3569ddd32d2bc3676d1a62125c20ece7a0f2b935"
+            "version": "ba15b2c4d5e5408f98b8479e18a99cfcec0e7704"
         }
     ]
 }
