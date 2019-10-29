@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    certmanager.io/cluster-issuer: letsencrypt-prod
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+  name: prometheus-oauth
+  namespace: oauth-proxy
+spec:
+  rules:
+  - host: prometheus.example.com
+    http:
+      paths:
+      - backend:
+          serviceName: oauth2-proxy
+          servicePort: http
+  tls:
+  - hosts:
+    - prometheus.example.com
+    secretName: prometheus-tls
