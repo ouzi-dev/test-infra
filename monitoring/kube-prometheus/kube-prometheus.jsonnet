@@ -21,6 +21,7 @@ local kp =
     alertmanager+:: {
       alertmanager+: {
         spec+: {
+          replicas: 1,
           externalUrl: 'https://' + alertmanagerHost,
         },
       },
