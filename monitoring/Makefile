@@ -33,7 +33,6 @@ compile: bootstrap
 	rm -rf $(PROM_FOLDER)
 	mkdir $(PROM_FOLDER)
 	MANIFESTS_PATH=${PROM_FOLDER} ./build.sh $(KUBE_PROM_JSONNET_FILE)
-	# jsonnet -J vendor -m $(PROM_FOLDER) "$(KUBE_PROM_JSONNET_FILE)" | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml; rm -f {}' -- {}
 
 monitoring-dry-run: compile
 	kubectl apply -f$(PROM_FOLDER) --dry-run

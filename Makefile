@@ -29,3 +29,9 @@ deploy-prow-dry-run:
 
 get-cluster-credentials:
 	@$(MAKE) -C infrastructure get-cluster-credentials
+
+monitoring-dry-run:
+	@$(MAKE) -C monitoring monitoring-dry-run
+
+monitoring:
+	@$(MAKE) -C monitoring monitoring

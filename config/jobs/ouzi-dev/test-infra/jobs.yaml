@@ -20,7 +20,26 @@ presubmits:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
               - --job-config-path=config/jobs
-            image: belitre/checkconfig:latest    
+            image: belitre/checkconfig:latest
+    - name: monitoring-dry-run
+      context: monitoring-dry-run
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1
+      trigger: "(?m)monitoring( please)?" 
+      rerun_command: "monitoring"
+      run_if_changed: 'monitoring/'
+      spec: 
+        containers:
+          - name: "monitoring-dry-run"
+            imagePullPolicy: IfNotPresent
+            command:
+              - make
+            args:
+              - monitoring-dry-run
+            image: quay.io/ouzi/toolbox:0.1.2
 postsubmits:
   ouzi-dev/test-infra:
     - name: test-config-postsubmit
