@@ -9,6 +9,11 @@ MANIFESTS_FOLDER := manifests
 PROM_FOLDER := $(MANIFESTS_FOLDER)/prometheus
 EXPOSE_FOLDER := $(MANIFESTS_FOLDER)/expose
 
+GRAFANA_DASHBOARDS_JSONNET_FILE := ./grafana-dashboards/dashboards.jsonnet
+GRAFANA_DASHBOARDS_RAW_JSON_FOLDER := ./grafana-dashboards/raw
+GRAFANA_DASHBOARDS_FOLDER := ./grafana-dashboards/output
+
+.PHONY: bootstrap
 bootstrap:
 ifndef IS_JB
 	go get -u github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
@@ -20,24 +25,42 @@ ifndef IS_JSONNET
 	go get github.com/google/go-jsonnet/cmd/jsonnet
 endif
 
+.PHONY: init
 init: bootstrap
 	jb init
 
+.PHONY: install
 install: bootstrap
 	jb install 
 
+.PHONY: update
 update: bootstrap
 	jb update
 
+.PHONY: compile
 compile: bootstrap install
 	rm -rf $(PROM_FOLDER)
 	mkdir $(PROM_FOLDER)
 	MANIFESTS_PATH=${PROM_FOLDER} ./build.sh $(KUBE_PROM_JSONNET_FILE)
 
+.PHONY: monitoring-dry-run
 monitoring-dry-run: compile
 	kubectl apply -f $(PROM_FOLDER) --dry-run
 	kubectl apply -f $(EXPOSE_FOLDER) --dry-run
 
+.PHONY: monitoring-apply
 monitoring-apply: compile
 	kubectl apply -f $(PROM_FOLDER)
 	kubectl apply -f $(EXPOSE_FOLDER)
+
+.PHONY: grafana-dashboards
+grafana-dashboards:
+	rm -rf $(GRAFANA_DASHBOARDS_FOLDER)
+	mkdir $(GRAFANA_DASHBOARDS_FOLDER)
+	jsonnet -J vendor -m ${GRAFANA_DASHBOARDS_FOLDER} "$(GRAFANA_DASHBOARDS_JSONNET_FILE)"
+	helm upgrade --install grafana stable/grafana \
+		--tiller-namespace kube-system \
+		--namespace monitoring \
+		--atomic \
+		-f grafana/values.yaml \
+		-f grafana-dashboards/output/values.json 

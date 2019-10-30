@@ -109,6 +109,16 @@
                 }
             },
             "version": "325f8a46fac9605f1de8bc20ca811cb92d1ef7e5"
+        },
+        {
+            "name": "prow-dashboards",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/kubernetes/test-infra",
+                    "subdir": "prow/cluster/monitoring/mixins/grafana_dashboards"
+                }
+            },
+            "version": "9158f27beee30af4b7e1a1019c48c5fb64fc5e96"
         }
     ]
 }
