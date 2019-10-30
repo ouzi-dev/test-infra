@@ -32,7 +32,6 @@ presubmits:
       rerun_command: "monitoring"
       run_if_changed: 'monitoring/'
       spec: 
-        serviceAccountName: prow
         containers:
           - name: "monitoring-dry-run"
             imagePullPolicy: IfNotPresent
