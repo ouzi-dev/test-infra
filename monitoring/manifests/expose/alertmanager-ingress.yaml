@@ -14,7 +14,7 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: prometheus-k8s
+          serviceName: alertmanager-main
           servicePort: web
         path: /
   tls:
