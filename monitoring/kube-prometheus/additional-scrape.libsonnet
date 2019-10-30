@@ -1,7 +1,6 @@
 local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 local secret = k.core.v1.secret;
 local secretName = 'prom-additional-scrape';
-local fileName = 'prometheus-additional.yaml';
 
 {
   prometheus+:: {
@@ -9,7 +8,7 @@ local fileName = 'prometheus-additional.yaml';
       spec+: {
         additionalScrapeConfigs: {
           name: secretName,
-          key: fileName,
+          key: 'prometheus-additional.yaml',
         },
       },
     },
@@ -69,8 +68,7 @@ local fileName = 'prometheus-additional.yaml';
           action: replace
           target_label: nodename
     |||;
-    local scrapeConfig = {fileName: std.base64(scrape)};
-    secret.new(secretName, scrapeConfig) +
+    secret.new(secretName, {'prometheus-additional.yaml': std.base64(scrape)}) +
     secret.mixin.metadata.withNamespace($._config.namespace),
   },
 }

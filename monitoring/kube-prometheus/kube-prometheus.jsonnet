@@ -17,6 +17,7 @@ local kp =
     _config+:: {
       namespace: 'monitoring',
       customPVCSize: '100Gi',
+      customPVCStorageClass: 'standard'
     },
     alertmanager+:: {
       alertmanager+: {
