@@ -29,7 +29,7 @@ install: bootstrap
 update: bootstrap
 	jb update
 
-compile: bootstrap 
+compile: bootstrap install
 	rm -rf $(PROM_FOLDER)
 	mkdir $(PROM_FOLDER)
 	MANIFESTS_PATH=${PROM_FOLDER} ./build.sh $(KUBE_PROM_JSONNET_FILE)

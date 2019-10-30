@@ -711,7 +711,7 @@ spec:
         ) < 0.15
         and
         predict_linear(kubelet_volume_stats_available_bytes{job="kubelet"}[6h], 4 * 24 * 3600) < 0
-      for: 5m
+      for: 1h
       labels:
         severity: critical
     - alert: KubePersistentVolumeErrors
@@ -1075,8 +1075,8 @@ spec:
     - alert: PrometheusRemoteWriteDesiredShards
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
-          desired shards calculation wants to run {{ printf $value }} shards, which
-          is more than the max of {{ printf `prometheus_remote_storage_shards_max{instance="%s",job="prometheus-k8s",namespace="monitoring"}`
+          desired shards calculation wants to run {{ $value }} shards, which is more
+          than the max of {{ printf `prometheus_remote_storage_shards_max{instance="%s",job="prometheus-k8s",namespace="monitoring"}`
           $labels.instance | query | first | value }}.
         summary: Prometheus remote write desired shards calculation wants to run more
           than configured max shards.
