@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: wildcard-test-infra-tls
+  namespace: monitoring
+  labels:
+    use-clouddns-solver: "true"
+spec:
+  secretName: wildcard-test-infra-tls
+  renewBefore: 360h # 15d
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: '*.test-infra.ouzi.io'
+  dnsNames:
+  - "*.test-infra.ouzi.io"

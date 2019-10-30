@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/auth-url: "https://oauth2.test-infra.ouzi.io/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://oauth2.test-infra.ouzi.io/oauth2/start?rd=/redirect/$http_host$request_uri"
+  name: alertmanager
+  namespace: monitoring
+spec:
+  rules:
+  - host: alertmanager.test-infra.ouzi.io
+    http:
+      paths:
+      - backend:
+          serviceName: alertmanager-main
+          servicePort: web
+        path: /
+  tls:
+  - hosts:
+    - alertmanager.test-infra.ouzi.io
+    secretName: wildcard-test-infra-tls
