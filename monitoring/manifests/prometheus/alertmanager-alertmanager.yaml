@@ -21,8 +21,7 @@ spec:
           topologyKey: kubernetes.io/hostname
         weight: 100
   baseImage: quay.io/prometheus/alertmanager
-  externalUrl:
-  - https://alertmanager.test-infra.ouzi.io
+  externalUrl: https://alertmanager.test-infra.ouzi.io
   nodeSelector:
     kubernetes.io/os: linux
   replicas: 3

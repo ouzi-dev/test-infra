@@ -35,9 +35,9 @@ compile: bootstrap install
 	MANIFESTS_PATH=${PROM_FOLDER} ./build.sh $(KUBE_PROM_JSONNET_FILE)
 
 monitoring-dry-run: compile
-	kubectl apply -f$(PROM_FOLDER) --dry-run
+	kubectl apply -f $(PROM_FOLDER) --dry-run
 	kubectl apply -f $(EXPOSE_FOLDER) --dry-run
 
-monitoring: compile
+monitoring-apply: compile
 	kubectl apply -f $(PROM_FOLDER)
 	kubectl apply -f $(EXPOSE_FOLDER)

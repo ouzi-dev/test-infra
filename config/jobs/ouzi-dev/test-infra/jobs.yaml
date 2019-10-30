@@ -61,3 +61,20 @@ postsubmits:
               - --plugin-config=prow/plugins.yaml
               - --job-config-path=config/jobs
             image: belitre/checkconfig:latest
+    - name: monitoring
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"
+      max_concurrency: 1
+      run_if_changed: 'monitoring/'
+      branches:
+        - master
+      spec: 
+        serviceAccountName: prow
+        containers:
+          - name: "monitoring"
+            imagePullPolicy: IfNotPresent
+            command:
+              - make
+            args:
+              - monitoring-apply
+            image: quay.io/ouzi/toolbox:0.1.2

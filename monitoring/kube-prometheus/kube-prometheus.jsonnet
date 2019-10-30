@@ -21,14 +21,14 @@ local kp =
     alertmanager+:: {
       alertmanager+: {
         spec+: {
-          externalUrl: ['https://' + alertmanagerHost],
+          externalUrl: 'https://' + alertmanagerHost,
         },
       },
     },
     prometheus+:: {
       prometheus+: {
         spec+: {
-          externalUrl: ['https://' + prometheusHost],
+          externalUrl: 'https://' + prometheusHost,
           replicas: 1,
           retention: '30d',
         },

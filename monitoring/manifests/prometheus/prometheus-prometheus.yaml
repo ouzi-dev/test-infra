@@ -38,8 +38,7 @@ spec:
       namespace: monitoring
       port: web
   baseImage: quay.io/prometheus/prometheus
-  externalUrl:
-  - https://prometheus.test-infra.ouzi.io
+  externalUrl: https://prometheus.test-infra.ouzi.io
   nodeSelector:
     kubernetes.io/os: linux
   podMonitorSelector: {}

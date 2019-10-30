@@ -33,5 +33,5 @@ get-cluster-credentials:
 monitoring-dry-run:
 	@$(MAKE) -C monitoring monitoring-dry-run
 
-monitoring:
-	@$(MAKE) -C monitoring monitoring
+monitoring-apply:
+	@$(MAKE) -C monitoring monitoring-apply
