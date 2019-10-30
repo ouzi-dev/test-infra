@@ -95,7 +95,7 @@ spec:
           - --upstream=file:///dev/null
           - --upstream=http://localhost/redirect/
           - --http-address=0.0.0.0:4180
-          - --cookie-domain=.{{.prow.baseurl}}
+          - --cookie-domain=.{{.base_domain}}
           - --footer=-
           # Register a new application
           # https://github.com/settings/applications/new
@@ -137,25 +137,42 @@ spec:
   selector:
     k8s-app: oauth2-proxy
 ---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  annotations:
+  labels:
+    use-clouddns-solver: "true"
+  name: wildcard-test-infra-tls
+  namespace: oauth2-proxy
+spec:
+  commonName: '*.{{.base_domain}}'
+  dnsNames:
+  - '*.{{.base_domain}}'
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  renewBefore: 360h0m0s
+  secretName: wildcard-test-infra-tls
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    certmanager.io/cluster-issuer: letsencrypt-prod
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx
   name: oauth2-proxy
   namespace: oauth2-proxy
 spec:
   rules:
-  - host: {{.prow.baseurl}}
+  - host: oauth2.{{.base_domain}}
     http:
       paths:
       - backend:
           serviceName: oauth2-proxy
           servicePort: http
-        path: /oauth2
+        path: /
   tls:
     - hosts:
-      - {{.prow.baseurl}}
-      secretName: testinfra-tls
+      - oauth2.{{.base_domain}}
+      secretName: wildcard-test-infra-tls

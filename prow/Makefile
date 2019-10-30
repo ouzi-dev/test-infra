@@ -24,6 +24,7 @@ CLUSTER_MANIFESTS_PDBS_PATH = $(CLUSTER_MANIFESTS_PATH)/06-pdbs
 
 PROW_MANIFESTS_PATH = manifests
 
+BASE_DOMAIN := test-infra.ouzi.io
 
 setup:
 	@mkdir -p $(BIN_DIR)
@@ -42,7 +43,7 @@ deploy-cluster: init-cluster
 	@$(GOTPL) $(CLUSTER_MANIFESTS_CERTMANAGER_PATH)/helm -f $(TERRAFORM_VALUES_FILEPATH) | helm upgrade --install raisin jetstack/cert-manager --version v0.11.0 --namespace cert-manager --wait -f -
 	@$(GOTPL) $(CLUSTER_MANIFESTS_CERTMANAGER_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply --validate=false -f -
 	@$(GOTPL) $(CLUSTER_MANIFESTS_NGINXINGRESS_PATH)/helm -f $(TERRAFORM_VALUES_FILEPATH) | helm upgrade --install peach stable/nginx-ingress --version 1.24.3 --namespace nginx --wait -f -
-	@$(GOTPL) $(CLUSTER_MANIFESTS_OAUTH_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f -
+	@$(GOTPL) $(CLUSTER_MANIFESTS_OAUTH_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) -s base_domain=$(BASE_DOMAIN) | kubectl apply -f -
 	@$(GOTPL) $(CLUSTER_MANIFESTS_PDBS_PATH)/manifests -f $(TERRAFORM_VALUES_FILEPATH) | kubectl apply -f -
 	#helm upgrade --install potato stable/prometheus-operator --namespace monitoring --wait
 
