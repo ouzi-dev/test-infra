@@ -38,18 +38,18 @@ update: bootstrap
 	jb update
 
 .PHONY: compile
-compile: bootstrap install
+compile: 
 	rm -rf $(PROM_FOLDER)
 	mkdir $(PROM_FOLDER)
 	MANIFESTS_PATH=${PROM_FOLDER} ./build.sh $(KUBE_PROM_JSONNET_FILE)
 
-.PHONY: monitoring-dry-run
-monitoring-dry-run: compile
+.PHONY: prometheus-dry-run
+prometheus-dry-run: bootstrap install compile
 	kubectl apply -f $(PROM_FOLDER) --dry-run
 	kubectl apply -f $(EXPOSE_FOLDER) --dry-run
 
-.PHONY: monitoring-apply
-monitoring-apply: compile
+.PHONY: prometheus
+prometheus: bootstrap install compile
 	kubectl apply -f $(PROM_FOLDER)
 	kubectl apply -f $(EXPOSE_FOLDER)
 
@@ -59,8 +59,8 @@ grafana-dashboards:
 	mkdir $(GRAFANA_DASHBOARDS_FOLDER)
 	jsonnet -J vendor -m ${GRAFANA_DASHBOARDS_FOLDER} "$(GRAFANA_DASHBOARDS_JSONNET_FILE)"
 
-.PHONY: grafana-apply
-grafana-apply:
+.PHONY: grafana
+grafana: grafana-dashboards
 	helm upgrade --install grafana stable/grafana \
 		--tiller-namespace kube-system \
 		--namespace monitoring \
@@ -68,8 +68,8 @@ grafana-apply:
 		-f grafana/values.yaml \
 		-f grafana-dashboards/output/values.json
 
-.PHONY: grafana-apply-dry-run
-grafana-apply-dry-run:
+.PHONY: grafana-dry-run
+grafana-dry-run: grafana-dashboards
 	helm upgrade --install grafana stable/grafana \
 		--tiller-namespace kube-system \
 		--namespace monitoring \
@@ -88,3 +88,10 @@ grafana-secret:
 		--from-literal=admin-user=$(USERNAME) \
 		--from-literal=admin-password=$(PASSWORD) \
 		-n monitoring 
+
+.PHONY: monitoring-dry-run
+monitoring-dry-run: prometheus-dry-run grafana-dry-run
+
+
+.PHONY: monitoring-apply
+monitoring-apply: prometheus grafana
