@@ -8,6 +8,7 @@ KUBE_PROM_JSONNET_FILE := $(KUBE_PROM_FOLDER)/kube-prometheus.jsonnet
 MANIFESTS_FOLDER := manifests
 PROM_FOLDER := $(MANIFESTS_FOLDER)/prometheus
 EXPOSE_FOLDER := $(MANIFESTS_FOLDER)/expose
+SERVICE_MONITORS_FOLDER := $(MANIFESTS_FOLDER)/service-monitors
 
 GRAFANA_DASHBOARDS_JSONNET_FILE := ./grafana-dashboards/dashboards.jsonnet
 GRAFANA_DASHBOARDS_RAW_JSON_FOLDER := ./grafana-dashboards/raw
@@ -66,7 +67,8 @@ grafana: grafana-dashboards
 		--namespace monitoring \
 		--atomic \
 		-f grafana/values.yaml \
-		-f grafana-dashboards/output/values.json
+		-f grafana-dashboards/output/values.json \
+		--version 4.0.0	--timeout 120
 
 .PHONY: grafana-dry-run
 grafana-dry-run: grafana-dashboards
@@ -75,7 +77,9 @@ grafana-dry-run: grafana-dashboards
 		--namespace monitoring \
 		--atomic \
 		-f grafana/values.yaml \
-		-f grafana-dashboards/output/values.json --debug --dry-run
+		-f grafana-dashboards/output/values.json \
+		--version 4.0.0 --timeout 120 \
+		--debug --dry-run
 
 .PHONY: grafana-secret
 .ONESHELL:
@@ -89,9 +93,16 @@ grafana-secret:
 		--from-literal=admin-password=$(PASSWORD) \
 		-n monitoring 
 
-.PHONY: monitoring-dry-run
-monitoring-dry-run: prometheus-dry-run grafana-dry-run
+.PHONY: service-monitors-dry-run
+service-monitors-dry-run:
+	kubectl apply -f $(SERVICE_MONITORS_FOLDER) --dry-run
 
+.PHONY: service-monitors
+service-monitors:
+	kubectl apply -f $(SERVICE_MONITORS_FOLDER)
+
+.PHONY: monitoring-dry-run
+monitoring-dry-run: prometheus-dry-run grafana-dry-run service-monitors-dry-run
 
 .PHONY: monitoring-apply
-monitoring-apply: prometheus grafana
+monitoring-apply: prometheus grafana service-monitors

@@ -139,12 +139,13 @@ datasources:
     apiVersion: 1
     datasources:
       - name: prometheus
+        type: prometheus
         access: proxy
         editable: false
-        orgId: 1
-        type: prometheus
-        url: http://prometheus-k8s.monitoring.svc:9090
         version: 1
+        orgId: 1
+        url: http://prometheus-k8s.monitoring.svc:9090
+        isDefault: true
 #      - name: DS_ELASTICSEARCH-EFK
 #        access: proxy
 #        basicAuth: false
