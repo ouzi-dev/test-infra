@@ -13,6 +13,7 @@ local kp =
   (import 'pvc.libsonnet') +
   (import 'prometheus-adapter-custom-rules.libsonnet') +
   (import 'alertmanager-config.libsonnet') +
+  (import 'additional-rbac.libsonnet') +
   {
     _config+:: {
       namespace: 'monitoring',
