@@ -6,13 +6,13 @@ local prow = import 'prow-dashboards/prow.jsonnet';
 local sinker = import 'prow-dashboards/sinker.jsonnet';
 local tide = import 'prow-dashboards/tide.jsonnet';
 
-local branch = 'feature/grafana';
-local outputPath = 'https://raw.githubusercontent.com/ouzi-dev/test-infra/' + branch + '/monitoring/grafana-dashboards/output/';
-local rawPath = 'https://raw.githubusercontent.com/ouzi-dev/test-infra/' + branch + '/monitoring/grafana-dashboards/raw/';
-
+local branch = 'master';
 local rawDashboards = [
   'nginx-ingress-controller',
 ];
+
+local outputPath = 'https://raw.githubusercontent.com/ouzi-dev/test-infra/' + branch + '/monitoring/grafana-dashboards/output/';
+local rawPath = 'https://raw.githubusercontent.com/ouzi-dev/test-infra/' + branch + '/monitoring/grafana-dashboards/raw/';
 
 local mixin = 
   (import "kubernetes-mixin/mixin.libsonnet") +

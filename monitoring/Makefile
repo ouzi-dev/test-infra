@@ -58,9 +58,33 @@ grafana-dashboards:
 	rm -rf $(GRAFANA_DASHBOARDS_FOLDER)
 	mkdir $(GRAFANA_DASHBOARDS_FOLDER)
 	jsonnet -J vendor -m ${GRAFANA_DASHBOARDS_FOLDER} "$(GRAFANA_DASHBOARDS_JSONNET_FILE)"
+
+.PHONY: grafana-apply
+grafana-apply:
 	helm upgrade --install grafana stable/grafana \
 		--tiller-namespace kube-system \
 		--namespace monitoring \
 		--atomic \
 		-f grafana/values.yaml \
-		-f grafana-dashboards/output/values.json 
+		-f grafana-dashboards/output/values.json
+
+.PHONY: grafana-apply-dry-run
+grafana-apply-dry-run:
+	helm upgrade --install grafana stable/grafana \
+		--tiller-namespace kube-system \
+		--namespace monitoring \
+		--atomic \
+		-f grafana/values.yaml \
+		-f grafana-dashboards/output/values.json --debug --dry-run
+
+.PHONY: grafana-secret
+.ONESHELL:
+SHELL = /usr/bin/env bash
+.SHELLFGLAGS = -euo pipefail 
+grafana-secret:
+	@$(eval USERNAME := $(shell credstash get prow-grafana-admin-user))
+	@$(eval PASSWORD := $(shell credstash get prow-grafana-admin-password))
+	@kubectl create secret generic grafana-user \
+		--from-literal=admin-user=$(USERNAME) \
+		--from-literal=admin-password=$(PASSWORD) \
+		-n monitoring 
