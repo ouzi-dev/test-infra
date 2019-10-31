@@ -81,18 +81,6 @@ grafana-dry-run: grafana-dashboards
 		--version 4.0.0 --timeout 120 \
 		--debug --dry-run
 
-.PHONY: grafana-secret
-.ONESHELL:
-SHELL = /usr/bin/env bash
-.SHELLFGLAGS = -euo pipefail 
-grafana-secret:
-	@$(eval USERNAME := $(shell credstash get prow-grafana-admin-user))
-	@$(eval PASSWORD := $(shell credstash get prow-grafana-admin-password))
-	@kubectl create secret generic grafana-user \
-		--from-literal=admin-user=$(USERNAME) \
-		--from-literal=admin-password=$(PASSWORD) \
-		-n monitoring 
-
 .PHONY: service-monitors-dry-run
 service-monitors-dry-run:
 	kubectl apply -f $(SERVICE_MONITORS_FOLDER) --dry-run
@@ -106,3 +94,13 @@ monitoring-dry-run: prometheus-dry-run grafana-dry-run service-monitors-dry-run
 
 .PHONY: monitoring-apply
 monitoring-apply: prometheus grafana service-monitors
+
+.PHONY: grafana-secret
+.ONESHELL:
+grafana-secret:
+	@$(eval USERNAME := $(shell credstash get prow-grafana-admin-user))
+	@$(eval PASSWORD := $(shell credstash get prow-grafana-admin-password))
+	@kubectl create secret generic grafana-user \
+		--from-literal=admin-user=$(USERNAME) \
+		--from-literal=admin-password=$(PASSWORD) \
+		-n monitoring 
