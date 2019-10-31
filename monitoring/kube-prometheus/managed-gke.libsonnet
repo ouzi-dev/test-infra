@@ -18,4 +18,12 @@
     if !std.setMember(q, ['serviceMonitorCoreDNS'])
   },
 
+  prometheusAlerts+:: {
+    local g = super.groups,
+    groups: [
+      l for l in g
+      if !std.setMember(l.name, ['kubernetes-system-controller-manager', 'kubernetes-system-scheduler'])
+    ],
+  },
+
 }

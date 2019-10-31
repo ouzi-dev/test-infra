@@ -32,6 +32,7 @@ presubmits:
       rerun_command: "monitoring"
       run_if_changed: 'monitoring/'
       spec: 
+        serviceAccountName: prow
         containers:
           - name: "monitoring-dry-run"
             imagePullPolicy: IfNotPresent
@@ -39,7 +40,7 @@ presubmits:
               - make
             args:
               - monitoring-dry-run
-            image: quay.io/ouzi/toolbox:0.1.2
+            image: quay.io/ouzi/toolbox:helm-v2.14.3
 postsubmits:
   ouzi-dev/test-infra:
     - name: test-config-postsubmit
@@ -76,4 +77,4 @@ postsubmits:
               - make
             args:
               - monitoring-apply
-            image: quay.io/ouzi/toolbox:0.1.2
+            image: quay.io/ouzi/toolbox:helm-v2.14.3

@@ -310,7 +310,7 @@ controller:
   #   command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
 
   metrics:
-    enabled: false
+    enabled: true
 
     service:
       annotations: {}
