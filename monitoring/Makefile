@@ -61,7 +61,7 @@ grafana-dashboards:
 	jsonnet -J vendor -m ${GRAFANA_DASHBOARDS_FOLDER} "$(GRAFANA_DASHBOARDS_JSONNET_FILE)"
 
 .PHONY: grafana
-grafana: grafana-dashboards
+grafana: grafana-dashboards helm-bootstrap
 	helm upgrade --install grafana stable/grafana \
 		--tiller-namespace kube-system \
 		--namespace monitoring \
@@ -71,7 +71,7 @@ grafana: grafana-dashboards
 		--version 4.0.0	--timeout 120
 
 .PHONY: grafana-dry-run
-grafana-dry-run: grafana-dashboards
+grafana-dry-run: grafana-dashboards helm-bootstrap
 	helm upgrade --install grafana stable/grafana \
 		--tiller-namespace kube-system \
 		--namespace monitoring \
@@ -94,6 +94,11 @@ monitoring-dry-run: prometheus-dry-run grafana-dry-run service-monitors-dry-run
 
 .PHONY: monitoring-apply
 monitoring-apply: prometheus grafana service-monitors
+
+.PHONY: helm-bootstrap
+helm-bootstrap:
+	helm init --client-only
+	helm repo update
 
 .PHONY: grafana-secret
 .ONESHELL:
