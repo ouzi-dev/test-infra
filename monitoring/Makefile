@@ -103,4 +103,4 @@ grafana-secret:
 	@kubectl create secret generic grafana-user \
 		--from-literal=admin-user=$(USERNAME) \
 		--from-literal=admin-password=$(PASSWORD) \
-		-n monitoring 
+		-n monitoring --dry-run -o yaml | kubectl apply -f -
