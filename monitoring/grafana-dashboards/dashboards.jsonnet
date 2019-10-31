@@ -6,6 +6,37 @@ local prow = import 'prow-dashboards/prow.jsonnet';
 local sinker = import 'prow-dashboards/sinker.jsonnet';
 local tide = import 'prow-dashboards/tide.jsonnet';
 
+local prowDashboards = [
+  {
+    name: 'deck-dashboard',
+    file: import 'prow-dashboards/deck.jsonnet',
+  },
+  {
+    name: 'ghproxy-dashboard',
+    file: import 'prow-dashboards/ghproxy.jsonnet',
+  },
+  {
+    name: 'hook-dashboard',
+    file: import 'prow-dashboards/hook.jsonnet',
+  },
+  {
+    name: 'plank-dashboard',
+    file: import 'prow-dashboards/plank.jsonnet',
+  },
+  {
+    name: 'prow-dashboard',
+    file: import 'prow-dashboards/prow.jsonnet',
+  },
+  {
+    name: 'sinker-dashboard',
+    file: import 'prow-dashboards/sinker.jsonnet',
+  },
+  {
+    name: 'tide-dashboard',
+    file: import 'prow-dashboards/tide.jsonnet',
+  },
+];
+
 local branch = 'master';
 local rawDashboards = [
   'nginx-ingress-controller',
@@ -39,11 +70,20 @@ local dashboardValues = {
 };
 
 local allDashboardsValues = 
-  dashboardValues + {
+  dashboardValues + 
+  {
     dashboards+: {
       default+: {
         [name]: {url: rawPath + name + '.json'}
         for name in rawDashboards
+      },
+    },
+  } + 
+  {
+    dashboards+: {
+      default+: {
+        [item.name]: {url: rawPath + item.file}
+        for item in prowDashboards
       },
     },
   };
