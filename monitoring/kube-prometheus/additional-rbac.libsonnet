@@ -7,7 +7,7 @@ local policyRule = clusterRole.rulesType;
       rules+:[
         local podNodesRule = policyRule.new() +
                              policyRule.withApiGroups(['']) +
-                             policyRule.withResources(['pods', 'nodes']) +
+                             policyRule.withResources(['pods', 'nodes', 'nodes/proxy']) +
                              policyRule.withVerbs(['list', 'get', 'watch']);
         podNodesRule,
         local servicesRule = policyRule.new() +

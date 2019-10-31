@@ -18,6 +18,7 @@ rules:
   resources:
   - pods
   - nodes
+  - nodes/proxy
   verbs:
   - list
   - get
