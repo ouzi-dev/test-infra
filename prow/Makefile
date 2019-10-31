@@ -26,10 +26,6 @@ PROW_MANIFESTS_PATH = manifests
 
 BASE_DOMAIN := test-infra.ouzi.io
 
-test-bleh: init-cluster
-	@$(GOTPL) $(CLUSTER_MANIFESTS_NGINXINGRESS_PATH)/helm -f $(TERRAFORM_VALUES_FILEPATH) | helm upgrade --install peach stable/nginx-ingress --version 1.24.3 --namespace nginx --debug --dry-run -f -
-
-
 setup:
 	@mkdir -p $(BIN_DIR)
 	@curl -SL $(GOTPL_DOWNLOAD_DARWIN_URL) | tar -xf - -C $(BIN_DIR)
