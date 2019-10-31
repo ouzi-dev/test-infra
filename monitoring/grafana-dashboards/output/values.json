@@ -10,14 +10,8 @@
          "hook-dashboard": {
             "url": "https://raw.githubusercontent.com/ouzi-dev/test-infra/feature/grafana/monitoring/grafana-dashboards/output/hook-dashboard.json"
          },
-         "mixin-apiserver": {
-            "url": "https://raw.githubusercontent.com/ouzi-dev/test-infra/feature/grafana/monitoring/grafana-dashboards/output/mixin-apiserver.json"
-         },
          "mixin-cluster-total": {
             "url": "https://raw.githubusercontent.com/ouzi-dev/test-infra/feature/grafana/monitoring/grafana-dashboards/output/mixin-cluster-total.json"
-         },
-         "mixin-controller-manager": {
-            "url": "https://raw.githubusercontent.com/ouzi-dev/test-infra/feature/grafana/monitoring/grafana-dashboards/output/mixin-controller-manager.json"
          },
          "mixin-k8s-resources-cluster": {
             "url": "https://raw.githubusercontent.com/ouzi-dev/test-infra/feature/grafana/monitoring/grafana-dashboards/output/mixin-k8s-resources-cluster.json"
@@ -54,12 +48,6 @@
          },
          "mixin-pods": {
             "url": "https://raw.githubusercontent.com/ouzi-dev/test-infra/feature/grafana/monitoring/grafana-dashboards/output/mixin-pods.json"
-         },
-         "mixin-proxy": {
-            "url": "https://raw.githubusercontent.com/ouzi-dev/test-infra/feature/grafana/monitoring/grafana-dashboards/output/mixin-proxy.json"
-         },
-         "mixin-scheduler": {
-            "url": "https://raw.githubusercontent.com/ouzi-dev/test-infra/feature/grafana/monitoring/grafana-dashboards/output/mixin-scheduler.json"
          },
          "mixin-statefulset": {
             "url": "https://raw.githubusercontent.com/ouzi-dev/test-infra/feature/grafana/monitoring/grafana-dashboards/output/mixin-statefulset.json"

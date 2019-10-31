@@ -16,7 +16,7 @@ local prowDashboards = [
   'tide-dashboard',
 ];
 
-local branch = 'master';
+local branch = 'feature/grafana';
 local rawDashboards = [
   'nginx-ingress-controller',
 ];
@@ -39,11 +39,19 @@ local mixin =
   },
 };
 
+local skipDashboards = [
+  'apiserver.json',
+  'controller-manager.json',
+  'proxy.json',
+  'scheduler.json',
+];
+
 local dashboardValues = {
   dashboards: {
     default: {
       ['mixin-' + std.strReplace(name, '.json', '')]: {url: outputPath + 'mixin-' + name }
       for name in std.objectFields(mixin.grafanaDashboards)
+      if !std.setMember(name, skipDashboards)
     },
   },
 };
@@ -68,7 +76,11 @@ local allDashboardsValues =
   };
   
 
-{ ['mixin-' + name]: mixin.grafanaDashboards[name] for name in std.objectFields(mixin.grafanaDashboards)} +
+{ 
+  ['mixin-' + name]: mixin.grafanaDashboards[name] 
+                     for name in std.objectFields(mixin.grafanaDashboards)
+                     if !std.setMember(name, skipDashboards)
+} +
 {['deck-dashboard.json']: deck} +
 {['ghproxy-dashboard.json']: ghproxy} +
 {['hook-dashboard.json']: hook} +
