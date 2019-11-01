@@ -16,7 +16,7 @@ local prowDashboards = [
   'tide-dashboard',
 ];
 
-local branch = 'feature/grafana';
+local branch = 'master';
 local rawDashboards = [
   'nginx-ingress-controller',
 ];
