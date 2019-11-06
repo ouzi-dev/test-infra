@@ -1,0 +1,88 @@
+presubmits:
+  ouzi-dev/cannon-prow:
+    - name: test-infra
+      context: test-infra
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/cannon-prow.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1
+      labels:
+        preset-aws-dms: "true"
+      trigger: "(?m)test-infra( please)?" 
+      rerun_command: "test-infra"
+      run_if_changed: '^(infrastructure/.*)$'
+      spec: 
+        containers:
+          - name: "test-infra"
+            imagePullPolicy: IfNotPresent
+            command:
+              - make
+            args:
+              - infra-plan
+            image: quay.io/ouzi/toolbox:latest
+    - name: test-dmsengage-manifests
+      context: test-dmsengage-manifests
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/cannon-prow.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1
+      labels:
+        preset-aws-dms: "true"
+      trigger: "(?m)test-dmsengage-manifests( please)?" 
+      rerun_command: "test-dmsengage-manifests"
+      run_if_changed: '^(dmsengage/.*)$'
+      spec: 
+        containers:
+          - name: "test-dmsengage-manifests"
+            imagePullPolicy: IfNotPresent
+            command:
+              - make
+            args:
+              -  dmsengage-deploy-dry-run
+            image: quay.io/ouzi/toolbox:latest
+postsubmits:
+  ouzi-dev/cannon-prow:
+    - name: apply-infra
+      context: apply-infra
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/cannon-prow.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1
+      labels:
+        preset-aws-dms: "true"
+      trigger: "(?m)apply-infra( please)?" 
+      rerun_command: "apply-infra"
+      run_if_changed: '^(infrastructure/.*)$'
+      spec: 
+        containers:
+          - name: "apply-infra"
+            imagePullPolicy: IfNotPresent
+            command:
+              - make
+            args:
+              - infra-apply
+            image: quay.io/ouzi/toolbox:latest
+    - name: apply-dmsengage-manifests
+      context: apply-dmsengage-manifests
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/cannon-prow.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1
+      labels:
+        preset-aws-dms: "true"
+      trigger: "(?m)apply-dmsengage-manifests( please)?" 
+      rerun_command: "apply-dmsengage-manifests"
+      run_if_changed: '^(dmsengage/.*)$'
+      spec: 
+        containers:
+          - name: "apply-dmsengage-manifests"
+            imagePullPolicy: IfNotPresent
+            command:
+              - make
+            args:
+              -  dmsengage-deploy
+            image: quay.io/ouzi/toolbox:latest

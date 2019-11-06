@@ -175,3 +175,15 @@ presets:
   - name: google-service-account
     mountPath: /etc/google-service-account
     readOnly: true
+- labels:
+      preset-aws-dms: "true"
+  - name: AWS_ACCESS_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: aws-dms-creds
+        key: access_key_id
+  - name: AWS_SECRET_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: aws-dms-creds
+        key: secret_access_key
