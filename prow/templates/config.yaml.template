@@ -176,7 +176,8 @@ presets:
     mountPath: /etc/google-service-account
     readOnly: true
 - labels:
-      preset-aws-dms: "true"
+    preset-aws-dms: "true"
+  env:
   - name: AWS_ACCESS_KEY_ID
     valueFrom:
       secretKeyRef:
@@ -188,7 +189,8 @@ presets:
         name: aws-dms-creds
         key: secret_access_key
 - labels:
-      preset-kubeconfig-cannon-prow: "true"
+    preset-kubeconfig-cannon-prow: "true"
+  env:
   - name: GOOGLE_APPLICATION_CREDENTIALS
     value: /etc/google-service-account/service-account.json
   - name: KUBECONFIG
