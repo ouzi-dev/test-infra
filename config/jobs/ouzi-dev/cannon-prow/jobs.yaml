@@ -9,6 +9,7 @@ presubmits:
       max_concurrency: 1
       labels:
         preset-aws-dms: "true"
+        preset-kubeconfig-cannon-prow: "true"
       trigger: "(?m)test-infra( please)?" 
       rerun_command: "test-infra"
       run_if_changed: '^(infrastructure/.*)$'
@@ -30,6 +31,7 @@ presubmits:
       max_concurrency: 1
       labels:
         preset-aws-dms: "true"
+        preset-kubeconfig-cannon-prow: "true"
       trigger: "(?m)test-dmsengage-manifests( please)?" 
       rerun_command: "test-dmsengage-manifests"
       run_if_changed: '^(dmsengage/.*)$'
@@ -53,6 +55,7 @@ postsubmits:
       max_concurrency: 1
       labels:
         preset-aws-dms: "true"
+        preset-kubeconfig-cannon-prow: "true"
       trigger: "(?m)apply-infra( please)?" 
       rerun_command: "apply-infra"
       run_if_changed: '^(infrastructure/.*)$'
@@ -74,6 +77,7 @@ postsubmits:
       max_concurrency: 1
       labels:
         preset-aws-dms: "true"
+        preset-kubeconfig-cannon-prow: "true"
       trigger: "(?m)apply-dmsengage-manifests( please)?" 
       rerun_command: "apply-dmsengage-manifests"
       run_if_changed: '^(dmsengage/.*)$'
