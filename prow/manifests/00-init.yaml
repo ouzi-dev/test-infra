@@ -225,6 +225,26 @@ type: kubernetes.io/dockerconfigjson
 #   access_key_id: 
 #   secret_access_key: 
 ---
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: ouzidev-cannon-prow-gcloud-service-account
+#   namespace: prow-test-pods
+# type: Opaque
+# data:
+#   service-account.json: 
+---
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: ouzidev-cannon-prow-gke-kubeconfig
+#   namespace: prow-test-pods
+# type: Opaque
+# data:
+#   kubeconfig: 
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
