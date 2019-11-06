@@ -187,3 +187,23 @@ presets:
       secretKeyRef:
         name: aws-dms-creds
         key: secret_access_key
+- labels:
+      preset-kubeconfig-cannon-prow: "true"
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/google-service-account/service-account.json
+  - name: KUBECONFIG
+    value: /etc/kubeconfig
+  volumes:
+  - name: google-service-account
+    secret:
+      secretName: ouzidev-cannon-prow-gcloud-service-account
+  - name: kubeconfig
+    secret:
+      secretName: ouzidev-cannon-prow-gke-kubeconfig
+  volumeMounts:
+  - name: google-service-account
+    mountPath: /etc/google-service-account
+    readOnly: true
+  - name: kubeconfig
+    mountPath: /etc
+    readOnly: true
