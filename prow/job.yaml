@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-alex
+  namespace: prow-test-pods
+spec:
+  containers:
+  - args:
+    - -f
+    - /dev/null
+    command:
+    - tail
+    env:
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          key: access_key_id
+          name: aws-dms-creds
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          key: secret_access_key
+          name: aws-dms-creds
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      value: /etc/google-service-account/service-account.json
+    - name: KUBECONFIG
+      value: /etc/kube/kubeconfig
+    image: quay.io/ouzi/toolbox:0.1.4
+    imagePullPolicy: IfNotPresent
+    name: test-infra
+    resources: {}
+    volumeMounts:
+    - mountPath: /etc/google-service-account
+      name: google-service-account
+      readOnly: true
+    - mountPath: /etc/kube
+      name: kubeconfig
+  volumes:
+  - name: google-service-account
+    secret:
+      secretName: ouzidev-cannon-prow-gcloud-service-account
+  - name: kubeconfig
+    secret:
+      secretName: ouzidev-cannon-prow-gke-kubeconfig

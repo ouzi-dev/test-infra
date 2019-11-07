@@ -194,7 +194,7 @@ presets:
   - name: GOOGLE_APPLICATION_CREDENTIALS
     value: /etc/google-service-account/service-account.json
   - name: KUBECONFIG
-    value: /etc/kubeconfig
+    value: /etc/kube/kubeconfig
   volumes:
   - name: google-service-account
     secret:
@@ -207,5 +207,4 @@ presets:
     mountPath: /etc/google-service-account
     readOnly: true
   - name: kubeconfig
-    mountPath: /etc
-    readOnly: true
+    mountPath: /etc/kube
