@@ -23,6 +23,9 @@ presubmits:
               - kube-dind-push
             securityContext:
               privileged: true
+            resources:
+              requests:
+                memory: "2Gi"
     - name: build-dind-image
       labels:
         preset-docker: "true"
@@ -46,6 +49,9 @@ presubmits:
               - dind-push
             securityContext:
               privileged: true
+            resources:
+              requests:
+                memory: "2Gi"
     - name: build-go-builder-image
       labels:
         preset-docker: "true"
@@ -68,7 +74,10 @@ presubmits:
               - make
               - go-builder-push
             securityContext:
-              privileged: true     
+              privileged: true
+            resources:
+              requests:
+                memory: "2Gi"
     - name: build-helm-image
       labels:
         preset-docker: "true"
@@ -92,6 +101,9 @@ presubmits:
               - helm-push
             securityContext:
               privileged: true
+            resources:
+              requests:
+                memory: "2Gi"
     - name: build-toolbox-image
       labels:
         preset-docker: "true"
@@ -114,4 +126,7 @@ presubmits:
               - make
               - toolbox-push
             securityContext:
-              privileged: true                   
+              privileged: true
+            resources:
+              requests:
+                memory: "2Gi"
