@@ -67,7 +67,7 @@ postsubmits:
             command:
               - make
             args:
-              - TF_EXTRA_ARGS=-auto-approve
+              - TF_EXTRA_ARGS=--auto-approve
               - infra-setup
               - infra-apply
             image: quay.io/ouzi/toolbox:0.1.7
