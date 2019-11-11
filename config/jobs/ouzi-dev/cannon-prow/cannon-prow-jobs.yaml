@@ -22,7 +22,7 @@ presubmits:
             args:
               - infra-setup
               - infra-plan
-            image: quay.io/ouzi/toolbox:0.1.6
+            image: quay.io/ouzi/toolbox:0.1.7
     - name: test-dmsengage-manifests
       context: test-dmsengage-manifests
       decorate: true 
@@ -44,7 +44,7 @@ presubmits:
               - make
             args:
               -  dmsengage-deploy-dry-run
-            image: quay.io/ouzi/toolbox:0.1.6
+            image: quay.io/ouzi/toolbox:0.1.7
 postsubmits:
   ouzi-dev/cannon-prow:
     - name: apply-infra
@@ -70,7 +70,7 @@ postsubmits:
               - TF_EXTRA_ARGS=-auto-approve
               - infra-setup
               - infra-apply
-            image: quay.io/ouzi/toolbox:0.1.6
+            image: quay.io/ouzi/toolbox:0.1.7
     - name: apply-dmsengage-manifests
       context: apply-dmsengage-manifests
       decorate: true 
@@ -92,4 +92,4 @@ postsubmits:
               - make
             args:
               -  dmsengage-deploy
-            image: quay.io/ouzi/toolbox:0.1.6
+            image: quay.io/ouzi/toolbox:0.1.7
