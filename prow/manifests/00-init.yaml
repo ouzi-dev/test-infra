@@ -214,6 +214,36 @@ metadata:
 data:
   .dockerconfigjson: {{.docker.config}}
 type: kubernetes.io/dockerconfigjson
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: aws-dms-creds
+#   namespace: prow-test-pods
+# type: Opaque
+# data:
+#   access_key_id: 
+#   secret_access_key: 
+---
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: ouzidev-cannon-prow-gcloud-service-account
+#   namespace: prow-test-pods
+# type: Opaque
+# data:
+#   service-account.json: 
+---
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: ouzidev-cannon-prow-gke-kubeconfig
+#   namespace: prow-test-pods
+# type: Opaque
+# data:
+#   kubeconfig: 
 ---
 apiVersion: v1
 kind: ConfigMap
