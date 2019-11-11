@@ -202,7 +202,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Time",
+               "pattern": "",
                "thresholds": [ ],
                "type": "hidden",
                "unit": "short"
@@ -216,7 +216,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #A",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "Bps"
@@ -230,7 +230,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #B",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "Bps"
@@ -244,7 +244,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #C",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "Bps"
@@ -258,7 +258,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #D",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "Bps"
@@ -272,7 +272,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #E",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "pps"
@@ -286,7 +286,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #F",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "pps"
@@ -300,7 +300,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #G",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "pps"
@@ -314,7 +314,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #H",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "pps"
@@ -328,7 +328,7 @@
                "link": true,
                "linkTooltip": "Drill down",
                "linkUrl": "d/728bf77cc1166d2f3133bf25846876cc/kubernetes-networking-workload?orgId=1&refresh=30s&var-namespace=$namespace&var-type=$type&var-workload=$__cell",
-               "pattern": "workload",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "short"

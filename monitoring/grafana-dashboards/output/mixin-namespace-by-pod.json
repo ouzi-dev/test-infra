@@ -350,7 +350,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Time",
+               "pattern": "",
                "thresholds": [ ],
                "type": "hidden",
                "unit": "short"
@@ -364,7 +364,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #A",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "Bps"
@@ -378,7 +378,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #B",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "Bps"
@@ -392,7 +392,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #C",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "pps"
@@ -406,7 +406,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #D",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "pps"
@@ -420,7 +420,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #E",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "pps"
@@ -434,7 +434,7 @@
                "link": false,
                "linkTooltip": "Drill down",
                "linkUrl": "",
-               "pattern": "Value #F",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "pps"
@@ -448,7 +448,7 @@
                "link": true,
                "linkTooltip": "Drill down",
                "linkUrl": "d/7a18067ce943a40ae25454675c19ff5c/kubernetes-networking-pod?orgId=1&refresh=30s&var-namespace=$namespace&var-pod=$__cell",
-               "pattern": "pod",
+               "pattern": "",
                "thresholds": [ ],
                "type": "number",
                "unit": "short"
