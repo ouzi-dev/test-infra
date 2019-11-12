@@ -3,17 +3,34 @@
 # Get current directory
 DIR := ${CURDIR}
 
-# Credstash version and dowload locations
-CREDSTASH_VERSION := 0.4.0
-CREDSTASH_DOWNLOAD_DARWIN_URL := https://github.com/sspinc/terraform-provider-credstash/releases/download/$(CREDSTASH_VERSION)/terraform-provider-credstash_darwin_amd64
-CREDSTASH_FILEPATH := ~/.terraform.d/plugins/terraform-provider-credstash_v$(CREDSTASH_VERSION)
+UNAME := $(shell uname)
+
+AWS_ACCOUNT_ID := 257496065652
+CREDSTASH_AWS_REGION:= eu-west-1
 
 GOOGLE_APPLICATION_CREDENTIALS_PATH := $(DIR)/.terraform-account.json
 GOOGLE_APPLICATION_CREDENTIALS_CREDSTASH_KEY := ouzidev-testinfra-terraform-svcaccount
-setup: get-google-service-account
-	@mkdir -p ~/.terraform.d/plugins
-	@curl -L "$(CREDSTASH_DOWNLOAD_DARWIN_URL)" -o $(CREDSTASH_FILEPATH) -z $(CREDSTASH_FILEPATH)
-	@chmod +x ~/.terraform.d/plugins/terraform-provider-credstash_v$(CREDSTASH_VERSION)
+
+# Credstash version and dowload locations
+CREDSTASH_VERSION := v0.4.0
+CREDSTASH_DOWNLOAD_LINUX_URL := https://github.com/sspinc/terraform-provider-credstash/releases/download/$(CREDSTASH_VERSION)/terraform-provider-credstash_linux_amd64
+CREDSTASH_DOWNLOAD_DARWIN_URL := https://github.com/sspinc/terraform-provider-credstash/releases/download/$(CREDSTASH_VERSION)/terraform-provider-credstash_darwin_amd64
+CREDSTASH_FILEPATH := $(HOME)/.terraform.d/plugins/terraform-provider-credstash_$(CREDSTASH_VERSION)
+
+setup:
+	@mkdir -p $(HOME)/.terraform.d/plugins
+	@rm -f $(CREDSTASH_FILEPATH)
+ifeq ($(UNAME),Linux)
+	@curl -Ls "$(CREDSTASH_DOWNLOAD_LINUX_URL)" -o $(CREDSTASH_FILEPATH) -z $(CREDSTASH_FILEPATH)
+endif
+ifeq ($(UNAME),Darwin)
+	@curl -Ls "$(CREDSTASH_DOWNLOAD_DARWIN_URL)" -o $(CREDSTASH_FILEPATH) -z $(CREDSTASH_FILEPATH)
+endif
+	@chmod +x $(CREDSTASH_FILEPATH)
+
+.PHONY: aws-identity-check
+aws-identity-check:
+	@if [ `aws sts get-caller-identity | jq -r .Account` != $(AWS_ACCOUNT_ID) ]; then echo "Pointing to the wrong AWS account..You may not proceed"; exit 1; fi;
 
 clean:
 	@rm -rf .terraform
@@ -47,4 +64,23 @@ get-cluster-credentials:
 	gcloud container clusters get-credentials $(NAME) --region=$(REGION)
 
 get-google-service-account: 
-	@credstash get $(GOOGLE_APPLICATION_CREDENTIALS_CREDSTASH_KEY) > $(GOOGLE_APPLICATION_CREDENTIALS_PATH)
+	@credstash --region ${CREDSTASH_AWS_REGION} get $(GOOGLE_APPLICATION_CREDENTIALS_CREDSTASH_KEY) > $(GOOGLE_APPLICATION_CREDENTIALS_PATH)
+
+.PHONY: export-secrets-to-credstash
+export-secrets-to-credstash: aws-identity-check
+	$(shell $(MAKE) output > .tf_output.json)
+	$(eval CREDSTASH_AWS_ACCESS_KEY_ID=$(shell cat .tf_output.json | jq -r .prow_aws_access_key_id.value))
+	$(eval CREDSTASH_AWS_SECRET_ACCESS_KEY=$(shell cat .tf_output.json | jq -r .prow_aws_secret_access_key.value))
+	@rm .tf_output.json
+	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-aws-access-key-id || true
+	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-aws-secret-access-key || true
+	@credstash --region ${CREDSTASH_AWS_REGION} put prow-aws-access-key-id $(CREDSTASH_AWS_ACCESS_KEY_ID)
+	@credstash --region ${CREDSTASH_AWS_REGION} put prow-aws-secret-access-key $(CREDSTASH_AWS_SECRET_ACCESS_KEY)
+	$(eval NAME=$(shell cat .tf_output.json  | jq .gke_name.value))
+	$(eval REGION=$(shell cat .tf_output.json  | jq .gcloud_region.value))
+	$(eval SERVER=$(shell gcloud container clusters describe $(NAME) --region=$(REGION) --format='value(endpoint)' ))
+	$(eval CA=$(shell gcloud container clusters describe $(NAME) --region=$(REGION) --format='value(masterAuth.clusterCaCertificate)' ))
+	@gotpl .kubeconfig.yaml.tpl --set server=$(SERVER) --set ca=$(CA) > .kubeconfig.yaml 
+	@credstash --region ${CREDSTASH_AWS_REGION} delete ouzi-prow-gke-kubeconfig || true
+	@credstash --region ${CREDSTASH_AWS_REGION} put ouzi-prow-gke-kubeconfig @.kubeconfig.yaml
+	@rm .kubeconfig.yaml
