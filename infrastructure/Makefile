@@ -71,11 +71,17 @@ export-secrets-to-credstash: aws-identity-check
 	$(shell $(MAKE) output > .tf_output.json)
 	$(eval CREDSTASH_AWS_ACCESS_KEY_ID=$(shell cat .tf_output.json | jq -r .prow_aws_access_key_id.value))
 	$(eval CREDSTASH_AWS_SECRET_ACCESS_KEY=$(shell cat .tf_output.json | jq -r .prow_aws_secret_access_key.value))
+	$(shell cat .tf_output.json | jq -r .certmanager_svc_account_key.value | base64 -D > .CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY )
+	$(shell cat .tf_output.json | jq -r .prow_bucket_svc_account_key.value | base64 -D > .CREDSTASH_PROW_BUCKET_SVC_ACCOUNT_KEY )
 	@rm .tf_output.json
 	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-aws-access-key-id || true
-	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-aws-secret-access-key || true
 	@credstash --region ${CREDSTASH_AWS_REGION} put prow-aws-access-key-id $(CREDSTASH_AWS_ACCESS_KEY_ID)
+	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-aws-secret-access-key || true
 	@credstash --region ${CREDSTASH_AWS_REGION} put prow-aws-secret-access-key $(CREDSTASH_AWS_SECRET_ACCESS_KEY)
+	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-cert-manager-svc-account-key || true
+	@credstash --region ${CREDSTASH_AWS_REGION} put prow-cert-manager-svc-account-key @.CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY
+	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-bucket-svc-account-key || true
+	@credstash --region ${CREDSTASH_AWS_REGION} put prow-bucket-svc-account-key @.CREDSTASH_PROW_BUCKET_SVC_ACCOUNT_KEY
 	$(eval NAME=$(shell cat .tf_output.json  | jq .gke_name.value))
 	$(eval REGION=$(shell cat .tf_output.json  | jq .gcloud_region.value))
 	$(eval SERVER=$(shell gcloud container clusters describe $(NAME) --region=$(REGION) --format='value(endpoint)' ))
@@ -84,3 +90,5 @@ export-secrets-to-credstash: aws-identity-check
 	@credstash --region ${CREDSTASH_AWS_REGION} delete ouzi-prow-gke-kubeconfig || true
 	@credstash --region ${CREDSTASH_AWS_REGION} put ouzi-prow-gke-kubeconfig @.kubeconfig.yaml
 	@rm .kubeconfig.yaml
+	@rm .CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY
+	@rm .CREDSTASH_PROW_BUCKET_SVC_ACCOUNT_KEY
