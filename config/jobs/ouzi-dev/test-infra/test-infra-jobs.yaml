@@ -15,12 +15,12 @@ presubmits:
           - name: "test-config"
             imagePullPolicy: IfNotPresent
             command:
-              - checkconfig
+              - /app/prow/cmd/checkconfig/app.binary
             args:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
               - --job-config-path=config/jobs
-            image: belitre/checkconfig:latest
+            image: gcr.io/k8s-prow/checkconfig:v20191028-a687a71be
     - name: monitoring-dry-run
       context: monitoring-dry-run
       decorate: true 
@@ -55,12 +55,12 @@ postsubmits:
           - name: "test-config"
             imagePullPolicy: IfNotPresent
             command:
-              - checkconfig
+              - /app/prow/cmd/checkconfig/app.binary
             args:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
               - --job-config-path=config/jobs
-            image: belitre/checkconfig:latest
+            image: gcr.io/k8s-prow/checkconfig:v20191028-a687a71be
     - name: monitoring
       decorate: true 
       clone_uri: "git@github.com:ouzi-dev/test-infra.git"
