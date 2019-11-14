@@ -24,7 +24,7 @@ provider "aws" {
 }
 
 provider "credstash" {
-  region  = var.credstash_region
+  region  = "eu-west-1"
   version = "0.4"
 }
 
@@ -41,17 +41,15 @@ provider "random" {
 }
 
 module "prow-cluster" {
-  source = "git@github.com:ouzi-dev/prow-gke-terraform.git?ref=v0.2"
+  source = "git@github.com:ouzi-dev/prow-gke-terraform.git?ref=v0.3.5"
 
   gcloud_region              = var.gcloud_region
   gcloud_project             = var.gcloud_project
+  gke_name                   = var.gke_name
   gke_kubernetes_version     = var.gke_kubernetes_version
-  dockerconfig_credstash_key = var.dockerconfig_credstash_key
 
   base_domain = var.base_domain
-  github_org  = var.github_org
 
-  slack_bot_token_credstash_key = var.slack_bot_token_credstash_key
   prow_artefact_bucket_location = var.prow_artefact_bucket_location
 
   gke_authenticator_groups_security_group = var.gke_authenticator_groups_security_group

@@ -8,6 +8,11 @@ UNAME := $(shell uname)
 AWS_ACCOUNT_ID := 257496065652
 CREDSTASH_AWS_REGION:= eu-west-1
 
+# TF VARS
+TF_GKE_NAME := $(shell cat terraform.tfvars | tr -s ' ' | awk -F= '$$1=="gke_name " {print $$2}' | tr -d "[:space:]")
+TF_GCLOUD_PROJECT := $(shell cat terraform.tfvars | tr -s ' ' | awk -F= '$$1=="gcloud_project " {print $$2}' | tr -d "[:space:]")
+TF_GCLOUD_REGION := $(shell cat terraform.tfvars | tr -s ' ' | awk -F= '$$1=="gcloud_region " {print $$2}' | tr -d "[:space:]")
+
 GOOGLE_APPLICATION_CREDENTIALS_PATH := $(DIR)/.terraform-account.json
 GOOGLE_APPLICATION_CREDENTIALS_CREDSTASH_KEY := ouzidev-testinfra-terraform-svcaccount
 
@@ -59,9 +64,7 @@ destroy: init
 
 get-cluster-credentials:
 	@$(MAKE) init > /dev/null 2>&1
-	$(eval NAME=$(shell $(MAKE) output | jq .gke_name.value))
-	$(eval REGION=$(shell $(MAKE) output | jq .gcloud_region.value))
-	gcloud container clusters get-credentials $(NAME) --region=$(REGION)
+	gcloud container clusters get-credentials $(TF_GKE_NAME) --region=$(TF_GCLOUD_REGION)
 
 get-google-service-account: 
 	@credstash --region ${CREDSTASH_AWS_REGION} get $(GOOGLE_APPLICATION_CREDENTIALS_CREDSTASH_KEY) > $(GOOGLE_APPLICATION_CREDENTIALS_PATH)
@@ -82,10 +85,8 @@ export-secrets-to-credstash: aws-identity-check
 	@credstash --region ${CREDSTASH_AWS_REGION} put prow-cert-manager-svc-account-key @.CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY
 	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-bucket-svc-account-key || true
 	@credstash --region ${CREDSTASH_AWS_REGION} put prow-bucket-svc-account-key @.CREDSTASH_PROW_BUCKET_SVC_ACCOUNT_KEY
-	$(eval NAME=$(shell cat .tf_output.json  | jq .gke_name.value))
-	$(eval REGION=$(shell cat .tf_output.json  | jq .gcloud_region.value))
-	$(eval SERVER=$(shell gcloud container clusters describe $(NAME) --region=$(REGION) --format='value(endpoint)' ))
-	$(eval CA=$(shell gcloud container clusters describe $(NAME) --region=$(REGION) --format='value(masterAuth.clusterCaCertificate)' ))
+	$(eval SERVER=$(shell gcloud container clusters describe $(TF_GKE_NAME) --region=$(TF_GCLOUD_REGION) --format='value(endpoint)' ))
+	$(eval CA=$(shell gcloud container clusters describe $(TF_GKE_NAME) --region=$(TF_GCLOUD_REGION) --format='value(masterAuth.clusterCaCertificate)' ))
 	@gotpl .kubeconfig.yaml.tpl --set server=$(SERVER) --set ca=$(CA) > .kubeconfig.yaml 
 	@credstash --region ${CREDSTASH_AWS_REGION} delete ouzi-prow-gke-kubeconfig || true
 	@credstash --region ${CREDSTASH_AWS_REGION} put ouzi-prow-gke-kubeconfig @.kubeconfig.yaml

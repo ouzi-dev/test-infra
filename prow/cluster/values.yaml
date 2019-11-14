@@ -1,5 +1,5 @@
 email: team@ouzi.dev
-baseDomain: test-infra-new.ouzi.io
+baseDomain: test-infra.ouzi.io
 cluster:
   admin:
     group: team@ouzi.dev
@@ -7,8 +7,6 @@ github:
   org: ouzi-dev
   bot:
     username: ouzibot  
-gcloud:
-  project: ouzidev-testinfra-252513
 credstashcontroller:
   namespace: credstash-controller
   aws:
@@ -43,11 +41,11 @@ externalDns:
 nginxIngress:
   namespace: nginx-ingress
 prow:
-  namespace: prow-new
-  namespaceForJobs: prow-new-test-pods
+  namespace: prow
+  namespaceForJobs: prow-test-pods
   prowbucketname: ouzidev-testinfra-252513-prow-artefacts
   credstashSecrets:
-    - name: gcs-credentials
+    - name: prow-bucket-gcs-credentials
       keys:
         - name: service-account.json
           key: prow-bucket-svc-account-key
@@ -59,7 +57,7 @@ prow:
           key: ouzibot_slack_legacytoken
           table: credential-store
           version: "0000000000000000001"
-    - name: oauth-token
+    - name: github-token
       keys:
         - name: oauth
           key: github_bot_personal_access_token_prow
@@ -71,7 +69,7 @@ prow:
           key: github_bot_ssh_private_key
           table: credential-store
           version: "0000000000000000001"
-    - name: github-oauth-config
+    - name: oauth-config
       keys:
         - name: secret
           key: prow-oauth-config

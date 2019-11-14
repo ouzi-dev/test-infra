@@ -1,20 +1,3 @@
-output "valuesyaml" {
-  value     = module.prow-cluster.valuesyaml
-  sensitive = true
-}
-
-output "gcloud_project" {
-  value = var.gcloud_project
-}
-
-output "gcloud_region" {
-  value = var.gcloud_region
-}
-
-output "gke_name" {
-  value = module.prow-cluster.gke_name
-}
-
 output "prow_bucket_name" {
   value = module.prow-cluster.prow_artefacts_bucket_name
 }
