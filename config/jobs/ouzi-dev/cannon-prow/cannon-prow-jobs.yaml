@@ -54,6 +54,8 @@ postsubmits:
       always_run: false 
       skip_report: false 
       max_concurrency: 1
+      branches:
+        - master
       labels:
         preset-aws-dms: "true"
         preset-kubeconfig-cannon-prow: "true"
@@ -78,6 +80,8 @@ postsubmits:
       always_run: false 
       skip_report: false 
       max_concurrency: 1
+      branches:
+        - master
       labels:
         preset-aws-dms: "true"
         preset-kubeconfig-cannon-prow: "true"
