@@ -8,6 +8,9 @@ UNAME := $(shell uname)
 AWS_ACCOUNT_ID := 257496065652
 CREDSTASH_AWS_REGION:= eu-west-1
 
+# source the terraform vars as env vars 
+include terraform.tfvars
+
 GOOGLE_APPLICATION_CREDENTIALS_PATH := $(DIR)/.terraform-account.json
 GOOGLE_APPLICATION_CREDENTIALS_CREDSTASH_KEY := ouzidev-testinfra-terraform-svcaccount
 
@@ -59,9 +62,7 @@ destroy: init
 
 get-cluster-credentials:
 	@$(MAKE) init > /dev/null 2>&1
-	$(eval NAME=$(shell $(MAKE) output | jq .gke_name.value))
-	$(eval REGION=$(shell $(MAKE) output | jq .gcloud_region.value))
-	gcloud container clusters get-credentials $(NAME) --region=$(REGION)
+	gcloud container clusters get-credentials $(gke_name) --region=$(gcloud_region)
 
 get-google-service-account: 
 	@credstash --region ${CREDSTASH_AWS_REGION} get $(GOOGLE_APPLICATION_CREDENTIALS_CREDSTASH_KEY) > $(GOOGLE_APPLICATION_CREDENTIALS_PATH)
@@ -82,10 +83,8 @@ export-secrets-to-credstash: aws-identity-check
 	@credstash --region ${CREDSTASH_AWS_REGION} put prow-cert-manager-svc-account-key @.CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY
 	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-bucket-svc-account-key || true
 	@credstash --region ${CREDSTASH_AWS_REGION} put prow-bucket-svc-account-key @.CREDSTASH_PROW_BUCKET_SVC_ACCOUNT_KEY
-	$(eval NAME=$(shell cat .tf_output.json  | jq .gke_name.value))
-	$(eval REGION=$(shell cat .tf_output.json  | jq .gcloud_region.value))
-	$(eval SERVER=$(shell gcloud container clusters describe $(NAME) --region=$(REGION) --format='value(endpoint)' ))
-	$(eval CA=$(shell gcloud container clusters describe $(NAME) --region=$(REGION) --format='value(masterAuth.clusterCaCertificate)' ))
+	$(eval SERVER=$(shell gcloud container clusters describe $(gke_name) --region=$(gcloud_region) --format='value(endpoint)' ))
+	$(eval CA=$(shell gcloud container clusters describe $(gke_name) --region=$(gcloud_region) --format='value(masterAuth.clusterCaCertificate)' ))
 	@gotpl .kubeconfig.yaml.tpl --set server=$(SERVER) --set ca=$(CA) > .kubeconfig.yaml 
 	@credstash --region ${CREDSTASH_AWS_REGION} delete ouzi-prow-gke-kubeconfig || true
 	@credstash --region ${CREDSTASH_AWS_REGION} put ouzi-prow-gke-kubeconfig @.kubeconfig.yaml

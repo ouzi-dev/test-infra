@@ -10,6 +10,10 @@ variable "gcloud_project" {
   description = "Name of the GKE project"
 }
 
+variable "gke_name" {
+  description = "Name of the GKE cluster"
+}
+
 variable "gke_kubernetes_version" {
   description = "Minimum k8s master version"
 }
@@ -21,46 +25,6 @@ variable "prow_artefact_bucket_location" {
   type = string
 }
 
-variable "github_bot_token_credstash_key" {
-  type = string
-}
-
-variable "github_bot_ssh_key_credstash_key" {
-  type = string
-}
-
-variable "github_org" {
-  type = string
-}
-
-variable "prow_github_oauth_client_id_credstash_key" {
-  type = string
-}
-
-variable "prow_github_oauth_client_secret_credstash_key" {
-  type = string
-}
-
-variable "prow_cluster_github_oauth_client_id_credstash_key" {
-  type = string
-}
-
-variable "prow_cluster_github_oauth_client_secret_credstash_key" {
-  type = string
-}
-
-variable "slack_bot_token_credstash_key" {
-  type = string
-}
-
-variable "dockerconfig_credstash_key" {
-  type = string
-}
-
-variable "credstash_region" {
-  type = string
-}
-
 variable "base_domain" {
   type = string
 }
@@ -68,3 +32,4 @@ variable "base_domain" {
 variable "google_credentials_file_path" {
   type = string
 }
+

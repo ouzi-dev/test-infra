@@ -1,0 +1,11 @@
+---  
+apiVersion: credstash.local/v1
+kind: CredStashSecret
+metadata:
+  name: clouddns-dns01-solver-svc-acct
+  namespace: {{ .namespace }}
+spec:
+  - name: key.json
+    from: {{ .credstash.svc_account_key | quote }}
+    table: {{ .credstash.svc_account_table | quote }}
+    version: {{ .credstash.svc_account_version | quote }}
