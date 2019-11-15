@@ -3,10 +3,8 @@ DRY_RUN ?= false
 AWS_ACCOUNT_ID := 257496065652
 CREDSTASH_AWS_REGION:= eu-west-1
 
-# TF VARS
-TF_GKE_NAME := $(shell cat ../../infrastructure/terraform.tfvars | tr -s ' ' | awk -F= '$$1=="gke_name " {print $$2}' | tr -d "[:space:]")
-TF_GCLOUD_PROJECT := $(shell cat ../../infrastructure/terraform.tfvars | tr -s ' ' | awk -F= '$$1=="gcloud_project " {print $$2}' | tr -d "[:space:]")
-TF_GCLOUD_REGION := $(shell cat ../../infrastructure/terraform.tfvars | tr -s ' ' | awk -F= '$$1=="gcloud_region " {print $$2}' | tr -d "[:space:]")
+# source the terraform vars as env vars 
+include ../infrastructure/terraform.tfvars
 
 CERTMANAGER_CHART_VERSION := v0.11.0
 EXTERNALDNS_CHART_VERSION := 2.10.0
@@ -76,7 +74,7 @@ render-gotpl-manifests:
 	@gotpl \
 		$(FOLDER)/manifests_values.yaml.tpl \
 		--values values.yaml \
-		--set gcloud.project=${TF_GCLOUD_PROJECT} \
+		--set gcloud.project=${gcloud_project} \
 		--strict \
 		> $(FOLDER)/manifests_values.yaml
 	@touch $(FOLDER)/manifests_values.yaml
@@ -87,7 +85,7 @@ render-helm-manifests:
 	@gotpl \
 		$(FOLDER)/helm_values.yaml.tpl \
 		--values values.yaml \
-		--set gcloud.project=${TF_GCLOUD_PROJECT} \
+		--set gcloud.project=${gcloud_project} \
 		--strict \
 		> $(FOLDER)/helm_values.yaml
 	@touch $(FOLDER)/helm_values.yaml
@@ -170,7 +168,7 @@ ifeq ($(DRY_RUN),true)
 		--version $(VERSION) \
 		--no-hooks \
 		--namespace $(NAMESPACE) \
-		--set gcloud.project=${TF_GCLOUD_PROJECT} \
+		--set gcloud.project=${gcloud_project} \
 		--values $(FOLDER)/helm_values.yaml
 else
 	@echo **Upgrading helm chart $(CHART) $(NAME) $(VERSION) from $(FOLDER) in $(NAMESPACE)
@@ -181,7 +179,7 @@ else
 		--install \
 		--wait \
 		--namespace $(NAMESPACE) \
-		--set gcloud.project=${TF_GCLOUD_PROJECT} \
+		--set gcloud.project=${gcloud_project} \
 		--values $(FOLDER)/helm_values.yaml
 endif
 
@@ -194,7 +192,7 @@ ifeq ($(DRY_RUN),true)
 		$(CHART) \
 		--no-hooks \
 		--namespace $(NAMESPACE) \
-		--set gcloud.project=${TF_GCLOUD_PROJECT} \
+		--set gcloud.project=${gcloud_project} \
 		--values $(FOLDER)/helm_values.yaml 		
 else
 	@echo **Upgrading helm chart $(CHART) $(NAME) $(VERSION) from $(FOLDER) in $(NAMESPACE)
@@ -204,7 +202,7 @@ else
 		--install \
 		--wait \
 		--namespace $(NAMESPACE) \
-		--set gcloud.project=${TF_GCLOUD_PROJECT} \
+		--set gcloud.project=${gcloud_project} \
 		--values $(FOLDER)/helm_values.yaml 	
 endif
 
@@ -215,7 +213,7 @@ ifeq ($(DRY_RUN),true)
 	@gotpl \
 		$(FOLDER) \
 		--values $(FOLDER)/../../manifests_values.yaml \
-		--set gcloud.project=${TF_GCLOUD_PROJECT} \
+		--set gcloud.project=${gcloud_project} \
 		--strict \
 		$(EXTRA_ARGS) \
 		| kubectl apply $(KUBECTL_ARGS) --dry-run -f -	
@@ -223,7 +221,7 @@ else
 	@echo **Applying $(FOLDER)
 	@gotpl \
 		$(FOLDER) \
-		--set gcloud.project=${TF_GCLOUD_PROJECT} \
+		--set gcloud.project=${gcloud_project} \
 		--values $(FOLDER)/../../manifests_values.yaml \
 		--strict \
 		$(EXTRA_ARGS) \
