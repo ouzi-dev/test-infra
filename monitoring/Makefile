@@ -63,7 +63,6 @@ grafana-dashboards:
 .PHONY: grafana
 grafana: grafana-dashboards helm-bootstrap
 	helm upgrade --install grafana stable/grafana \
-		--tiller-namespace kube-system \
 		--namespace monitoring \
 		--atomic \
 		-f grafana/values.yaml \
@@ -73,7 +72,6 @@ grafana: grafana-dashboards helm-bootstrap
 .PHONY: grafana-dry-run
 grafana-dry-run: grafana-dashboards helm-bootstrap
 	helm upgrade --install grafana stable/grafana \
-		--tiller-namespace kube-system \
 		--namespace monitoring \
 		--atomic \
 		-f grafana/values.yaml \
