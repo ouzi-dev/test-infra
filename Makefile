@@ -18,14 +18,11 @@ infra-destroy:
 infra-output:
 	@$(MAKE) -C infrastructure output	
 
-deploy: infra-apply 
-	@$(MAKE) -C prow deploy
+deploy:
+	@$(MAKE) -C cluster deploy
 
-deploy-prow: 
-	@$(MAKE) -C prow deploy-prow
-
-deploy-prow-dry-run: 
-	@$(MAKE) -C prow deploy-prow-dry-run	
+deploy-dry-run: 
+	@$(MAKE) -C cluster DRY_RUN=true deploy
 
 get-cluster-credentials:
 	@$(MAKE) -C infrastructure get-cluster-credentials
