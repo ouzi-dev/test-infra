@@ -63,22 +63,20 @@ grafana-dashboards:
 .PHONY: grafana
 grafana: grafana-dashboards helm-bootstrap
 	helm upgrade --install grafana stable/grafana \
-		--tiller-namespace kube-system \
 		--namespace monitoring \
 		--atomic \
 		-f grafana/values.yaml \
 		-f grafana-dashboards/output/values.json \
-		--version 4.0.0	--timeout 120
+		--version 4.0.0	--timeout 120s
 
 .PHONY: grafana-dry-run
 grafana-dry-run: grafana-dashboards helm-bootstrap
 	helm upgrade --install grafana stable/grafana \
-		--tiller-namespace kube-system \
 		--namespace monitoring \
 		--atomic \
 		-f grafana/values.yaml \
 		-f grafana-dashboards/output/values.json \
-		--version 4.0.0 --timeout 120 \
+		--version 4.0.0 --timeout 120s \
 		--debug --dry-run
 
 .PHONY: service-monitors-dry-run
@@ -97,7 +95,7 @@ monitoring-apply: prometheus grafana service-monitors
 
 .PHONY: helm-bootstrap
 helm-bootstrap:
-	helm init --client-only
+	helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 	helm repo update
 
 .PHONY: grafana-secret

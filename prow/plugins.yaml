@@ -23,6 +23,7 @@ plugins:
     - skip
     - welcome
     - heart
+    - goose
 
 config_updater:
   maps:
