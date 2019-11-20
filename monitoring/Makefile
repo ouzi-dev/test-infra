@@ -95,6 +95,7 @@ monitoring-apply: prometheus grafana service-monitors
 
 .PHONY: helm-bootstrap
 helm-bootstrap:
+	helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 	helm repo update
 
 .PHONY: grafana-secret
