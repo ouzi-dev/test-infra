@@ -95,7 +95,6 @@ monitoring-apply: prometheus grafana service-monitors
 
 .PHONY: helm-bootstrap
 helm-bootstrap:
-	helm init --client-only
 	helm repo update
 
 .PHONY: grafana-secret
