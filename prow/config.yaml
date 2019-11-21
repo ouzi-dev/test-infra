@@ -45,14 +45,87 @@ push_gateway:
 branch-protection:
   orgs:
     ouzi-dev:
-      protect: true  # enable protection
-      enforce_admins: true  # rules apply to admins
-      required_status_checks:
-        contexts: # checks which must be green to merge
-        - tide
-      restrictions: # restrict who can push to the repo
-        users:
-        - ouzibot
+      repos:
+        test-infra:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
+        eks-terraform:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
+        whalers-of-the-moon:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
+        prow-gke-terraform:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
+        cannon-prow:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
+        prow-helm-chart:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
+        avro-kedavro:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
+        bigbang:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
+        gke-terraform:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
+        test-optional-context:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
 tide:
   sync_period: 1m
   merge_method:
