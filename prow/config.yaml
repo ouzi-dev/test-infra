@@ -71,7 +71,7 @@ tide:
   merge_label: tide/merge-method-merge
   context_options:
     # Use branch protection options to define required and optional contexts
-    from-branch-protection: true
+    from-branch-protection: false
     # Treat unknown contexts as optional
     skip-unknown-contexts: false
   queries:
@@ -165,16 +165,6 @@ presets:
         secretKeyRef:
           name: github-token
           key: oauth
-- labels:
-    preset-helm-admin: "true"
-  volumes:
-  - name: google-service-account
-    secret:
-      secretName: ouzidev-helm-admin-sa
-  volumeMounts:
-  - name: google-service-account
-    mountPath: /etc/google-service-account
-    readOnly: true
 - labels:
     preset-aws-dms: "true"
   env:

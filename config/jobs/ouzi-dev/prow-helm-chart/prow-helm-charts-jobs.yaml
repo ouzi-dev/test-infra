@@ -78,7 +78,6 @@ postsubmits:
       max_concurrency: 1 
       labels:
         preset-semantic-release: "true"
-        preset-helm-admin: "true"      
       branches:
         - master
       spec: 
