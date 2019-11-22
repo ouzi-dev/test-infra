@@ -21,6 +21,11 @@ infra-output:
 deploy:
 	@$(MAKE) -C cluster deploy
 
+.PHONY: deploy-prow-config
+deploy-prow-config: 
+	@$(MAKE) -C prow deploy-prow-config
+
+.PHONY: deploy-dry-run
 deploy-dry-run: 
 	@$(MAKE) -C cluster DRY_RUN=true deploy
 

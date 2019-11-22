@@ -166,16 +166,6 @@ presets:
           name: github-token
           key: oauth
 - labels:
-    preset-helm-admin: "true"
-  volumes:
-  - name: google-service-account
-    secret:
-      secretName: ouzidev-helm-admin-sa
-  volumeMounts:
-  - name: google-service-account
-    mountPath: /etc/google-service-account
-    readOnly: true
-- labels:
     preset-aws-dms: "true"
   env:
   - name: AWS_ACCESS_KEY_ID
