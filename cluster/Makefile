@@ -9,7 +9,7 @@ include ../infrastructure/terraform.tfvars
 CERTMANAGER_CHART_VERSION := v0.11.0
 EXTERNALDNS_CHART_VERSION := 2.10.0
 NGINX_INGRESS_CHART_VERSION := 1.24.4
-PROW_CHART_VERSION := v0.4.9
+PROW_CHART_VERSION := v0.4.10
 
 setup: 
 	helm plugin install https://github.com/databus23/helm-diff --version v3.0.0-rc.6 
