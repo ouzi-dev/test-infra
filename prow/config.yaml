@@ -141,7 +141,7 @@ tide:
   context_options:
     # Use branch protection options to define required and optional contexts
     from-branch-protection: true
-    # Treat unknown contexts as optional
+    # Treat unknown contexts as required
     skip-unknown-contexts: false
   queries:
   - orgs:
