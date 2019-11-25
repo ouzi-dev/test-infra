@@ -118,7 +118,7 @@ branch-protection:
               restrictions: # restrict who can push to the repo
                 users:
                 - ouzibot
-        test-commit-status-github:
+        commit-status-updater:
           branches:
             master:
               protect: true  # enable protection
