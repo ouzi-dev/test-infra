@@ -118,14 +118,11 @@ branch-protection:
               restrictions: # restrict who can push to the repo
                 users:
                 - ouzibot
-        test-optional-context:
+        test-commit-status-github:
           branches:
             master:
               protect: true  # enable protection
               enforce_admins: true  # rules apply to admins
-              required_status_checks:
-                contexts: 
-                  - "Check A"
               restrictions: # restrict who can push to the repo
                 users:
                 - ouzibot
