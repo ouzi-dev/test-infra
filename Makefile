@@ -14,7 +14,7 @@ infra-plan:
 
 .PHONY: infra-apply
 infra-apply:
-	@$(MAKE) -C infrastructure apply
+	@$(MAKE) -C infrastructure TF_ARGS=-auto-approve apply
 
 .PHONY: infra-destroy
 infra-destroy:

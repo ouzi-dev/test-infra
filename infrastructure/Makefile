@@ -51,7 +51,7 @@ plan: init
 	@terraform plan --var-file=terraform.tfvars  -detailed-exitcode -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
 
 apply: init 
-	@terraform apply --var-file=terraform.tfvars -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
+	@terraform apply --var-file=terraform.tfvars -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) $(TF_ARGS)
 
 output:
 	@$(MAKE) init > /dev/null 2>&1
