@@ -13,6 +13,8 @@ presubmits:
       rerun_command: "build-kube-dind-image"
       run_if_changed: 'kube-dind/'
       spec:
+        nodeSelector:
+          group_name: image-builder
         tolerations:
         - key: "imagebuilderonly"
           value: "true"
@@ -46,6 +48,8 @@ presubmits:
       rerun_command: "build-dind-image"
       run_if_changed: 'dind/'
       spec:
+        nodeSelector:
+          group_name: image-builder
         tolerations:
         - key: "imagebuilderonly"
           value: "true"
@@ -79,6 +83,8 @@ presubmits:
       rerun_command: "build-go-builder-image"
       run_if_changed: 'go-builder/'
       spec:
+        nodeSelector:
+          group_name: image-builder
         tolerations:
         - key: "imagebuilderonly"
           value: "true"
@@ -112,6 +118,8 @@ presubmits:
       rerun_command: "build-helm-image"
       run_if_changed: 'helm/'
       spec:
+        nodeSelector:
+          group_name: image-builder
         tolerations:
         - key: "imagebuilderonly"
           value: "true"
@@ -145,6 +153,8 @@ presubmits:
       rerun_command: "build-toolbox-image"
       run_if_changed: 'toolbox/'
       spec:
+        nodeSelector:
+          group_name: image-builder
         tolerations:
         - key: "imagebuilderonly"
           value: "true"
