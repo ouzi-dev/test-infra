@@ -4,7 +4,8 @@ presubmits:
       labels:
         preset-docker: "true"
       context: build-kube-dind-image
-      decorate: true 
+      decorate: true
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
       always_run: false 
       skip_report: false 
       max_concurrency: 1 
@@ -37,6 +38,7 @@ presubmits:
         preset-docker: "true"
       context: build-dind-image
       decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
       always_run: false 
       skip_report: false 
       max_concurrency: 1 
@@ -68,7 +70,8 @@ presubmits:
       labels:
         preset-docker: "true"
       context: build-go-builder-image
-      decorate: true 
+      decorate: true
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
       always_run: false 
       skip_report: false 
       max_concurrency: 1 
@@ -100,7 +103,8 @@ presubmits:
       labels:
         preset-docker: "true"
       context: build-helm-image
-      decorate: true 
+      decorate: true
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
       always_run: false 
       skip_report: false 
       max_concurrency: 1 
@@ -132,7 +136,8 @@ presubmits:
       labels:
         preset-docker: "true"
       context: build-toolbox-image
-      decorate: true 
+      decorate: true
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
       always_run: false 
       skip_report: false 
       max_concurrency: 1 
