@@ -26,7 +26,7 @@ infra-output:
 
 .PHONY: deploy
 deploy:
-	@$(MAKE) -C cluster setup deploy
+	@$(MAKE) -C cluster init deploy
 
 .PHONY: deploy-prow-config
 deploy-prow-config: 
@@ -34,7 +34,7 @@ deploy-prow-config:
 
 .PHONY: deploy-dry-run
 deploy-dry-run: 
-	@$(MAKE) -C cluster DRY_RUN=true setup deploy
+	@$(MAKE) -C cluster DRY_RUN=true init deploy
 
 .PHONY: get-cluster-credentials
 get-cluster-credentials:

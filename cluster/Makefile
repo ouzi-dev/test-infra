@@ -14,15 +14,13 @@ PROW_CHART_VERSION := v0.4.10
 HELM_PLUGIN_DIFF_URL := https://github.com/databus23/helm-diff
 HELM_PLUGIN_DIFF_VERSION := v3.0.0-rc.7
 
-setup: 
-	helm plugin install $(HELM_PLUGIN_DIFF_URL) --version $(HELM_PLUGIN_DIFF_VERSION) || echo "Plugin already installed - nothing to do"
-
 .PHONY: aws-identity-check
 aws-identity-check:
 	@if [ `aws sts get-caller-identity | jq -r .Account` != $(AWS_ACCOUNT_ID) ]; then echo "Pointing to the wrong AWS account..You may not proceed"; exit 1; fi;
 
 .PHONY: init
 init: 
+	helm plugin install $(HELM_PLUGIN_DIFF_URL) --version $(HELM_PLUGIN_DIFF_VERSION) || echo "Plugin already installed - nothing to do"
 	helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 	helm repo add jetstack https://charts.jetstack.io
 	helm repo update
