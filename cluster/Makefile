@@ -11,8 +11,8 @@ EXTERNALDNS_CHART_VERSION := 2.10.0
 NGINX_INGRESS_CHART_VERSION := 1.24.4
 PROW_CHART_VERSION := v0.4.10
 
-setup: 
-	helm plugin install https://github.com/databus23/helm-diff --version v3.0.0-rc.6 
+HELM_PLUGIN_DIFF_URL := https://github.com/databus23/helm-diff
+HELM_PLUGIN_DIFF_VERSION := v3.0.0-rc.7
 
 .PHONY: aws-identity-check
 aws-identity-check:
@@ -20,12 +20,13 @@ aws-identity-check:
 
 .PHONY: init
 init: 
+	helm plugin install $(HELM_PLUGIN_DIFF_URL) --version $(HELM_PLUGIN_DIFF_VERSION) || echo "Plugin already installed - nothing to do"
 	helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 	helm repo add jetstack https://charts.jetstack.io
 	helm repo update
 
 .PHONY: deploy
-deploy: render install-bootstrap install-credstash-controller install-cert-manager install-oauth-proxy install-external-dns install-nginx-ingress install-prow install-build-secrets
+deploy: render install-bootstrap install-credstash-controller install-cert-manager install-oauth-proxy install-external-dns install-nginx-ingress install-prow install-build-secrets 
 
 .PHONY: render
 render: render-bootstrap render-credstash-controller render-cert-manager render-oauth-proxy render-external-dns render-nginx-ingress render-prow render-build-secrets

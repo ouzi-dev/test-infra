@@ -40,7 +40,51 @@ presubmits:
               - make
             args:
               - monitoring-dry-run
-            image: quay.io/ouzi/toolbox:0.1.8
+            image: quay.io/ouzi/toolbox:0.1.9
+    - name: test-infra
+      context: test-infra
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1
+      labels:
+        preset-aws-ouzi: "true"
+      trigger: "(?m)test-infra( please)?" 
+      rerun_command: "test-infra"
+      run_if_changed: '^(infrastructure/.*)$'
+      spec: 
+        containers:
+          - name: "test-infra"
+            imagePullPolicy: IfNotPresent
+            command:
+              - make
+            args:
+              - infra-setup
+              - infra-plan
+            image: quay.io/ouzi/toolbox:0.1.9
+    - name: test-manifests
+      context: test-manifests
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1
+      labels:
+        preset-aws-ouzi: "true"
+      trigger: "(?m)test-manifests( please)?" 
+      rerun_command: "test-manifests"
+      run_if_changed: '^(cluster/.*)$'
+      spec: 
+        serviceAccountName: prow
+        containers:
+          - name: "test-manifests"
+            imagePullPolicy: IfNotPresent
+            command:
+              - make
+            args:
+              -  deploy-dry-run
+            image: quay.io/ouzi/toolbox:0.1.9
 postsubmits:
   ouzi-dev/test-infra:
     - name: test-config-postsubmit
@@ -77,4 +121,52 @@ postsubmits:
               - make
             args:
               - monitoring-apply
-            image: quay.io/ouzi/toolbox:0.1.8
+            image: quay.io/ouzi/toolbox:0.1.9
+    - name: test-infra
+      context: test-infra
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1
+      labels:
+        preset-aws-ouzi: "true"
+      trigger: "(?m)test-infra( please)?" 
+      rerun_command: "test-infra"
+      run_if_changed: '^(infrastructure/.*)$'
+      branches:
+        - master
+      spec: 
+        containers:
+          - name: "test-infra"
+            imagePullPolicy: IfNotPresent
+            command:
+              - make
+            args:
+              - infra-setup
+              - infra-apply
+            image: quay.io/ouzi/toolbox:0.1.9
+    - name: test-manifests
+      context: test-manifests
+      decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1
+      labels:
+        preset-aws-ouzi: "true"
+      trigger: "(?m)test-manifests( please)?" 
+      rerun_command: "test-manifests"
+      run_if_changed: '^(cluster/.*)$'
+      branches:
+        - master
+      spec: 
+        serviceAccountName: prow
+        containers:
+          - name: "test-manifests"
+            imagePullPolicy: IfNotPresent
+            command:
+              - make
+            args:
+              -  deploy
+            image: quay.io/ouzi/toolbox:0.1.9

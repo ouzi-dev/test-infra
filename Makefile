@@ -14,7 +14,7 @@ infra-plan:
 
 .PHONY: infra-apply
 infra-apply:
-	@$(MAKE) -C infrastructure apply
+	@$(MAKE) -C infrastructure TF_ARGS=-auto-approve apply
 
 .PHONY: infra-destroy
 infra-destroy:
@@ -26,7 +26,7 @@ infra-output:
 
 .PHONY: deploy
 deploy:
-	@$(MAKE) -C cluster deploy
+	@$(MAKE) -C cluster init deploy
 
 .PHONY: deploy-prow-config
 deploy-prow-config: 
@@ -34,7 +34,7 @@ deploy-prow-config:
 
 .PHONY: deploy-dry-run
 deploy-dry-run: 
-	@$(MAKE) -C cluster DRY_RUN=true deploy
+	@$(MAKE) -C cluster DRY_RUN=true init deploy
 
 .PHONY: get-cluster-credentials
 get-cluster-credentials:

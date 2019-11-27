@@ -140,3 +140,13 @@ build:
         key: prow_dms_secret_access_key
         table: singularity
         version: "0000000000000000001"
+    - name: aws-ouzi-creds
+      keys:
+      - name: access_key_id
+        key: prow-aws-access-key-id
+        table: credential-store
+        version: "0000000000000000001"
+      - name: secret_access_key
+        key: prow-aws-secret-access-key
+        table: credential-store
+        version: "0000000000000000001"

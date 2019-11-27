@@ -232,6 +232,19 @@ presets:
           name: github-token
           key: oauth
 - labels:
+    preset-aws-ouzi: "true"
+  env:
+  - name: AWS_ACCESS_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: aws-ouzi-creds
+        key: access_key_id
+  - name: AWS_SECRET_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: aws-ouzi-creds
+        key: secret_access_key
+- labels:
     preset-aws-dms: "true"
   env:
   - name: AWS_ACCESS_KEY_ID
