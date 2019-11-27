@@ -11,7 +11,12 @@ presubmits:
       trigger: "(?m)build-kube-dind-image( please)?" 
       rerun_command: "build-kube-dind-image"
       run_if_changed: 'kube-dind/'
-      spec: 
+      spec:
+        tolerations:
+        - key: "imagebuilderonly"
+          value: "true"
+          operator: "Equal"
+          effect: "PreferNoSchedule" 
         containers:
           - name: "build-kube-dind-image"
             imagePullPolicy: IfNotPresent
@@ -38,7 +43,12 @@ presubmits:
       trigger: "(?m)build-dind-image( please)?" 
       rerun_command: "build-dind-image"
       run_if_changed: 'dind/'
-      spec: 
+      spec:
+        tolerations:
+        - key: "imagebuilderonly"
+          value: "true"
+          operator: "Equal"
+          effect: "PreferNoSchedule"  
         containers:
           - name: "build-dind-image"
             imagePullPolicy: IfNotPresent
@@ -65,7 +75,12 @@ presubmits:
       trigger: "(?m)build-go-builder-image( please)?" 
       rerun_command: "build-go-builder-image"
       run_if_changed: 'go-builder/'
-      spec: 
+      spec:
+        tolerations:
+        - key: "imagebuilderonly"
+          value: "true"
+          operator: "Equal"
+          effect: "PreferNoSchedule"  
         containers:
           - name: "build-go-builder-image"
             imagePullPolicy: IfNotPresent
@@ -92,7 +107,12 @@ presubmits:
       trigger: "(?m)build-helm-image( please)?" 
       rerun_command: "build-helm-image"
       run_if_changed: 'helm/'
-      spec: 
+      spec:
+        tolerations:
+        - key: "imagebuilderonly"
+          value: "true"
+          operator: "Equal"
+          effect: "PreferNoSchedule" 
         containers:
           - name: "build-helm-image"
             imagePullPolicy: IfNotPresent
@@ -119,7 +139,12 @@ presubmits:
       trigger: "(?m)build-toolbox-image( please)?" 
       rerun_command: "build-toolbox-image"
       run_if_changed: 'toolbox/'
-      spec: 
+      spec:
+        tolerations:
+        - key: "imagebuilderonly"
+          value: "true"
+          operator: "Equal"
+          effect: "PreferNoSchedule" 
         containers:
           - name: "build-toolbox-image"
             imagePullPolicy: IfNotPresent
