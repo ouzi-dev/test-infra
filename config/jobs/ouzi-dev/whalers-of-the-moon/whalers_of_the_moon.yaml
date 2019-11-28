@@ -4,14 +4,22 @@ presubmits:
       labels:
         preset-docker: "true"
       context: build-kube-dind-image
-      decorate: true 
+      decorate: true
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
       always_run: false 
       skip_report: false 
       max_concurrency: 1 
       trigger: "(?m)build-kube-dind-image( please)?" 
       rerun_command: "build-kube-dind-image"
       run_if_changed: 'kube-dind/'
-      spec: 
+      spec:
+        nodeSelector:
+          group_name: image-builder
+        tolerations:
+        - key: "imagebuilderonly"
+          value: "true"
+          operator: "Equal"
+          effect: "PreferNoSchedule" 
         containers:
           - name: "build-kube-dind-image"
             imagePullPolicy: IfNotPresent
@@ -32,13 +40,21 @@ presubmits:
         preset-docker: "true"
       context: build-dind-image
       decorate: true 
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
       always_run: false 
       skip_report: false 
       max_concurrency: 1 
       trigger: "(?m)build-dind-image( please)?" 
       rerun_command: "build-dind-image"
       run_if_changed: 'dind/'
-      spec: 
+      spec:
+        nodeSelector:
+          group_name: image-builder
+        tolerations:
+        - key: "imagebuilderonly"
+          value: "true"
+          operator: "Equal"
+          effect: "PreferNoSchedule"  
         containers:
           - name: "build-dind-image"
             imagePullPolicy: IfNotPresent
@@ -58,14 +74,22 @@ presubmits:
       labels:
         preset-docker: "true"
       context: build-go-builder-image
-      decorate: true 
+      decorate: true
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
       always_run: false 
       skip_report: false 
       max_concurrency: 1 
       trigger: "(?m)build-go-builder-image( please)?" 
       rerun_command: "build-go-builder-image"
       run_if_changed: 'go-builder/'
-      spec: 
+      spec:
+        nodeSelector:
+          group_name: image-builder
+        tolerations:
+        - key: "imagebuilderonly"
+          value: "true"
+          operator: "Equal"
+          effect: "PreferNoSchedule"  
         containers:
           - name: "build-go-builder-image"
             imagePullPolicy: IfNotPresent
@@ -85,14 +109,22 @@ presubmits:
       labels:
         preset-docker: "true"
       context: build-helm-image
-      decorate: true 
+      decorate: true
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
       always_run: false 
       skip_report: false 
       max_concurrency: 1 
       trigger: "(?m)build-helm-image( please)?" 
       rerun_command: "build-helm-image"
       run_if_changed: 'helm/'
-      spec: 
+      spec:
+        nodeSelector:
+          group_name: image-builder
+        tolerations:
+        - key: "imagebuilderonly"
+          value: "true"
+          operator: "Equal"
+          effect: "PreferNoSchedule" 
         containers:
           - name: "build-helm-image"
             imagePullPolicy: IfNotPresent
@@ -112,14 +144,22 @@ presubmits:
       labels:
         preset-docker: "true"
       context: build-toolbox-image
-      decorate: true 
+      decorate: true
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
       always_run: false 
       skip_report: false 
       max_concurrency: 1 
       trigger: "(?m)build-toolbox-image( please)?" 
       rerun_command: "build-toolbox-image"
       run_if_changed: 'toolbox/'
-      spec: 
+      spec:
+        nodeSelector:
+          group_name: image-builder
+        tolerations:
+        - key: "imagebuilderonly"
+          value: "true"
+          operator: "Equal"
+          effect: "PreferNoSchedule" 
         containers:
           - name: "build-toolbox-image"
             imagePullPolicy: IfNotPresent
