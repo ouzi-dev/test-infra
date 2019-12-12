@@ -126,6 +126,22 @@ branch-protection:
               restrictions: # restrict who can push to the repo
                 users:
                 - ouzibot
+        dind-action:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
+        go-make-action:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
 tide:
   sync_period: 1m
   merge_method:
