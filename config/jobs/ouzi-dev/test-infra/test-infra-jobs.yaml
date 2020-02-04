@@ -20,7 +20,7 @@ presubmits:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
               - --job-config-path=config/jobs
-            image: gcr.io/k8s-prow/checkconfig::v20200131-19ad23dfd
+            image: gcr.io/k8s-prow/checkconfig:v20200131-19ad23dfd
     - name: monitoring-dry-run
       context: monitoring-dry-run
       decorate: true 
