@@ -1,5 +1,5 @@
 presubmits:
-  ouzi-dev:
+  ouzi-dev/*:
   - name: validate-prow-yaml
     always_run: true
     decorate: true
