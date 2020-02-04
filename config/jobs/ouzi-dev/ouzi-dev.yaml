@@ -1,0 +1,21 @@
+presubmits:
+  ouzi-dev:
+  - name: validate-prow-yaml
+    always_run: true
+    decorate: true
+    trigger: "(?m)validate-prow-yaml( please)?" 
+    rerun_command: "validate-prow-yaml"
+    run_if_changed: '.prow.yaml'
+    extra_refs:
+      - org: ouzi-dev
+        repo: test-infra
+        base_ref: master
+    spec:
+      containers:
+      - image: gcr.io/k8s-prow/checkconfig:v20200131-19ad23dfd
+        command:
+        - /app/prow/cmd/checkconfig/app.binary
+        args:
+        - --plugin-config=../test-infra/prow/plugins.yaml
+        - --config-path=../test-infra/prow/config.yaml
+        - --prow-yaml-repo-name=$(REPO_OWNER)/$(REPO_NAME)
