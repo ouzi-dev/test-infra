@@ -154,7 +154,8 @@ tide:
   sync_period: 1m
   merge_method:
     ouzi-dev: squash
-  pr_status_base_url: https://prow.test-infra.ouzi.io/pr
+  pr_status_base_urls:
+    '*': https://prow.test-infra.ouzi.io/pr
   blocker_label: tide/merge-blocker
   squash_label: tide/merge-method-squash
   rebase_label: tide/merge-method-rebase
