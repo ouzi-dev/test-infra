@@ -154,7 +154,8 @@ tide:
   sync_period: 1m
   merge_method:
     ouzi-dev: squash
-  pr_status_base_url: https://prow.test-infra.ouzi.io/pr
+  pr_status_base_urls:
+    '*': https://prow.test-infra.ouzi.io/pr
   blocker_label: tide/merge-blocker
   squash_label: tide/merge-method-squash
   rebase_label: tide/merge-method-rebase
@@ -182,24 +183,22 @@ github_reporter:
   - presubmit
   - postsubmit
 
-slack_reporter:
-  # Default: None
-  job_types_to_report:
-  - presubmit
-  - postsubmit
-  - periodic
-  - batch
-  # Default: None
-  job_states_to_report:
-  - triggered
-  - pending
-  - success
-  - failure
-  - aborted
-  - error
-  channel: cicd-job-status
-  # The template shown below is the default
-  report_template: 'Job {{.Spec.Job}} of type {{.Spec.Type}} ended with state {{.Status.State}}. <{{.Status.URL}}|View logs>'
+
+
+
+slack_reporter_configs:
+  '*':
+    job_types_to_report:
+      - presubmit
+      - postsubmit
+      - periodic
+      - batch
+    job_states_to_report:
+      - failure
+      - error
+    channel: cicd-job-status
+    # The template shown below is the default
+    report_template: 'Job {{.Spec.Job}} of type {{.Spec.Type}} ended with state {{.Status.State}}. <{{.Status.URL}}|View logs>'
 
 presets:
 # credential presets
