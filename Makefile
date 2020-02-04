@@ -50,4 +50,4 @@ monitoring-apply:
 
 .PHONY: dev-test-config
 dev-test-config:
-	@docker run -v $(DIR)/:/test-infra  gcr.io/k8s-prow/checkconfig:v20191028-a687a71be --config-path=/test-infra/prow/config.yaml --plugin-config=/test-infra/prow/plugins.yaml  --job-config-path=/test-infra/config/jobs
+	@docker run -v $(DIR)/:/test-infra  gcr.io/k8s-prow/checkconfig:v20200131-19ad23dfd --config-path=/test-infra/prow/config.yaml --plugin-config=/test-infra/prow/plugins.yaml  --job-config-path=/test-infra/config/jobs
