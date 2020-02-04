@@ -9,7 +9,7 @@ include ../infrastructure/terraform.tfvars
 CERTMANAGER_CHART_VERSION := v0.11.0
 EXTERNALDNS_CHART_VERSION := 2.10.0
 NGINX_INGRESS_CHART_VERSION := 1.24.4
-PROW_CHART_VERSION := v0.6.0
+PROW_CHART_VERSION := v0.6.4
 
 HELM_PLUGIN_DIFF_URL := https://github.com/databus23/helm-diff
 HELM_PLUGIN_DIFF_VERSION := v3.0.0-rc.7
