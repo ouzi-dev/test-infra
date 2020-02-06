@@ -2,7 +2,7 @@ prowjob_namespace: prow
 pod_namespace: prow-test-pods
 
 plank:
-  job_url_template: 'https://prow.test-infra.ouzi.io/view/gcs/ouzidev-testinfra-252513-prow-artefacts/pr-logs/pull/{{.Spec.Refs.Repo}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}'
+  job_url_template: 'https://prow.test-infra.ouzi.io/view/gcs/ouzidev-testinfra-252513-prow-artefacts/pr-logs/pull/{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}'
   report_template: '[Full PR test history](https://prow.test-infra.ouzi.io/pr-history?org={{.Spec.Refs.Org}}&repo={{.Spec.Refs.Repo}}&pr={{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}})'
   pod_pending_timeout: 60m
   default_decoration_configs:
