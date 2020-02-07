@@ -223,33 +223,6 @@ slack_reporter_configs:
 presets:
 # credential presets
 - labels:
-    preset-terraform: "true"
-  env:
-  - name: GOOGLE_APPLICATION_CREDENTIALS
-    value: /etc/google-service-account/service-account.json
-  # storage e2e tests borrow this as a preconfigured key instead of creating and
-  # injecting a new key. this allows us to avoid mass key download warnings
-  - name: E2E_GOOGLE_APPLICATION_CREDENTIALS
-    value: /etc/google-service-account/service-account.json
-  - name: AWS_ACCESS_KEY_ID
-    valueFrom:
-      secretKeyRef:
-        name: terraform-ouzidev-aws-service-account
-        key: access_key_id
-  - name: AWS_SECRET_ACCESS_KEY
-    valueFrom:
-      secretKeyRef:
-        name: terraform-ouzidev-aws-service-account
-        key: secret_access_key
-  volumes:
-  - name: google-service-account
-    secret:
-      secretName: terraform-ouzidev-google-service-account
-  volumeMounts:
-  - name: google-service-account
-    mountPath: /etc/google-service-account
-    readOnly: true
-- labels:
     preset-docker: "true"
   env:
     - name: DOCKER_CONFIG
