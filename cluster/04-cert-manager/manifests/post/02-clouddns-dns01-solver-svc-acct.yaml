@@ -16,7 +16,8 @@ metadata:
   name: clouddns-dns01-solver-svc-acct-2
   namespace: {{ .namespace }}
 spec:
+  secrets:
   - name: key.json
-    from: {{ .credstash.svc_account_key | quote }}
+    key: {{ .credstash.svc_account_key | quote }}
     table: {{ .credstash.svc_account_table | quote }}
     version: {{ .credstash.svc_account_version | quote }}
