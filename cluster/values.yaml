@@ -112,12 +112,6 @@ build:
         key: prow-aws-secret-access-key
         table: credential-store
         version: "0000000000000000001"
-    - name: terraform-ouzidev-google-service-account
-      keys:
-      - name: key.json
-        key: ouzi-prow-google-cloud-service-account
-        table: credential-store
-        version: "0000000000000000001"
     - name: ouzidev-cannon-prow-gcloud-service-account
       keys:
         - name: service-account.json
