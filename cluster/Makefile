@@ -169,7 +169,7 @@ install-credstash-operator: aws-identity-check
 	$(eval CREDSTASH_AWS_ACCESS_KEY_ID=$(shell credstash --region $(CREDSTASH_AWS_REGION) get prow-aws-access-key-id ))
 	$(eval CREDSTASH_AWS_SECRET_ACCESS_KEY=$(shell credstash --region $(CREDSTASH_AWS_REGION) get prow-aws-secret-access-key ))
 	@$(MAKE) FOLDER=10-credstash-operator/manifests/pre KUBECTL_ARGS=--validate=false  install-manifests-gotpl
-	$(MAKE) \
+	@$(MAKE) \
 		CHART=https://github.com/ouzi-dev/credstash-operator/releases/download/$(CREDSTASH_OPERATOR_VERSION)/credstash-operator-$(CREDSTASH_OPERATOR_VERSION).tgz \
 		NAME=tomato \
 		NAMESPACE=credstash-operator \
