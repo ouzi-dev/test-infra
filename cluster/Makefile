@@ -27,20 +27,16 @@ init:
 	helm repo update
 
 .PHONY: deploy
-deploy: render install-bootstrap install-credstash-controller install-cert-manager install-oauth-proxy install-external-dns install-nginx-ingress install-prow install-build-secrets install-credstash-operator
+deploy: render install-bootstrap install-cert-manager install-oauth-proxy install-external-dns install-nginx-ingress install-prow install-build-secrets install-credstash-operator
 
 .PHONY: render
-render: render-bootstrap render-credstash-controller render-cert-manager render-oauth-proxy render-external-dns render-nginx-ingress render-prow render-build-secrets render-credstash-operator
+render: render-bootstrap render-cert-manager render-oauth-proxy render-external-dns render-nginx-ingress render-prow render-build-secrets render-credstash-operator
 
 .PHONY: render-bootstrap
 render-bootstrap: 
 	@$(MAKE) FOLDER=00-storage render-gotpl-manifests
 	@$(MAKE) FOLDER=01-rbac render-gotpl-manifests
 	@$(MAKE) FOLDER=02-pod-disruption-budget render-gotpl-manifests
-
-.PHONY: render-credstash-controller
-render-credstash-controller:
-	@$(MAKE) FOLDER=03-credstash-controller render-gotpl-manifests
 
 .PHONY: render-cert-manager
 render-cert-manager:
@@ -74,6 +70,7 @@ render-build-secrets:
 render-credstash-operator:
 	@$(MAKE) FOLDER=10-credstash-operator render-gotpl-manifests
 	@$(MAKE) FOLDER=10-credstash-operator render-helm-manifests
+
 .PHONY: render-gotpl-manifests
 render-gotpl-manifests:
 	@echo Rendering gotpl values in $(FOLDER)
@@ -101,15 +98,6 @@ install-bootstrap:
 	@$(MAKE) FOLDER=00-storage/manifests/pre install-manifests-gotpl
 	@$(MAKE) FOLDER=01-rbac/manifests/pre install-manifests-gotpl
 	@$(MAKE) FOLDER=02-pod-disruption-budget/manifests/pre install-manifests-gotpl
-
-.PHONY: install-credstash-controller
-install-credstash-controller: aws-identity-check
-	$(eval CREDSTASH_AWS_ACCESS_KEY_ID=$(shell credstash --region $(CREDSTASH_AWS_REGION) get prow-aws-access-key-id ))
-	$(eval CREDSTASH_AWS_SECRET_ACCESS_KEY=$(shell credstash --region $(CREDSTASH_AWS_REGION) get prow-aws-secret-access-key ))
-	@$(MAKE) \
-		FOLDER=03-credstash-controller/manifests/pre \
-		EXTRA_ARGS='--set aws.access_key_id="$(CREDSTASH_AWS_ACCESS_KEY_ID)" --set aws.secret_access_key="$(CREDSTASH_AWS_SECRET_ACCESS_KEY)"' \
-		install-manifests-gotpl
 
 .PHONY: install-cert-manager
 install-cert-manager:

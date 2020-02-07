@@ -6,11 +6,7 @@ cluster:
 github:
   org: ouzi-dev
   bot:
-    username: ouzibot  
-credstashcontroller:
-  namespace: credstash-controller
-  aws:
-    region: eu-west-1
+    username: ouzibot
 certmanager:
   namespace: cert-manager
   svc_account:
