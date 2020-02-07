@@ -9,3 +9,14 @@ spec:
     from: {{ .credstash.svc_account_key | quote }}
     table: {{ .credstash.svc_account_table | quote }}
     version: {{ .credstash.svc_account_version | quote }}
+---  
+apiVersion: credstash.ouzi.tech/v1alpha1
+kind: CredstashSecret
+metadata:
+  name: clouddns-dns01-solver-svc-acct-2
+  namespace: {{ .namespace }}
+spec:
+  - name: key.json
+    from: {{ .credstash.svc_account_key | quote }}
+    table: {{ .credstash.svc_account_table | quote }}
+    version: {{ .credstash.svc_account_version | quote }}

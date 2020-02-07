@@ -150,3 +150,7 @@ build:
         key: prow-aws-secret-access-key
         table: credential-store
         version: "0000000000000000001"
+credstashOperator:
+  namespace: credstash-operator
+  aws:
+    region: eu-west-1
