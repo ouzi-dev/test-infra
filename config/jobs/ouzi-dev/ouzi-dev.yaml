@@ -2,7 +2,7 @@ presubmits:
   ouzi-dev/*:
   - name: validate-prow-yaml
     always_run: true
-    decorate: false
+    decorate: true
     trigger: "(?m)validate-prow-yaml( please)?" 
     rerun_command: "validate-prow-yaml"
     extra_refs:
@@ -20,12 +20,12 @@ presubmits:
         - --prow-yaml-repo-name=$(REPO_OWNER)/$(REPO_NAME)
   - name: validate-no-creds
     always_run: true
-    decorate: false
+    decorate: true
     trigger: "(?m)validate-no-creds( please)?" 
     rerun_command: "validate-no-creds"
     spec:
       containers:
-      - image: quay.io/ouzi/git-secret-scanner
+      - image: quay.io/ouzi/git-secret-scanner:0.0.3
         command:
         - git-secrets
         args:
