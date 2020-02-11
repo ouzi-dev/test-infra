@@ -1,5 +1,18 @@
 presubmits:
   ouzi-dev/test-infra:
+    - name: validate-no-creds
+      always_run: true
+      decorate: true
+      clone_uri: "git@github.com:ouzi-dev/test-infra.git"
+      trigger: "(?m)validate-no-creds( please)?" 
+      rerun_command: "validate-no-creds"
+      spec:
+        containers:
+        - image: quay.io/ouzi/git-secret-scanner:0.0.3
+          command:
+          - git-secrets
+          args:
+          - --scan
     - name: test-prow-config
       context: test-prow-config
       decorate: true 
