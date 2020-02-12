@@ -1,5 +1,5 @@
 presubmits:
-  ouzi-dev/ouzi.io:
+  ouzi-dev/syrinx:
     # https://github.com/kubernetes/test-infra/blob/master/prow/inrepoconfig.md
     - name: validate-prow-yaml
       always_run: true

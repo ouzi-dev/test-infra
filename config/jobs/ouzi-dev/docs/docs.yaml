@@ -1,5 +1,5 @@
 presubmits:
-  ouzi-dev/bigbang:
+  ouzi-dev/docs:
     # https://github.com/kubernetes/test-infra/blob/master/prow/inrepoconfig.md
     - name: validate-prow-yaml
       always_run: true
