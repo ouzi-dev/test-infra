@@ -1,10 +1,10 @@
 presubmits:
-  ouzi-dev/cannon-prow:
+  ouzi-dev/hoarder-prow:
     # https://github.com/kubernetes/test-infra/blob/master/prow/inrepoconfig.md
     - name: validate-prow-yaml
       always_run: true
       decorate: true
-      clone_uri: "git@github.com:ouzi-dev/cannon-prow.git"
+      clone_uri: "git@github.com:ouzi-dev/hoarder-prow.git"
       trigger: "(?m)validate-prow-yaml( please)?" 
       rerun_command: "validate-prow-yaml"
       extra_refs:
@@ -23,7 +23,7 @@ presubmits:
     - name: validate-no-creds
       always_run: true
       decorate: true
-      clone_uri: "git@github.com:ouzi-dev/cannon-prow.git"
+      clone_uri: "git@github.com:ouzi-dev/hoarder-prow.git"
       trigger: "(?m)validate-no-creds( please)?" 
       rerun_command: "validate-no-creds"
       spec:
