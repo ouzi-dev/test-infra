@@ -202,6 +202,14 @@ branch-protection:
               restrictions: # restrict who can push to the repo
                 users:
                 - ouzibot
+        hoarder-prow:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
 tide:
   sync_period: 1m
   merge_method:
