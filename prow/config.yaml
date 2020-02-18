@@ -333,6 +333,39 @@ presets:
     readOnly: true
   - name: kubeconfig
     mountPath: /etc/kube
+- labels:
+    preset-aws-4leaf: "true"
+  env:
+  - name: AWS_ACCESS_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: aws-4leaf-creds
+        key: access_key_id
+  - name: AWS_SECRET_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: aws-4leaf-creds
+        key: secret_access_key
+- labels:
+    preset-kubeconfig-hoarder-prow: "true"
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/google-service-account/service-account.json
+  - name: KUBECONFIG
+    value: /etc/kube/kubeconfig
+  volumes:
+  - name: google-service-account
+    secret:
+      secretName: ouzidev-hoarder-prow-gcloud-service-account
+  - name: kubeconfig
+    secret:
+      secretName: ouzidev-hoarder-prow-gke-kubeconfig
+  volumeMounts:
+  - name: google-service-account
+    mountPath: /etc/google-service-account
+    readOnly: true
+  - name: kubeconfig
+    mountPath: /etc/kube
 
 in_repo_config:
   enabled:
