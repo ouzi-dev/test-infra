@@ -92,13 +92,13 @@ build:
           key: github_bot_personal_access_token_prow
           table: credential-store
           version: "0000000000000000001"
-    - name: ouzi-bot-dockerconfig # needs to be appleid manually as the credstash controller only creates a Opaque type secret unfortunately
+    - name: ouzi-bot-dockerconfig # needs to be applied manually as the credstash controller only creates a Opaque type secret unfortunately
       keys:
         - name: .dockerconfigjson
           key: quay_bot_dockerconfig
           table: credential-store
           version: "0000000000000000001"
-    - name: terraform-ouzidev-aws-service-account
+    - name: aws-ouzi-creds
       keys:
       - name: access_key_id
         key: prow-aws-access-key-id
@@ -108,6 +108,7 @@ build:
         key: prow-aws-secret-access-key
         table: credential-store
         version: "0000000000000000001"
+# DMS
     - name: ouzidev-cannon-prow-gcloud-service-account
       keys:
         - name: service-account.json
@@ -130,15 +131,28 @@ build:
         key: prow_dms_secret_access_key
         table: singularity
         version: "0000000000000000001"
-    - name: aws-ouzi-creds
+# Singularity
+    - name: ouzidev-hoarder-prow-gcloud-service-account
+      keys:
+        - name: service-account.json
+          key: ouzidev-hoarder-prow-gcloud-service-account
+          table: singularity
+          version: "0000000000000000001"
+    - name: ouzidev-hoarder-prow-gke-kubeconfig
+      keys:
+        - name: kubeconfig
+          key: ouzidev-hoarder-prow-gke-kubeconfig
+          table: singularity
+          version: "0000000000000000001"
+    - name: aws-4leaf-creds
       keys:
       - name: access_key_id
-        key: prow-aws-access-key-id
-        table: credential-store
+        key: prow_4leaf_access_key_id
+        table: singularity
         version: "0000000000000000001"
       - name: secret_access_key
-        key: prow-aws-secret-access-key
-        table: credential-store
+        key: prow_4leaf_secret_access_key
+        table: singularity
         version: "0000000000000000001"
 credstashOperator:
   namespace: credstash-operator
