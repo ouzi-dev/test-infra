@@ -278,3 +278,38 @@ presubmits:
               requests:
                 memory: "2Gi"
                 cpu: 1
+    - name: build-python-builder-image
+      labels:
+        preset-docker: "true"
+      context: build-python-builder-image
+      decorate: true
+      clone_uri: "git@github.com:ouzi-dev/whalers-of-the-moon.git"
+      always_run: false 
+      skip_report: false 
+      max_concurrency: 1 
+      trigger: "(?m)build-python-builder-image( please)?" 
+      rerun_command: "build-python-builder-image"
+      run_if_changed: 'python-builder/'
+      spec:
+        nodeSelector:
+          group_name: image-builder
+        tolerations:
+        - key: "imagebuilderonly"
+          value: "true"
+          operator: "Equal"
+          effect: "PreferNoSchedule"  
+        containers:
+          - name: "build-python-builder-image"
+            imagePullPolicy: IfNotPresent
+            image: quay.io/ouzi/kube-dind:18.09
+            command:
+              - runner.sh
+            args:
+              - make
+              - python-builder-push
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                memory: "2Gi"
+                cpu: 1
