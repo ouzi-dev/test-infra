@@ -36,6 +36,8 @@ externalDns:
   replicas: 1
 nginxIngress:
   namespace: nginx-ingress
+gkePreemptibleKiller:
+  namespace: gke-preemptible-killer
 prow:
   namespace: prow
   namespaceForJobs: prow-test-pods
