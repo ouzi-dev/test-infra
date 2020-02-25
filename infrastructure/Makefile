@@ -73,6 +73,7 @@ export-secrets-to-credstash: aws-identity-check
 	$(eval CREDSTASH_AWS_ACCESS_KEY_ID=$(shell cat .tf_output.json | jq -r .prow_aws_access_key_id.value))
 	$(eval CREDSTASH_AWS_SECRET_ACCESS_KEY=$(shell cat .tf_output.json | jq -r .prow_aws_secret_access_key.value))
 	$(shell cat .tf_output.json | jq -r .certmanager_svc_account_key.value | base64 -D > .CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY )
+	$(shell cat .tf_output.json | jq -r .preemptible_killer_key_svc_account_key.value | base64 -D > .CREDSTASH_GKE_PREEMPTIBLE_KILLER_SVC_ACCOUNT_KEY )
 	$(shell cat .tf_output.json | jq -r .prow_bucket_svc_account_key.value | base64 -D > .CREDSTASH_PROW_BUCKET_SVC_ACCOUNT_KEY )
 	@rm .tf_output.json
 	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-aws-access-key-id || true
@@ -83,6 +84,8 @@ export-secrets-to-credstash: aws-identity-check
 	@credstash --region ${CREDSTASH_AWS_REGION} put prow-cert-manager-svc-account-key @.CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY
 	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-bucket-svc-account-key || true
 	@credstash --region ${CREDSTASH_AWS_REGION} put prow-bucket-svc-account-key @.CREDSTASH_PROW_BUCKET_SVC_ACCOUNT_KEY
+	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-gke-preemptible-killer-svc-account-key || true
+	@credstash --region ${CREDSTASH_AWS_REGION} put prow-gke-preemptible-killer-svc-account-key @.CREDSTASH_GKE_PREEMPTIBLE_KILLER_SVC_ACCOUNT_KEY
 	$(eval SERVER=$(shell gcloud container clusters describe $(gke_name) --region=$(gcloud_region) --format='value(endpoint)' ))
 	$(eval CA=$(shell gcloud container clusters describe $(gke_name) --region=$(gcloud_region) --format='value(masterAuth.clusterCaCertificate)' ))
 	@gotpl .kubeconfig.yaml.tpl --set server=$(SERVER) --set ca=$(CA) > .kubeconfig.yaml 

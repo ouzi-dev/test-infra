@@ -7,15 +7,15 @@ terraform {
 provider "google" {
   region      = var.gcloud_region
   project     = var.gcloud_project
-  version     = "2.13"
-  credentials = "${file("${var.google_credentials_file_path}")}"
+  version     = "3.8.0"
+  credentials = file(var.google_credentials_file_path)
 }
 
 provider "google-beta" {
   region      = var.gcloud_region
   project     = var.gcloud_project
-  version     = "2.13"
-  credentials = "${file("${var.google_credentials_file_path}")}"
+  version     = "3.8.0"
+  credentials = file(var.google_credentials_file_path)
 }
 
 provider "aws" {
@@ -41,7 +41,7 @@ provider "random" {
 }
 
 module "prow-cluster" {
-  source = "github.com/ouzi-dev/prow-gke-terraform?ref=v0.4.3"
+  source = "github.com/ouzi-dev/prow-gke-terraform?ref=v0.7.0"
 #  source = "../../prow-gke-terraform"
   gcloud_region              = var.gcloud_region
   gcloud_project             = var.gcloud_project
