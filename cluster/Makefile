@@ -34,7 +34,7 @@ init:
 deploy: render install-bootstrap install-cert-manager install-oauth-proxy install-external-dns install-nginx-ingress install-prow install-build-secrets install-credstash-operator install-gke-preemptible-killer install-gke-node-termination-handler 
 
 .PHONY: render
-render: render-bootstrap render-cert-manager render-oauth-proxy render-external-dns render-nginx-ingress render-prow render-build-secrets render-credstash-operator render-gke-preemptible-killer render-gke-preemptible-killer
+render: render-bootstrap render-cert-manager render-oauth-proxy render-external-dns render-nginx-ingress render-prow render-build-secrets render-credstash-operator render-gke-preemptible-killer render-gke-node-termination-handler
 
 .PHONY: render-bootstrap
 render-bootstrap: 
@@ -79,8 +79,8 @@ render-credstash-operator:
 render-gke-preemptible-killer:
 	@$(MAKE) FOLDER=11-gke-preemptible-killer render-gotpl-manifests
 
-.PHONY: render-gke-preemptible-killer
-render-gke-preemptible-killer:
+.PHONY: render-gke-node-termination-handler
+render-gke-node-termination-handler:
 	@$(MAKE) FOLDER=12-gke-node-termination-handler render-gotpl-manifests
 
 .PHONY: render-gotpl-manifests

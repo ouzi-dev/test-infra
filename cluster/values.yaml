@@ -1,5 +1,6 @@
 email: team@ouzi.dev
 baseDomain: test-infra.ouzi.io
+
 cluster:
   admin:
     group: team@ouzi.dev
@@ -7,6 +8,12 @@ github:
   org: ouzi-dev
   bot:
     username: ouzibot
+
+credstashOperator:
+  namespace: credstash-operator
+  aws:
+    region: eu-west-1
+    
 certmanager:
   namespace: cert-manager
   svc_account:
@@ -14,6 +21,7 @@ certmanager:
       key: prow-cert-manager-svc-account-key
       table: credential-store
       version: "0000000000000000001"
+
 oauth2Proxy:
   namespace: oauth-proxy
   clientid:
@@ -31,11 +39,14 @@ oauth2Proxy:
       key: prow-cluster-github-oauth-cookie-secret
       table: credential-store
       version: "0000000000000000001"
+
 externalDns:
   namespace: external-dns
   replicas: 1
+
 nginxIngress:
   namespace: nginx-ingress
+
 gkePreemptibleKiller:
   namespace: gke-preemptible-killer
   service_account:
@@ -162,7 +173,3 @@ build:
         key: prow_4leaf_secret_access_key
         table: singularity
         version: "0000000000000000001"
-credstashOperator:
-  namespace: credstash-operator
-  aws:
-    region: eu-west-1
