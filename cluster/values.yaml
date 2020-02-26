@@ -38,6 +38,12 @@ nginxIngress:
   namespace: nginx-ingress
 gkePreemptibleKiller:
   namespace: gke-preemptible-killer
+  service_account:
+    credstash:
+      key: prow-gke-preemptible-killer-svc-account-key
+      table: credential-store
+      version: "0000000000000000001"
+    
 prow:
   namespace: prow
   namespaceForJobs: prow-test-pods
