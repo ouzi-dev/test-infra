@@ -13,7 +13,7 @@ credstashOperator:
   namespace: credstash-operator
   aws:
     region: eu-west-1
-    
+
 certmanager:
   namespace: cert-manager
   svc_account:
@@ -117,14 +117,15 @@ build:
           key: quay_bot_dockerconfig
           table: credential-store
           version: "0000000000000000001"
+# Ouzi
     - name: aws-ouzi-creds
       keys:
       - name: access_key_id
-        key: prow-aws-access-key-id
+        key: terraform-aws-access-key-id
         table: credential-store
         version: "0000000000000000001"
       - name: secret_access_key
-        key: prow-aws-secret-access-key
+        key: terraform-aws-secret-access-key
         table: credential-store
         version: "0000000000000000001"
 # DMS
