@@ -156,21 +156,21 @@ build:
       keys:
         - name: service-account.json
           key: ouzidev-hoarder-prow-gcloud-service-account
-          table: singularity
+          table: fourleaf
           version: "0000000000000000001"
     - name: ouzidev-hoarder-prow-gke-kubeconfig
       keys:
         - name: kubeconfig
           key: ouzidev-hoarder-prow-gke-kubeconfig
-          table: singularity
+          table: fourleaf
           version: "0000000000000000001"
     - name: aws-4leaf-creds
       keys:
       - name: access_key_id
         key: prow_4leaf_access_key_id
-        table: singularity
+        table: fourleaf
         version: "0000000000000000001"
       - name: secret_access_key
         key: prow_4leaf_secret_access_key
-        table: singularity
+        table: fourleaf
         version: "0000000000000000001"
