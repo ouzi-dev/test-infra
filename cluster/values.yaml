@@ -1,5 +1,6 @@
 email: team@ouzi.dev
 baseDomain: test-infra.ouzi.io
+
 cluster:
   admin:
     group: team@ouzi.dev
@@ -7,6 +8,12 @@ github:
   org: ouzi-dev
   bot:
     username: ouzibot
+
+credstashOperator:
+  namespace: credstash-operator
+  aws:
+    region: eu-west-1
+
 certmanager:
   namespace: cert-manager
   svc_account:
@@ -14,6 +21,7 @@ certmanager:
       key: prow-cert-manager-svc-account-key
       table: credential-store
       version: "0000000000000000001"
+
 oauth2Proxy:
   namespace: oauth-proxy
   clientid:
@@ -31,11 +39,22 @@ oauth2Proxy:
       key: prow-cluster-github-oauth-cookie-secret
       table: credential-store
       version: "0000000000000000001"
+
 externalDns:
   namespace: external-dns
   replicas: 1
+
 nginxIngress:
   namespace: nginx-ingress
+
+gkePreemptibleKiller:
+  namespace: gke-preemptible-killer
+  service_account:
+    credstash:
+      key: prow-gke-preemptible-killer-svc-account-key
+      table: credential-store
+      version: "0000000000000000001"
+    
 prow:
   namespace: prow
   namespaceForJobs: prow-test-pods
@@ -98,14 +117,15 @@ build:
           key: quay_bot_dockerconfig
           table: credential-store
           version: "0000000000000000001"
+# Ouzi
     - name: aws-ouzi-creds
       keys:
       - name: access_key_id
-        key: prow-aws-access-key-id
+        key: terraform-aws-access-key-id
         table: credential-store
         version: "0000000000000000001"
       - name: secret_access_key
-        key: prow-aws-secret-access-key
+        key: terraform-aws-secret-access-key
         table: credential-store
         version: "0000000000000000001"
 # DMS
@@ -136,25 +156,21 @@ build:
       keys:
         - name: service-account.json
           key: ouzidev-hoarder-prow-gcloud-service-account
-          table: singularity
+          table: fourleaf
           version: "0000000000000000001"
     - name: ouzidev-hoarder-prow-gke-kubeconfig
       keys:
         - name: kubeconfig
           key: ouzidev-hoarder-prow-gke-kubeconfig
-          table: singularity
+          table: fourleaf
           version: "0000000000000000001"
     - name: aws-4leaf-creds
       keys:
       - name: access_key_id
         key: prow_4leaf_access_key_id
-        table: singularity
+        table: fourleaf
         version: "0000000000000000001"
       - name: secret_access_key
         key: prow_4leaf_secret_access_key
-        table: singularity
+        table: fourleaf
         version: "0000000000000000001"
-credstashOperator:
-  namespace: credstash-operator
-  aws:
-    region: eu-west-1

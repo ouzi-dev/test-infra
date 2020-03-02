@@ -1,5 +1,6 @@
 DRY_RUN ?= false
 
+# Ouzi aws account
 AWS_ACCOUNT_ID := 257496065652
 CREDSTASH_AWS_REGION:= eu-west-1
 
@@ -11,6 +12,7 @@ EXTERNALDNS_CHART_VERSION := 2.10.0
 NGINX_INGRESS_CHART_VERSION := 1.24.4
 PROW_CHART_VERSION := v0.6.5
 CREDSTASH_OPERATOR_VERSION := v1.6.0
+ESTAFETTE_GKE_PREEMPTIBLE_KILLER := 0.1.0
 
 HELM_PLUGIN_DIFF_URL := https://github.com/databus23/helm-diff
 HELM_PLUGIN_DIFF_VERSION := v3.0.0-rc.7
@@ -24,13 +26,15 @@ init:
 	helm plugin install $(HELM_PLUGIN_DIFF_URL) --version $(HELM_PLUGIN_DIFF_VERSION) || echo "Plugin already installed - nothing to do"
 	helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 	helm repo add jetstack https://charts.jetstack.io
+	helm repo add estafette https://helm.estafette.io
+
 	helm repo update
 
 .PHONY: deploy
-deploy: render install-bootstrap install-cert-manager install-oauth-proxy install-external-dns install-nginx-ingress install-prow install-build-secrets install-credstash-operator
+deploy: render install-bootstrap install-cert-manager install-oauth-proxy install-external-dns install-nginx-ingress install-prow install-build-secrets install-credstash-operator install-gke-preemptible-killer install-gke-node-termination-handler 
 
 .PHONY: render
-render: render-bootstrap render-cert-manager render-oauth-proxy render-external-dns render-nginx-ingress render-prow render-build-secrets render-credstash-operator
+render: render-bootstrap render-cert-manager render-oauth-proxy render-external-dns render-nginx-ingress render-prow render-build-secrets render-credstash-operator render-gke-preemptible-killer render-gke-node-termination-handler
 
 .PHONY: render-bootstrap
 render-bootstrap: 
@@ -70,6 +74,14 @@ render-build-secrets:
 render-credstash-operator:
 	@$(MAKE) FOLDER=10-credstash-operator render-gotpl-manifests
 	@$(MAKE) FOLDER=10-credstash-operator render-helm-manifests
+
+.PHONY: render-gke-preemptible-killer
+render-gke-preemptible-killer:
+	@$(MAKE) FOLDER=11-gke-preemptible-killer render-gotpl-manifests
+
+.PHONY: render-gke-node-termination-handler
+render-gke-node-termination-handler:
+	@$(MAKE) FOLDER=12-gke-node-termination-handler render-gotpl-manifests
 
 .PHONY: render-gotpl-manifests
 render-gotpl-manifests:
@@ -154,8 +166,8 @@ install-build-secrets:
 
 .PHONY: install-credstash-operator
 install-credstash-operator: aws-identity-check
-	$(eval CREDSTASH_AWS_ACCESS_KEY_ID=$(shell credstash --region $(CREDSTASH_AWS_REGION) get prow-aws-access-key-id ))
-	$(eval CREDSTASH_AWS_SECRET_ACCESS_KEY=$(shell credstash --region $(CREDSTASH_AWS_REGION) get prow-aws-secret-access-key ))
+	$(eval CREDSTASH_AWS_ACCESS_KEY_ID=$(shell credstash --region $(CREDSTASH_AWS_REGION) get prow-credstash-reader-aws-access-key-id ))
+	$(eval CREDSTASH_AWS_SECRET_ACCESS_KEY=$(shell credstash --region $(CREDSTASH_AWS_REGION) get prow-credstash-reader-aws-secret-access-key ))
 	@$(MAKE) FOLDER=10-credstash-operator/manifests/pre KUBECTL_ARGS=--validate=false  install-manifests-gotpl
 	@$(MAKE) \
 		CHART=https://github.com/ouzi-dev/credstash-operator/releases/download/$(CREDSTASH_OPERATOR_VERSION)/credstash-operator-$(CREDSTASH_OPERATOR_VERSION).tgz \
@@ -164,6 +176,14 @@ install-credstash-operator: aws-identity-check
 		FOLDER=10-credstash-operator \
 		HELM_EXTRA_ARGS="--set awsCredentials.awsAccessKeyId=$(CREDSTASH_AWS_ACCESS_KEY_ID) --set awsCredentials.awsSecretAccessKey='$(CREDSTASH_AWS_SECRET_ACCESS_KEY)'" \
 		install-helm-chart-tar
+
+.PHONY: install-gke-preemptible-killer
+install-gke-preemptible-killer:
+	@$(MAKE) FOLDER=11-gke-preemptible-killer/manifests/pre install-manifests-gotpl
+
+.PHONY: install-gke-node-termination-handler
+install-gke-node-termination-handler:
+	@$(MAKE) FOLDER=12-gke-node-termination-handler/manifests/pre install-manifests-gotpl
 
 .PHONY: install-helm-chart
 install-helm-chart:

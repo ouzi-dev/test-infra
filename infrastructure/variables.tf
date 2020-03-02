@@ -14,6 +14,16 @@ variable "gke_name" {
   description = "Name of the GKE cluster"
 }
 
+variable "gke_min_nodes" {
+  description = "Min number of workers"
+  default     = 0
+}
+
+variable "gke_max_nodes" {
+  description = "Max number of workers"
+  default     = 4
+}
+
 variable "gke_kubernetes_version" {
   description = "Minimum k8s master version"
 }
