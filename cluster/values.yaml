@@ -106,6 +106,7 @@ buildsecrets:
           key: github_bot_personal_access_token_prow
           table: credential-store
           version: "0000000000000000001"
+# Ouzi
     - name: ouzi-bot-dockerconfig # needs to be applied manually as the credstash controller only creates a Opaque type secret unfortunately
       keys:
         - name: .dockerconfigjson
@@ -115,11 +116,11 @@ buildsecrets:
     - name: aws-ouzi-creds
       keys:
       - name: access_key_id
-        key: prow-aws-access-key-id
+        key: terraform-aws-access-key-id
         table: credential-store
         version: "0000000000000000001"
       - name: secret_access_key
-        key: prow-aws-secret-access-key
+        key: terraform-aws-secret-access-key
         table: credential-store
         version: "0000000000000000001"
 # Singularity
