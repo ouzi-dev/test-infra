@@ -41,9 +41,9 @@ credstashoperator:
   instances:
     system:
       aws:
-        region: eu-west-2
-        accessid: 1234567890
-        secretaccesskey: topsecret
+        region: eu-west-1
+        # accessid: 1234567890
+        # secretaccesskey: topsecret
 
 # GKE PreEmptible Killer Settings
 gkepreemptiblekiller:
