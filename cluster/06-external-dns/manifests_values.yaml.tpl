@@ -1,1 +1,0 @@
-namespace: {{ .externalDns.namespace }}
