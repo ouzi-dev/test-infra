@@ -123,6 +123,10 @@ buildsecrets:
         key: terraform-aws-secret-access-key
         table: credential-store
         version: "0000000000000000001"
+      - name: default_region
+        key: terraform-aws-region
+        table: credential-store
+        version: "0000000000000000001"
 # Singularity
     - name: ouzidev-hoarder-prow-gcloud-service-account
       keys:
