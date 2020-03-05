@@ -1,9 +1,9 @@
 # installer url
-PROW_INSTALLER_URL = https://github.com/ouzi-dev/prow-installer/releases/download/v1.2.3/prow-installer-v1.2.3.tar.gz
+PROW_INSTALLER_URL = https://github.com/ouzi-dev/prow-installer/releases/download/v1.2.4/prow-installer-v1.2.4.tar.gz
 
 # make sure make fails on shell errors 
 # caveat: does not work for the shell function
-SHELL = /bin/bash -eo pipefail
+SHELL = /usr/bin/env bash -eo pipefail
 
 # Set credstashoperator.instances.system.aws. overrides 
 SET_VALUES="--set credstashoperator.instances.system.aws.accessid=$(shell credstash --region eu-west-1 get prow-credstash-reader-aws-access-key-id) \
