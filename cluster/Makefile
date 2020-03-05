@@ -1,17 +1,16 @@
 # installer url
 PROW_INSTALLER_URL = https://github.com/ouzi-dev/prow-installer/releases/download/v1.2.1/prow-installer-v1.2.1.tar.gz
 
-
 # make sure make fails on shell errors 
 # caveat: does not work for the shell function
 SHELL = /bin/bash -eo pipefail
 
 # Get aws keys from credstash 
-PROW_CREDSTASH_AWS_ACCESS_KEY_ID := $(shell credstash get prow-credstash-reader-aws-access-key-id)
+PROW_CREDSTASH_AWS_ACCESS_KEY_ID := $(shell credstash --region eu-west-1 get prow-credstash-reader-aws-access-key-id)
 ifneq ($(.SHELLSTATUS),0)
   $(error Getting Credstash secret failed!)
 endif
-PROW_CREDSTASH_AWS_SECRET_ACCESS_KEY := $(shell credstash get prow-credstash-reader-aws-secret-access-key)
+PROW_CREDSTASH_AWS_SECRET_ACCESS_KEY := $(shell credstash --region eu-west-1 get prow-credstash-reader-aws-secret-access-key)
 ifneq ($(.SHELLSTATUS),0)
   $(error Getting Credstash secret failed!)
 endif
