@@ -1,10 +1,9 @@
 # installer url
-PROW_INSTALLER_URL = https://github.com/ouzi-dev/prow-installer/releases/download/v1.2.1/prow-installer-v1.2.1.tar.gz
+PROW_INSTALLER_URL = https://github.com/ouzi-dev/prow-installer/releases/download/v1.2.2/prow-installer-v1.2.2.tar.gz
 
 # make sure make fails on shell errors 
 # caveat: does not work for the shell function
 SHELL = /bin/bash -eo pipefail
-MAKEFLAGS += --silent
 
 # # Get aws keys from credstash 
 # PROW_CREDSTASH_AWS_ACCESS_KEY_ID := $(shell credstash --region eu-west-1 get prow-credstash-reader-aws-access-key-id)
@@ -30,5 +29,4 @@ deploy: init
 	@$(MAKE) VALUES=../values.yaml SET_VALUES='$(SET_VALUES)' -C .dist DRY_RUN=false deploy
 
 deploy-dry-run: init
-	credstash --region eu-west-1 get prow-credstash-reader-aws-access-key-id
 	@$(MAKE) VALUES=../values.yaml SET_VALUES='$(SET_VALUES)' -C .dist DRY_RUN=true deploy
