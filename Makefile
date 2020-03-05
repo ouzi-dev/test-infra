@@ -34,7 +34,7 @@ deploy-prow-config:
 
 .PHONY: deploy-dry-run
 deploy-dry-run: 
-	@$(MAKE) -C cluster DRY_RUN=true init deploy
+	@$(MAKE) -C cluster init deploy-dry-run
 
 .PHONY: get-cluster-credentials
 get-cluster-credentials:
