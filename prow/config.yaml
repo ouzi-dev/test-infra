@@ -98,14 +98,6 @@ branch-protection:
               restrictions: # restrict who can push to the repo
                 users:
                 - ouzibot
-        cannon-prow:
-          branches:
-            master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
-              restrictions: # restrict who can push to the repo
-                users:
-                - ouzibot
         prow-helm-chart:
           branches:
             master:
@@ -326,26 +318,6 @@ presets:
       secretKeyRef:
         name: aws-dms-creds
         key: secret_access_key
-- labels:
-    preset-kubeconfig-cannon-prow: "true"
-  env:
-  - name: GOOGLE_APPLICATION_CREDENTIALS
-    value: /etc/google-service-account/service-account.json
-  - name: KUBECONFIG
-    value: /etc/kube/kubeconfig
-  volumes:
-  - name: google-service-account
-    secret:
-      secretName: ouzidev-cannon-prow-gcloud-service-account
-  - name: kubeconfig
-    secret:
-      secretName: ouzidev-cannon-prow-gke-kubeconfig
-  volumeMounts:
-  - name: google-service-account
-    mountPath: /etc/google-service-account
-    readOnly: true
-  - name: kubeconfig
-    mountPath: /etc/kube
 - labels:
     preset-aws-4leaf: "true"
   env:
