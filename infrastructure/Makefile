@@ -48,7 +48,7 @@ init: get-google-service-account
 	@terraform init -backend-config=backend.tfvars  -backend-config=credentials=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
 	
 plan: init 
-	@terraform plan --var-file=terraform.tfvars  -detailed-exitcode -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
+	@terraform plan --var-file=terraform.tfvars -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) 
 
 apply: init 
 	@terraform apply --var-file=terraform.tfvars -var google_credentials_file_path=$(GOOGLE_APPLICATION_CREDENTIALS_PATH) $(TF_ARGS)
