@@ -41,7 +41,7 @@ provider "random" {
 }
 
 module "prow-cluster" {
-  source = "github.com/ouzi-dev/prow-gke-terraform?ref=v0.8.1"
+  source = "github.com/ouzi-dev/prow-gke-terraform?ref=v0.9.0"
   # source = "../../prow-gke-terraform"
   gcloud_region              = var.gcloud_region
   gcloud_project             = var.gcloud_project
