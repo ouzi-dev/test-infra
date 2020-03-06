@@ -1,29 +1,25 @@
-email: team@ouzi.dev
-baseDomain: test-infra.ouzi.io
+# Global Settings
+global:
+  email: team@ouzi.dev
+  admingroup: team@ouzi.dev
+  basedomain: test-infra.ouzi.io
+  gcloud:
+    project: ouzidev-testinfra-252513
+  github:
+    org: ouzi-dev
+    bot:
+      username: ouzibot
 
-cluster:
-  admin:
-    group: team@ouzi.dev
-github:
-  org: ouzi-dev
-  bot:
-    username: ouzibot
-
-credstashOperator:
-  namespace: credstash-operator
-  aws:
-    region: eu-west-1
-
+# Cert-Manager settings 
 certmanager:
-  namespace: cert-manager
-  svc_account:
+  svcaccount:
     credstash:
       key: prow-cert-manager-svc-account-key
       table: credential-store
       version: "0000000000000000001"
 
-oauth2Proxy:
-  namespace: oauth-proxy
+# Oauth2 Proxy Settings
+oauthproxy:
   clientid:
     credstash:
       key: prow-cluster-github-oauth-client-id
@@ -40,59 +36,58 @@ oauth2Proxy:
       table: credential-store
       version: "0000000000000000001"
 
-externalDns:
-  namespace: external-dns
-  replicas: 1
+# Credstash Operator that will allow you to fetch secrets from Credstash
+credstashoperator:
+  instances:
+    system:
+      aws:
+        region: eu-west-1
+        # accessid: 1234567890
+        # secretaccesskey: topsecret
 
-nginxIngress:
-  namespace: nginx-ingress
-
-gkePreemptibleKiller:
-  namespace: gke-preemptible-killer
-  service_account:
+# GKE PreEmptible Killer Settings
+gkepreemptiblekiller:
+  svcaccount:
     credstash:
       key: prow-gke-preemptible-killer-svc-account-key
       table: credential-store
       version: "0000000000000000001"
-    
-prow:
-  namespace: prow
-  namespaceForJobs: prow-test-pods
-  prowbucketname: ouzidev-testinfra-252513-prow-artefacts
-  credstashSecrets:
-    - name: prow-bucket-gcs-credentials
-      keys:
-        - name: service-account.json
-          key: prow-bucket-svc-account-key
-          table: credential-store
-          version: "0000000000000000001"
-    - name: slack-token
-      keys:
-        - name: token
-          key: ouzibot_slack_legacytoken
-          table: credential-store
-          version: "0000000000000000001"
-    - name: github-token
-      keys:
-        - name: oauth
-          key: github_bot_personal_access_token_prow
-          table: credential-store
-          version: "0000000000000000001"
-    - name: github-ssh-key
-      keys:
-        - name: key
-          key: github_bot_ssh_private_key
-          table: credential-store
-          version: "0000000000000000001"
-    - name: oauth-config
-      keys:
-        - name: secret
-          key: prow-oauth-config
-          table: credential-store
-          version: "0000000000000000001"
 
-build:
-  credstashSecrets:
+# Prow Settings
+prow:
+  prowbucketname: ouzidev-testinfra-252513-prow-artefacts
+  gcs:
+    svcaccount:
+      credstash:
+        key: prow-bucket-svc-account-key
+        table: credential-store
+        version: "0000000000000000001"
+  slack:
+    token:
+      credstash:
+        key: ouzibot_slack_legacytoken
+        table: credential-store
+        version: "0000000000000000001"
+  github:
+    token:
+      credstash:
+        key: github_bot_personal_access_token_prow
+        table: credential-store
+        version: "0000000000000000001"
+    sshkey:
+      credstash:
+        key: github_bot_ssh_private_key
+        table: credential-store
+        version: "0000000000000000001"
+    oauthconfig:
+      credstash:
+        key: prow-oauth-config
+        table: credential-store
+        version: "0000000000000000001"
+
+# Build Secrets
+buildsecrets:
+  credstashsecrets:
     - name: gcs-credentials
       keys:
         - name: service-account.json
@@ -111,13 +106,13 @@ build:
           key: github_bot_personal_access_token_prow
           table: credential-store
           version: "0000000000000000001"
+# Ouzi
     - name: ouzi-bot-dockerconfig # needs to be applied manually as the credstash controller only creates a Opaque type secret unfortunately
       keys:
         - name: .dockerconfigjson
           key: quay_bot_dockerconfig
           table: credential-store
           version: "0000000000000000001"
-# Ouzi
     - name: aws-ouzi-creds
       keys:
       - name: access_key_id
@@ -128,28 +123,9 @@ build:
         key: terraform-aws-secret-access-key
         table: credential-store
         version: "0000000000000000001"
-# DMS
-    - name: ouzidev-cannon-prow-gcloud-service-account
-      keys:
-        - name: service-account.json
-          key: ouzidev-cannon-prow-gcloud-service-account
-          table: singularity
-          version: "0000000000000000001"
-    - name: ouzidev-cannon-prow-gke-kubeconfig
-      keys:
-        - name: kubeconfig
-          key: ouzidev-cannon-prow-gke-kubeconfig
-          table: singularity
-          version: "0000000000000000001"
-    - name: aws-dms-creds
-      keys:
-      - name: access_key_id
-        key: prow_dms_access_key_id
-        table: singularity
-        version: "0000000000000000001"
-      - name: secret_access_key
-        key: prow_dms_secret_access_key
-        table: singularity
+      - name: default_region
+        key: terraform-aws-region
+        table: credential-store
         version: "0000000000000000001"
 # Singularity
     - name: ouzidev-hoarder-prow-gcloud-service-account

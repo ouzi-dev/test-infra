@@ -308,6 +308,11 @@ presets:
       secretKeyRef:
         name: aws-ouzi-creds
         key: secret_access_key
+  - name: AWS_DEFAULT_REGION
+    valueFrom:
+      secretKeyRef:
+        name: aws-ouzi-creds
+        key: default_region
 - labels:
     preset-aws-dms: "true"
   env:

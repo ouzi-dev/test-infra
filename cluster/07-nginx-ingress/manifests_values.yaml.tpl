@@ -1,1 +1,0 @@
-namespace: {{ .nginxIngress.namespace }}

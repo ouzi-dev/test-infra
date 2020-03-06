@@ -69,12 +69,12 @@ get-google-service-account:
 
 .PHONY: export-secrets-to-credstash
 export-secrets-to-credstash: aws-identity-check
-	$(shell $(MAKE) output > .tf_output.json)
+	$(shell $(MAKE) -s output > .tf_output.json)
 	$(shell cat .tf_output.json | jq -r .certmanager_svc_account_key.value | base64 -D > .CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY )
 	$(shell cat .tf_output.json | jq -r .prow_bucket_svc_account_key.value | base64 -D > .CREDSTASH_PROW_BUCKET_SVC_ACCOUNT_KEY )
 	$(shell cat .tf_output.json | jq -r .preemptible_killer_svc_account_key.value | base64 -D > .CREDSTASH_GKE_PREEMPTIBLE_KILLER_SVC_ACCOUNT_KEY )
-	$(shell cat .tf_output.json | jq -r .prow_credstash_reader_aws_access_key_id.value > .CREDSTASH_PROW_CREDSTASH_READER_AWS_ACCESS_KEY_ID )
-	$(shell cat .tf_output.json | jq -r .prow_credstash_reader_aws_secret_access_key.value > .CREDSTASH_PROW_CREDSTASH_READER_AWS_SECRET_ACCESS_KEY )
+	$(shell cat .tf_output.json | jq -r .prow_credstash_reader_aws_access_key_id.value | tr -d '\n' > .CREDSTASH_PROW_CREDSTASH_READER_AWS_ACCESS_KEY_ID )
+	$(shell cat .tf_output.json | jq -r .prow_credstash_reader_aws_secret_access_key.value | tr -d '\n' > .CREDSTASH_PROW_CREDSTASH_READER_AWS_SECRET_ACCESS_KEY )
 	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-cert-manager-svc-account-key || true
 	@credstash --region ${CREDSTASH_AWS_REGION} put prow-cert-manager-svc-account-key @.CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY
 	@credstash --region ${CREDSTASH_AWS_REGION} delete prow-bucket-svc-account-key || true
