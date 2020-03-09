@@ -24,6 +24,10 @@ variable "gke_max_nodes" {
   default     = 4
 }
 
+variable "gke_num_of_zones" {
+  description = "Number of zones for the cluster."
+}
+
 variable "gke_kubernetes_version" {
   description = "Minimum k8s master version"
 }
