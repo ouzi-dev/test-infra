@@ -41,14 +41,15 @@ provider "random" {
 }
 
 module "prow-cluster" {
-  source = "github.com/ouzi-dev/prow-gke-terraform?ref=v0.9.0"
+  source = "github.com/ouzi-dev/prow-gke-terraform?ref=v0.10.0"
   # source = "../../prow-gke-terraform"
   gcloud_region              = var.gcloud_region
   gcloud_project             = var.gcloud_project
   gke_name                   = var.gke_name
   gke_kubernetes_version     = var.gke_kubernetes_version
   gke_min_nodes              = var.gke_min_nodes
-  
+  gke_num_of_zones              = var.gke_num_of_zones
+
   base_domain = var.base_domain
 
   prow_artefact_bucket_location = var.prow_artefact_bucket_location
