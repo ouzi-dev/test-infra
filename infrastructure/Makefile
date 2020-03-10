@@ -7,7 +7,8 @@ UNAME := $(shell uname)
 
 AWS_ACCOUNT_ID := 257496065652
 CREDSTASH_AWS_REGION:= eu-west-1
-CREDSTASH_ARGS := --region $(CREDSTASH_AWS_REGION) -t credential-store -p aws-ouzi
+CREDSTASH_ARGS := --region $(CREDSTASH_AWS_REGION) -t credential-store
+
 # source the terraform vars as env vars 
 include terraform.tfvars
 
