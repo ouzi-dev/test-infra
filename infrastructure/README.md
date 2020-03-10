@@ -31,3 +31,16 @@ Manually enable the:
 - Kubernetes API,
 - IAM API,
 - Cloud Resource Manager API 
+  
+## Encrypting sensitive text
+
+```
+$ echo -n my-secret-password | gcloud kms encrypt \
+> --project var.gcloud_project \
+> --location var.gcloud_region \
+> --keyring test-infra \
+> --key build \
+> --plaintext-file - \
+> --ciphertext-file - \
+> | base64
+```
