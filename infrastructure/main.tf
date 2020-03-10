@@ -100,15 +100,24 @@ resource "aws_iam_user_policy" "prow_credstash_reader" {
 EOF
 }
 
+### Enable the KMS API if not enabled
+resource "google_project_service" "kms" {
+  project                    = var.gcloud_project
+  service                    = "cloudkms.googleapis.com"
+  disable_dependent_services = false
+}
+
 ### KMS key ring
 resource "google_kms_key_ring" "test_infra_key_ring" {
   project  = var.gcloud_project
   name     = "test-infra"
   location = var.gcloud_region
+  depends_on = [ google_project_service.kms ]
 }
 
 ### KMS crypto key
 resource "google_kms_crypto_key" "build_crypto_key" {
   name     = "build"
   key_ring = google_kms_key_ring.test_infra_key_ring.self_link
+  depends_on = [ google_project_service.kms ]
 }
