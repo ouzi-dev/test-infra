@@ -127,5 +127,5 @@ resource "google_kms_crypto_key" "build_crypto_key" {
 ### Set IAM for Cloud Builder Default Service Account
 resource "google_project_iam_member" "cloud_builder_key_decrypter" {
   role   = "roles/cloudkms.cryptoKeyDecrypter"
-  member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+  member = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
 }
