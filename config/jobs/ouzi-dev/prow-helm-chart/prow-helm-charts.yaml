@@ -103,7 +103,7 @@ presubmits:
         containers:
           - name: "test-prow-helm-chart-semrelease-dryrun"
             imagePullPolicy: IfNotPresent
-            image: quay.io/ouzi/toolbox:0.1.11
+            image: quay.io/ouzi/toolbox:0.1.16
             command:
               - make
             args:
@@ -122,7 +122,7 @@ postsubmits:
         containers:
           - name: "release-prow-helm-chart"
             imagePullPolicy: IfNotPresent
-            image: quay.io/ouzi/toolbox:0.1.11
+            image: quay.io/ouzi/toolbox:0.1.16
             command:
               - make
             args:

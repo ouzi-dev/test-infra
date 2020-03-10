@@ -53,7 +53,7 @@ presubmits:
               - make
             args:
               - monitoring-dry-run
-            image: quay.io/ouzi/toolbox:0.1.14
+            image: quay.io/ouzi/toolbox:0.1.16
     - name: test-infra
       context: test-infra
       decorate: true 
@@ -75,7 +75,7 @@ presubmits:
             args:
               - infra-setup
               - infra-plan
-            image: quay.io/ouzi/toolbox:0.1.14
+            image: quay.io/ouzi/toolbox:0.1.16
     - name: test-manifests
       context: test-manifests
       decorate: true 
@@ -97,7 +97,7 @@ presubmits:
               - make
             args:
               -  deploy-dry-run
-            image: quay.io/ouzi/toolbox:0.1.14
+            image: quay.io/ouzi/toolbox:0.1.16
 postsubmits:
   ouzi-dev/test-infra:
     - name: test-config-postsubmit
@@ -134,7 +134,7 @@ postsubmits:
               - make
             args:
               - monitoring-apply
-            image: quay.io/ouzi/toolbox:0.1.14
+            image: quay.io/ouzi/toolbox:0.1.16
     - name: apply-infra
       context: apply-infra
       decorate: true 
@@ -158,7 +158,7 @@ postsubmits:
             args:
               - infra-setup
               - infra-apply
-            image: quay.io/ouzi/toolbox:0.1.14
+            image: quay.io/ouzi/toolbox:0.1.16
     - name: deploy-prow
       context: deploy-prow
       decorate: true 
@@ -182,4 +182,4 @@ postsubmits:
               - make
             args:
               -  deploy
-            image: quay.io/ouzi/toolbox:0.1.14
+            image: quay.io/ouzi/toolbox:0.1.16
