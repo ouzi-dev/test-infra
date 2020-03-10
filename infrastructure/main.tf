@@ -99,3 +99,16 @@ resource "aws_iam_user_policy" "prow_credstash_reader" {
 }
 EOF
 }
+
+### KMS key ring
+resource "google_kms_key_ring" "test_infra_key_ring" {
+  project  = var.gcloud_project
+  name     = "test-infra"
+  location = var.gcloud_region
+}
+
+### KMS crypto key
+resource "google_kms_crypto_key" "build_crypto_key" {
+  name     = "build"
+  key_ring = google_kms_key_ring.test_infra_key_ring.self_link
+}
