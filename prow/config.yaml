@@ -332,6 +332,19 @@ presets:
         name: aws-4leaf-creds
         key: secret_access_key
 - labels:
+    preset-kubeconfig-testinfra-prow: "true"
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/google-service-account/service-account.json
+  volumes:
+  - name: google-service-account
+    secret:
+      secretName: ouzidev-testinfra-prow-gcloud-service-account
+  volumeMounts:
+  - name: google-service-account
+    mountPath: /etc/google-service-account
+    readOnly: true
+- labels:
     preset-kubeconfig-hoarder-prow: "true"
   env:
   - name: GOOGLE_APPLICATION_CREDENTIALS
