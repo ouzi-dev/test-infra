@@ -127,6 +127,12 @@ buildsecrets:
         key: terraform-aws-region
         table: credential-store
         version: "0000000000000000001"
+    - name: ouzidev-testinfra-prow-gcloud-service-account
+      keys:
+        - name: service-account.json
+          key: prow-terraform-svc-account-key
+          table: credential-store
+          version: "0000000000000000001"
 # Singularity
     - name: ouzidev-hoarder-prow-gcloud-service-account
       keys:

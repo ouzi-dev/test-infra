@@ -7,6 +7,11 @@ output "prow_bucket_svc_account_key" {
   sensitive = true
 }
 
+output "prow_terraform_gcloud_svc_account_key" {
+  value = module.prow-cluster.prow_terraform_gcloud_svc_account_key
+  sensitive = true
+}
+
 output "certmanager_svc_account_key" {
   value = module.prow-cluster.certmanager_svc_account_key
   sensitive = true

@@ -73,6 +73,7 @@ export-secrets-to-credstash: aws-identity-check
 	$(shell $(MAKE) -s output > .tf_output.json)
 	$(shell cat .tf_output.json | jq -r .certmanager_svc_account_key.value | base64 -D > .CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY )
 	$(shell cat .tf_output.json | jq -r .prow_bucket_svc_account_key.value | base64 -D > .CREDSTASH_PROW_BUCKET_SVC_ACCOUNT_KEY )
+	$(shell cat .tf_output.json | jq -r .prow_terraform_gcloud_svc_account_key.value | base64 -D > .CREDSTASH_PROW_TERRAFORM_SVC_ACCOUNT_KEY )
 	$(shell cat .tf_output.json | jq -r .preemptible_killer_svc_account_key.value | base64 -D > .CREDSTASH_GKE_PREEMPTIBLE_KILLER_SVC_ACCOUNT_KEY )
 	$(shell cat .tf_output.json | jq -r .prow_credstash_reader_aws_access_key_id.value | tr -d '\n' > .CREDSTASH_PROW_CREDSTASH_READER_AWS_ACCESS_KEY_ID )
 	$(shell cat .tf_output.json | jq -r .prow_credstash_reader_aws_secret_access_key.value | tr -d '\n' > .CREDSTASH_PROW_CREDSTASH_READER_AWS_SECRET_ACCESS_KEY )
@@ -80,6 +81,8 @@ export-secrets-to-credstash: aws-identity-check
 	@credstash $(CREDSTASH_ARGS) put prow-cert-manager-svc-account-key @.CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY
 	@credstash $(CREDSTASH_ARGS) delete prow-bucket-svc-account-key || true
 	@credstash $(CREDSTASH_ARGS) put prow-bucket-svc-account-key @.CREDSTASH_PROW_BUCKET_SVC_ACCOUNT_KEY
+	@credstash $(CREDSTASH_ARGS) delete prow-terraform-svc-account-key || true
+	@credstash $(CREDSTASH_ARGS) put prow-terraform-svc-account-key @.CREDSTASH_PROW_TERRAFORM_SVC_ACCOUNT_KEY
 	@credstash $(CREDSTASH_ARGS) delete prow-gke-preemptible-killer-svc-account-key || true
 	@credstash $(CREDSTASH_ARGS) put prow-gke-preemptible-killer-svc-account-key @.CREDSTASH_GKE_PREEMPTIBLE_KILLER_SVC_ACCOUNT_KEY
 	@credstash $(CREDSTASH_ARGS) delete prow-credstash-reader-aws-access-key-id || true
@@ -94,6 +97,7 @@ export-secrets-to-credstash: aws-identity-check
 	@rm .kubeconfig.yaml
 	@rm .CREDSTASH_CERT_MANAGER_SVC_ACCOUNT_KEY
 	@rm .CREDSTASH_PROW_BUCKET_SVC_ACCOUNT_KEY
+	@rm .CREDSTASH_PROW_TERRAFORM_SVC_ACCOUNT_KEY
 	@rm .CREDSTASH_GKE_PREEMPTIBLE_KILLER_SVC_ACCOUNT_KEY
 	@rm .CREDSTASH_PROW_CREDSTASH_READER_AWS_ACCESS_KEY_ID
 	@rm .CREDSTASH_PROW_CREDSTASH_READER_AWS_SECRET_ACCESS_KEY
