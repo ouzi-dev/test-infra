@@ -332,7 +332,7 @@ presets:
         name: aws-4leaf-creds
         key: secret_access_key
 - labels:
-    preset-kubeconfig-testinfra-prow: "true"
+    preset-gcloud-testinfra-prow: "true"
   env:
   - name: GOOGLE_APPLICATION_CREDENTIALS
     value: /etc/google-service-account/service-account.json
