@@ -1,5 +1,5 @@
 # installer url
-PROW_INSTALLER_URL = https://github.com/ouzi-dev/prow-installer/releases/download/v1.3.0/prow-installer-v1.3.0.tar.gz
+PROW_INSTALLER_URL = https://github.com/ouzi-dev/prow-installer/releases/download/v1.4.0/prow-installer-v1.4.0.tar.gz
 
 # make sure make fails on shell errors 
 # caveat: does not work for the shell function
@@ -18,7 +18,7 @@ init:
 deploy: init 
 	@$(MAKE) VALUES=../values.yaml SET_VALUES='$(SET_VALUES)' -C .dist DRY_RUN=false init deploy
 
-deploy-dry-run: init
+deploy-dry-run: 
 	@$(MAKE) VALUES=../values.yaml SET_VALUES='$(SET_VALUES)' -C .dist DRY_RUN=true init deploy
 
 clean:
