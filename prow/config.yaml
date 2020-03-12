@@ -210,6 +210,22 @@ branch-protection:
               restrictions: # restrict who can push to the repo
                 users:
                 - ouzibot
+        node-tagger:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
+        claptrap:
+          branches:
+            master:
+              protect: true  # enable protection
+              enforce_admins: true  # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                - ouzibot
 tide:
   sync_period: 1m
   merge_method:
@@ -242,9 +258,6 @@ github_reporter:
   job_types_to_report:
   - presubmit
   - postsubmit
-
-
-
 
 slack_reporter_configs:
   '*':
