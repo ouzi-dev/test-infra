@@ -18,7 +18,7 @@ init:
 deploy: init 
 	@$(MAKE) VALUES=../values.yaml SET_VALUES='$(SET_VALUES)' -C .dist DRY_RUN=false init deploy
 
-deploy-dry-run: 
+deploy-dry-run: init
 	@$(MAKE) VALUES=../values.yaml SET_VALUES='$(SET_VALUES)' -C .dist DRY_RUN=true init deploy
 
 clean:
