@@ -5,7 +5,7 @@ presubmits:
       always_run: true
       decorate: true
       clone_uri: "git@github.com:ouzi-dev/bigbang.git"
-      trigger: "(?m)validate-prow-yaml( please)?" 
+      trigger: "(?m)validate-prow-yaml( please)?"
       rerun_command: "validate-prow-yaml"
       extra_refs:
         - org: ouzi-dev
@@ -13,41 +13,41 @@ presubmits:
           base_ref: master
       spec:
         containers:
-        - image: gcr.io/k8s-prow/checkconfig:v20200220-16f6e7c89
-          command:
-          - /app/prow/cmd/checkconfig/app.binary
-          args:
-          - --plugin-config=../test-infra/prow/plugins.yaml
-          - --config-path=../test-infra/prow/config.yaml
-          - --prow-yaml-repo-name=$(REPO_OWNER)/$(REPO_NAME)
+          - image: gcr.io/k8s-prow/checkconfig:v20200220-16f6e7c89
+            command:
+              - /app/prow/cmd/checkconfig/app.binary
+            args:
+              - --plugin-config=../test-infra/prow/plugins.yaml
+              - --config-path=../test-infra/prow/config.yaml
+              - --prow-yaml-repo-name=$(REPO_OWNER)/$(REPO_NAME)
     - name: validate-no-creds
       always_run: true
       decorate: true
       clone_uri: "git@github.com:ouzi-dev/bigbang.git"
-      trigger: "(?m)validate-no-creds( please)?" 
+      trigger: "(?m)validate-no-creds( please)?"
       rerun_command: "validate-no-creds"
       spec:
         containers:
-        - image: quay.io/ouzi/git-secret-scanner:0.0.3
-          command:
-          - git-secrets
-          args:
-          - --scan
+          - image: quay.io/ouzi/git-secret-scanner:0.0.3
+            command:
+              - git-secrets
+            args:
+              - --scan
 postsubmits:
   ouzi-dev/bigbang:
     - name: release-bigbang
       decorate: true
-      clone_uri: "git@github.com:ouzi-dev/bigbang.git" 
-      max_concurrency: 1 
+      clone_uri: "git@github.com:ouzi-dev/bigbang.git"
+      max_concurrency: 1
       labels:
-        preset-semantic-release: "true"      
+        preset-semantic-release: "true"
       branches:
         - master
-      spec: 
+      spec:
         containers:
           - name: "release-bigbang"
             imagePullPolicy: IfNotPresent
-            image: quay.io/ouzi/go-builder:1.13.1
+            image: quay.io/ouzi/go-builder:1.14.2
             command:
               - make
             args:
