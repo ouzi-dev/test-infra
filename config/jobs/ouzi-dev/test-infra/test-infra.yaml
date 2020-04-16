@@ -7,6 +7,11 @@ presubmits:
       trigger: "(?m)validate-no-creds( please)?" 
       rerun_command: "validate-no-creds"
       spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         containers:
         - image: quay.io/ouzi/git-secret-scanner:0.0.3
           command:
@@ -23,7 +28,12 @@ presubmits:
       trigger: "(?m)test-prow-config( please)?" 
       rerun_command: "test-prow-config"
       run_if_changed: '^(config/.*|prow/.*)$'
-      spec: 
+      spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         containers:
           - name: "test-config"
             imagePullPolicy: IfNotPresent
@@ -44,7 +54,12 @@ presubmits:
       trigger: "(?m)monitoring( please)?" 
       rerun_command: "monitoring"
       run_if_changed: 'monitoring/'
-      spec: 
+      spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         serviceAccountName: prow
         containers:
           - name: "monitoring-dry-run"
@@ -66,7 +81,12 @@ presubmits:
       trigger: "(?m)test-infra( please)?" 
       rerun_command: "test-infra"
       run_if_changed: '^(infrastructure/.*)$'
-      spec: 
+      spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         containers:
           - name: "test-infra"
             imagePullPolicy: IfNotPresent
@@ -88,7 +108,12 @@ presubmits:
       trigger: "(?m)test-manifests( please)?" 
       rerun_command: "test-manifests"
       run_if_changed: '^(cluster/.*)$'
-      spec: 
+      spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         serviceAccountName: prow
         containers:
           - name: "test-manifests"
@@ -108,6 +133,11 @@ postsubmits:
       branches:
         - master
       spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         containers:
           - name: "test-config"
             imagePullPolicy: IfNotPresent
@@ -125,7 +155,12 @@ postsubmits:
       run_if_changed: 'monitoring/'
       branches:
         - master
-      spec: 
+      spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         serviceAccountName: prow
         containers:
           - name: "monitoring"
@@ -149,7 +184,12 @@ postsubmits:
       run_if_changed: '^(infrastructure/.*)$'
       branches:
         - master
-      spec: 
+      spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         containers:
           - name: "apply-infra"
             imagePullPolicy: IfNotPresent
@@ -173,7 +213,12 @@ postsubmits:
       run_if_changed: '^(cluster/.*)$'
       branches:
         - master
-      spec: 
+      spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         serviceAccountName: prow
         containers:
           - name: "deploy-prow"

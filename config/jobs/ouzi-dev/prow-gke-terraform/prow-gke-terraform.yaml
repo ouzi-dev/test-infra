@@ -12,6 +12,11 @@ presubmits:
           repo: test-infra
           base_ref: master
       spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         containers:
           - image: gcr.io/k8s-prow/checkconfig:v20200220-16f6e7c89
             command:
@@ -27,6 +32,11 @@ presubmits:
       trigger: "(?m)validate-no-creds( please)?"
       rerun_command: "validate-no-creds"
       spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         containers:
           - image: quay.io/ouzi/git-secret-scanner:0.0.3
             command:
@@ -44,6 +54,11 @@ postsubmits:
       branches:
         - master
       spec:
+        tolerations:
+          - effect: NoSchedule
+            key: cloud.google.com/gke-preemptible
+            operator: Equal
+            value: "true"
         containers:
           - name: "release-prow-gke-terraform"
             imagePullPolicy: IfNotPresent
