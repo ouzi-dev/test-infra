@@ -45,12 +45,12 @@ data "google_project" "project" {}
 module "prow-cluster" {
   source = "github.com/ouzi-dev/prow-gke-terraform?ref=v0.11.2"
   # source = "../../prow-gke-terraform"
-  gcloud_region              = var.gcloud_region
-  gcloud_project             = var.gcloud_project
-  gke_name                   = var.gke_name
-  gke_kubernetes_version     = var.gke_kubernetes_version
-  gke_min_nodes              = var.gke_min_nodes
-  gke_num_of_zones              = var.gke_num_of_zones
+  gcloud_region          = var.gcloud_region
+  gcloud_project         = var.gcloud_project
+  gke_name               = var.gke_name
+  gke_kubernetes_version = var.gke_kubernetes_version
+  gke_min_nodes          = var.gke_min_nodes
+  gke_num_of_zones       = var.gke_num_of_zones
 
   base_domain = var.base_domain
 
@@ -111,17 +111,17 @@ resource "google_project_service" "kms" {
 
 ### KMS key ring
 resource "google_kms_key_ring" "test_infra_key_ring" {
-  project  = var.gcloud_project
-  name     = "test-infra"
-  location = var.gcloud_region
-  depends_on = [ google_project_service.kms ]
+  project    = var.gcloud_project
+  name       = "test-infra"
+  location   = var.gcloud_region
+  depends_on = [google_project_service.kms]
 }
 
 ### KMS crypto key
 resource "google_kms_crypto_key" "build_crypto_key" {
-  name     = "build"
-  key_ring = google_kms_key_ring.test_infra_key_ring.self_link
-  depends_on = [ google_project_service.kms ]
+  name       = "build"
+  key_ring   = google_kms_key_ring.test_infra_key_ring.self_link
+  depends_on = [google_project_service.kms]
 }
 
 ### Set IAM for Cloud Builder Default Service Account
