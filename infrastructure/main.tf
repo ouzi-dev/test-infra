@@ -43,7 +43,7 @@ provider "random" {
 data "google_project" "project" {}
 
 module "prow-cluster" {
-  source = "github.com/ouzi-dev/prow-gke-terraform?ref=v0.11.2"
+  source = "github.com/ouzi-dev/prow-gke-terraform?ref=v0.11.3"
   # source = "../../prow-gke-terraform"
   gcloud_region          = var.gcloud_region
   gcloud_project         = var.gcloud_project
