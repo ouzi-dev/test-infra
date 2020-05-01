@@ -52,7 +52,9 @@ module "prow-cluster" {
   gke_min_nodes          = var.gke_min_nodes
   gke_num_of_zones       = var.gke_num_of_zones
 
-  base_domain = var.base_domain
+  cluster_autoscaling = false
+  
+  base_domain         = var.base_domain
 
   prow_artefact_bucket_location = var.prow_artefact_bucket_location
 
