@@ -7,7 +7,6 @@ metadata:
     use-clouddns-solver: "true"
 spec:
   secretName: wildcard-test-infra-tls
-  renewBefore: 360h # 15d
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
