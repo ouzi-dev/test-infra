@@ -43,7 +43,7 @@ provider "random" {
 data "google_project" "project" {}
 
 module "prow-cluster" {
-  source = "github.com/ouzi-dev/prow-gke-terraform?ref=v0.11.3"
+  source = "github.com/ouzi-dev/prow-gke-terraform?ref=v0.11.4"
   # source = "../../prow-gke-terraform"
   gcloud_region          = var.gcloud_region
   gcloud_project         = var.gcloud_project
@@ -53,8 +53,8 @@ module "prow-cluster" {
   gke_num_of_zones       = var.gke_num_of_zones
 
   cluster_autoscaling = false
-  
-  base_domain         = var.base_domain
+
+  base_domain = var.base_domain
 
   prow_artefact_bucket_location = var.prow_artefact_bucket_location
 
