@@ -3,10 +3,10 @@ pod_namespace: prow-test-pods
 
 plank:
   job_url_template: 'https://prow.test-infra.ouzi.io/view/gcs/ouzidev-testinfra-252513-prow-artefacts/{{if eq .Spec.Type "presubmit"}}pr-logs/pull{{else if eq .Spec.Type "batch"}}pr-logs/pull{{else}}logs{{end}}/{{if eq .Spec.Type "presubmit"}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}/{{end}}{{else if eq .Spec.Type "batch"}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/batch/{{end}}{{.Spec.Job}}/{{.Status.BuildID}}/'
-  report_template: '[Full PR test history](https://prow.test-infra.ouzi.io/pr-history?org={{.Spec.Refs.Org}}&repo={{.Spec.Refs.Repo}}&pr={{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}})'
+  report_template: "[Full PR test history](https://prow.test-infra.ouzi.io/pr-history?org={{.Spec.Refs.Org}}&repo={{.Spec.Refs.Repo}}&pr={{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}})"
   pod_pending_timeout: 60m
   default_decoration_configs:
-    '*':
+    "*":
       timeout: 2h
       grace_period: 15s
       utility_images:
@@ -19,39 +19,38 @@ plank:
         path_strategy: "explicit"
       gcs_credentials_secret: gcs-credentials
       ssh_key_secrets:
-        - github-ssh-key # name of the secret that stores the bot's ssh keys for GitHub, doesn't matter what the key of the map is and it will just uses the values       
+        - github-ssh-key # name of the secret that stores the bot's ssh keys for GitHub, doesn't matter what the key of the map is and it will just uses the values
 
 deck:
   spyglass:
     size_limit: 500000000 # 500MB
     announcement: "Remember: friendship is magic!"
     lenses:
-    - lens:
-        name: metadata
-      required_files:
-      - started.json|finished.json
-      optional_files:
-      - podinfo.json
-    - lens:
-        name: buildlog
-      required_files:
-        - build-log.txt
-    - lens:
-        name: junit
-      required_files:
-        - artifacts/junit.*\.xml
-    - lens:
-        name: coverage
-      required_files:
-        - artifacts/filtered.cov
-      optional_files:
-        - artifacts/filtered.html
-    - lens:
-        name: podinfo
-      required_files:
-        - podinfo.json
+      - lens:
+          name: metadata
+        required_files:
+          - started.json|finished.json
+        optional_files:
+          - podinfo.json
+      - lens:
+          name: buildlog
+        required_files:
+          - build-log.txt
+      - lens:
+          name: junit
+        required_files:
+          - artifacts/junit.*\.xml
+      - lens:
+          name: coverage
+        required_files:
+          - artifacts/filtered.cov
+        optional_files:
+          - artifacts/filtered.html
+      - lens:
+          name: podinfo
+        required_files:
+          - podinfo.json
   tide_update_period: 1s
-
 
 sinker:
   resync_period: 1m
@@ -69,177 +68,185 @@ branch-protection:
         test-infra:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         eks-terraform:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         whalers-of-the-moon:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         prow-gke-terraform:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         prow-helm-chart:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         avro-kedavro:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         bigbang:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         gke-terraform:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         commit-status-updater:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         dind-action:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         go-make-action:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         credstash-operator:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         ouzi.io:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         docs:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         owners-template:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         syrinx:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         hoarder-prow:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         prow-installer:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         node-tagger:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         claptrap:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
         k8sprimitives1:
           branches:
             master:
-              protect: true  # enable protection
-              enforce_admins: true  # rules apply to admins
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
                 users:
-                - ouzibot
+                  - ouzibot
+        piti:
+          branches:
+            master:
+              protect: true # enable protection
+              enforce_admins: true # rules apply to admins
+              restrictions: # restrict who can push to the repo
+                users:
+                  - ouzibot
 tide:
   sync_period: 1m
   merge_method:
     ouzi-dev: squash
   pr_status_base_urls:
-    '*': https://prow.test-infra.ouzi.io/pr
+    "*": https://prow.test-infra.ouzi.io/pr
   blocker_label: tide/merge-blocker
   squash_label: tide/merge-method-squash
   rebase_label: tide/merge-method-rebase
@@ -250,25 +257,25 @@ tide:
     # Treat unknown contexts as required
     skip-unknown-contexts: false
   queries:
-  - orgs:
-    - ouzi-dev
-    labels:
-    - lgtm
-    - approved
-    missingLabels:
-    - do-not-merge
-    - do-not-merge/hold
-    - do-not-merge/work-in-progress
-    - needs-rebase
-    - do-not-merge/invalid-owners-file
+    - orgs:
+        - ouzi-dev
+      labels:
+        - lgtm
+        - approved
+      missingLabels:
+        - do-not-merge
+        - do-not-merge/hold
+        - do-not-merge/work-in-progress
+        - needs-rebase
+        - do-not-merge/invalid-owners-file
 
 github_reporter:
   job_types_to_report:
-  - presubmit
-  - postsubmit
+    - presubmit
+    - postsubmit
 
 slack_reporter_configs:
-  '*':
+  "*":
     job_types_to_report:
       - presubmit
       - postsubmit
@@ -279,112 +286,112 @@ slack_reporter_configs:
       - error
     channel: cicd-job-status
     # The template shown below is the default
-    report_template: 'Job {{.Spec.Job}} of type {{.Spec.Type}} ended with state {{.Status.State}}. <{{.Status.URL}}|View logs>'
+    report_template: "Job {{.Spec.Job}} of type {{.Spec.Type}} ended with state {{.Status.State}}. <{{.Status.URL}}|View logs>"
 
 presets:
-# credential presets
-- labels:
-    preset-docker: "true"
-  env:
-    - name: DOCKER_CONFIG
-      value: "/kaniko/.docker"
-  volumes:
-  - name: kaniko-config
-    projected:
-      sources:
-      - secret:
-          name: ouzi-bot-pull-push-secret
-          items:
-          - key: .dockerconfigjson
-            path: config.json      
-  volumeMounts:
-  - name: kaniko-config
-    mountPath: /kaniko/.docker
-- labels:
-    preset-semantic-release: "true"
-  env:
-    - name: GITHUB_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: github-token
-          key: oauth
-- labels:
-    preset-aws-ouzi: "true"
-  env:
-  - name: AWS_ACCESS_KEY_ID
-    valueFrom:
-      secretKeyRef:
-        name: aws-ouzi-creds
-        key: access_key_id
-  - name: AWS_SECRET_ACCESS_KEY
-    valueFrom:
-      secretKeyRef:
-        name: aws-ouzi-creds
-        key: secret_access_key
-  - name: AWS_DEFAULT_REGION
-    valueFrom:
-      secretKeyRef:
-        name: aws-ouzi-creds
-        key: default_region
-- labels:
-    preset-aws-dms: "true"
-  env:
-  - name: AWS_ACCESS_KEY_ID
-    valueFrom:
-      secretKeyRef:
-        name: aws-dms-creds
-        key: access_key_id
-  - name: AWS_SECRET_ACCESS_KEY
-    valueFrom:
-      secretKeyRef:
-        name: aws-dms-creds
-        key: secret_access_key
-- labels:
-    preset-aws-4leaf: "true"
-  env:
-  - name: AWS_ACCESS_KEY_ID
-    valueFrom:
-      secretKeyRef:
-        name: aws-4leaf-creds
-        key: access_key_id
-  - name: AWS_SECRET_ACCESS_KEY
-    valueFrom:
-      secretKeyRef:
-        name: aws-4leaf-creds
-        key: secret_access_key
-- labels:
-    preset-gcloud-testinfra-prow: "true"
-  env:
-  - name: GOOGLE_APPLICATION_CREDENTIALS
-    value: /etc/google-service-account/service-account.json
-  volumes:
-  - name: google-service-account
-    secret:
-      secretName: ouzidev-testinfra-prow-gcloud-service-account
-  volumeMounts:
-  - name: google-service-account
-    mountPath: /etc/google-service-account
-    readOnly: true
-- labels:
-    preset-kubeconfig-hoarder-prow: "true"
-  env:
-  - name: GOOGLE_APPLICATION_CREDENTIALS
-    value: /etc/google-service-account/service-account.json
-  - name: KUBECONFIG
-    value: /etc/kube/kubeconfig
-  volumes:
-  - name: google-service-account
-    secret:
-      secretName: ouzidev-hoarder-prow-gcloud-service-account
-  - name: kubeconfig
-    secret:
-      secretName: ouzidev-hoarder-prow-gke-kubeconfig
-  volumeMounts:
-  - name: google-service-account
-    mountPath: /etc/google-service-account
-    readOnly: true
-  - name: kubeconfig
-    mountPath: /etc/kube
+  # credential presets
+  - labels:
+      preset-docker: "true"
+    env:
+      - name: DOCKER_CONFIG
+        value: "/kaniko/.docker"
+    volumes:
+      - name: kaniko-config
+        projected:
+          sources:
+            - secret:
+                name: ouzi-bot-pull-push-secret
+                items:
+                  - key: .dockerconfigjson
+                    path: config.json
+    volumeMounts:
+      - name: kaniko-config
+        mountPath: /kaniko/.docker
+  - labels:
+      preset-semantic-release: "true"
+    env:
+      - name: GITHUB_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: github-token
+            key: oauth
+  - labels:
+      preset-aws-ouzi: "true"
+    env:
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: aws-ouzi-creds
+            key: access_key_id
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: aws-ouzi-creds
+            key: secret_access_key
+      - name: AWS_DEFAULT_REGION
+        valueFrom:
+          secretKeyRef:
+            name: aws-ouzi-creds
+            key: default_region
+  - labels:
+      preset-aws-dms: "true"
+    env:
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: aws-dms-creds
+            key: access_key_id
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: aws-dms-creds
+            key: secret_access_key
+  - labels:
+      preset-aws-4leaf: "true"
+    env:
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: aws-4leaf-creds
+            key: access_key_id
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: aws-4leaf-creds
+            key: secret_access_key
+  - labels:
+      preset-gcloud-testinfra-prow: "true"
+    env:
+      - name: GOOGLE_APPLICATION_CREDENTIALS
+        value: /etc/google-service-account/service-account.json
+    volumes:
+      - name: google-service-account
+        secret:
+          secretName: ouzidev-testinfra-prow-gcloud-service-account
+    volumeMounts:
+      - name: google-service-account
+        mountPath: /etc/google-service-account
+        readOnly: true
+  - labels:
+      preset-kubeconfig-hoarder-prow: "true"
+    env:
+      - name: GOOGLE_APPLICATION_CREDENTIALS
+        value: /etc/google-service-account/service-account.json
+      - name: KUBECONFIG
+        value: /etc/kube/kubeconfig
+    volumes:
+      - name: google-service-account
+        secret:
+          secretName: ouzidev-hoarder-prow-gcloud-service-account
+      - name: kubeconfig
+        secret:
+          secretName: ouzidev-hoarder-prow-gke-kubeconfig
+    volumeMounts:
+      - name: google-service-account
+        mountPath: /etc/google-service-account
+        readOnly: true
+      - name: kubeconfig
+        mountPath: /etc/kube
 
 in_repo_config:
   enabled:
