@@ -70,8 +70,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -80,8 +78,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -90,8 +86,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -100,8 +94,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -110,8 +102,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -120,8 +110,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -130,8 +118,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -140,8 +126,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -150,8 +134,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -160,8 +142,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -170,8 +150,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -180,8 +158,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -190,8 +166,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -200,8 +174,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -210,8 +182,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -220,8 +190,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -230,8 +198,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -240,8 +206,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -250,8 +214,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -260,8 +222,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -270,8 +230,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
@@ -280,8 +238,6 @@ branch-protection:
             master:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
-              required_status_checks: # Require branches to be up to date before merging.
-                strict: true
               restrictions: # restrict who can push to the repo
                 users:
                   - ouzibot
