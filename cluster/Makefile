@@ -1,6 +1,6 @@
 # installer url
 # PROW_INSTALLER_URL = file://$(CURDIR)/../../prow-installer/.dist//prow-installer-canary.tar.gz
-PROW_INSTALLER_URL = https://github.com/ouzi-dev/prow-installer/releases/download/v1.7.0/prow-installer-v1.7.0.tar.gz
+PROW_INSTALLER_URL = https://github.com/ouzi-dev/prow-installer/releases/download/v1.9.0/prow-installer-v1.9.0.tar.gz
 
 # make sure make fails on shell errors 
 # caveat: does not work for the shell function
