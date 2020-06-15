@@ -400,6 +400,19 @@ presets:
         readOnly: true
       - name: kubeconfig
         mountPath: /etc/kube
+  - labels:
+      preset-ouzi-helm-push: "true"
+    env:
+      - name: HELM_REPO_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: ouzi-chart-museum-push-creds
+            key: basic-auth-user
+      - name: HELM_REPO_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: ouzi-chart-museum-push-creds
+            key: basic-auth-pass
 
 in_repo_config:
   enabled:
