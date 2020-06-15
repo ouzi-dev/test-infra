@@ -104,6 +104,12 @@ buildsecrets:
       keys:
         - name: service-account.json
           key: prow-terraform-svc-account-key
+    - name: ouzi-chart-museum-push-creds
+      keys:
+        - name: basic-auth-user
+          key: chartmuseum-username
+        - name: basic-auth-pass
+          key: chartmuseum-password
 # Singularity
     - name: ouzidev-hoarder-prow-gcloud-service-account
       keys:
