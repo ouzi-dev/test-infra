@@ -397,7 +397,7 @@ default:
       name: "released"
       target: both
       addedBy: anyone
-    - color: e11d21
+    - color: 9b02fa
       description: Indicates a PR cannot be merged because its name doesn't match the provided regular expression.
       name: needs-retitle
       target: prs
