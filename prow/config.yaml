@@ -276,6 +276,7 @@ tide:
         - do-not-merge/work-in-progress
         - needs-rebase
         - do-not-merge/invalid-owners-file
+        - needs-retitle
 
 github_reporter:
   job_types_to_report:

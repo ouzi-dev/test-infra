@@ -1,21 +1,21 @@
 plugins:
   ouzi-dev/test-infra:
-  - config-updater
+    - config-updater
   ouzi-dev:
-    - approve  # Allow OWNERS to /approve
-    - assign  # Allow /assign and /cc
-    - blunderbuss  # Auto-assign people
+    - approve # Allow OWNERS to /approve
+    - assign # Allow /assign and /cc
+    - blunderbuss # Auto-assign people
     - cat # /meow replies with cat pictures
     - dog # /bark replies with dog pictures
-    - help  # Support /help and /good-first-issue
-    - hold  # Support /hold to delay merge
-    - lgtm  # Allow /lgtm 
-    - lifecycle  # Allow /lifecycle stale
+    - help # Support /help and /good-first-issue
+    - hold # Support /hold to delay merge
+    - lgtm # Allow /lgtm
+    - lifecycle # Allow /lifecycle stale
     - override
-    - size  # Auto-label size of PR
-    - trigger  # Allow people to configure CI jobs to /test
+    - size # Auto-label size of PR
+    - trigger # Allow people to configure CI jobs to /test
     - verify-owners # Validates OWNERS file changes in PRs.
-    - wip  # Auto-hold PRs with WIP in title
+    - wip # Auto-hold PRs with WIP in title
     - yuks # Let prow tell a /joke
     - branchcleaner
     - pony
@@ -38,48 +38,61 @@ config_updater:
       gzip: true
 
 triggers:
-- repos:
-  - ouzi-dev
+  - repos:
+      - ouzi-dev
 
 approve:
-- repos:
-  - ouzi-dev
-  require_self_approval: false
-  lgtm_acts_as_approve: true
+  - repos:
+      - ouzi-dev
+    require_self_approval: false
+    lgtm_acts_as_approve: true
 
 lgtm:
-- repos:
-  - ouzi-dev
-  review_acts_as_lgtm: true
+  - repos:
+      - ouzi-dev
+    review_acts_as_lgtm: true
 
 external_plugins:
   ouzi-dev:
-  - name: needs-rebase
-    events:
-      - pull_request
+    - name: needs-rebase
+      events:
+        - pull_request
+    - name: needs-retitle
+      events:
+        - pull_request
+
+needs_retitle:
+  regexp: "^(fix:|feat:|major:|patch:|doc:|build:).*$"
+  error_message: |
+    Invalid title for the PR, the title needs to be like:
+
+    * `patch: this is a patch commit` => if using semantic-release will trigger a patch release
+    * `fix: this is a fix commit` => if using semantic-release will trigger a patch release
+    * `feat: this is a feature commit` => if using semantic-release will trigger a minor release
+    * `major: this is a major commit` => if using semantic-release will trigger a major release
+    * `doc: this is a doc commit` => if using semantic-release won't trigger a new release
+    * `build: this is a build commit` => if using semantic-release won't trigger a new release
 
 welcome:
-- repos:
-  - ouzi-dev
+  - repos:
+      - ouzi-dev
 
 blunderbuss:
   max_request_count: 2
-  use_status_availability: true  
+  use_status_availability: true
 
 size:
-  s:   10
-  m:   30
-  l:   100
-  xl:  500
+  s: 10
+  m: 30
+  l: 100
+  xl: 500
   xxl: 1000
 
 slack:
   mergewarnings:
-  - repos:
-    - ouzi-dev
-    channels:
-    - prs
-    whitelist:
-    - k8s-ci-robot
-
-
+    - repos:
+        - ouzi-dev
+      channels:
+        - prs
+      whitelist:
+        - k8s-ci-robot
