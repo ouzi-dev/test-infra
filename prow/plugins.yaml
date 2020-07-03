@@ -57,6 +57,7 @@ external_plugins:
     - name: needs-rebase
       events:
         - pull_request
+  ouzi-dev/needs-retitle:
     - name: needs-retitle
       events:
         - pull_request
