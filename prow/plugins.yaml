@@ -62,7 +62,7 @@ external_plugins:
         - pull_request
 
 needs_retitle:
-  regexp: "^(fix:|feat:|major:|refactor:|doc:|build:).*$"
+  regexp: "^(fix:|feat:|major:|refactor:|doc:|build:|no-release:).*$"
   error_message: |
     Invalid title for the PR, the title needs to be like:
 
@@ -72,6 +72,7 @@ needs_retitle:
     * `major: this is a major commit` => if using semantic-release will trigger a major release
     * `doc: this is a doc commit` => if using semantic-release won't trigger a new release
     * `build: this is a build commit` => if using semantic-release will trigger a patch release
+    * `no-release: this is a no-release commit` => won't trigger a new release
 
 welcome:
   - repos:
