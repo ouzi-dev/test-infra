@@ -49,6 +49,7 @@ module "prow-cluster" {
   gcloud_project         = var.gcloud_project
   gke_name               = var.gke_name
   gke_kubernetes_version = var.gke_kubernetes_version
+  gke_machine_type       = var.gke_machine_type
   gke_min_nodes          = var.gke_min_nodes
   gke_num_of_zones       = var.gke_num_of_zones
 

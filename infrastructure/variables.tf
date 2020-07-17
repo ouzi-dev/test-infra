@@ -14,6 +14,10 @@ variable "gke_name" {
   description = "Name of the GKE cluster"
 }
 
+variable "gke_machine_type" {
+  description = "Instance type for the primary pool of workers"
+}
+
 variable "gke_min_nodes" {
   description = "Min number of workers"
   default     = 0
