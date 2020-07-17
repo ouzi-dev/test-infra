@@ -60,6 +60,10 @@ deck:
         required_files:
           - podinfo.json
   tide_update_period: 1s
+  rerun_auth_configs:
+    'ouzi-dev':
+      github_team_ids:
+      - 3359879 # ouzi team
 
 sinker:
   resync_period: 1m
