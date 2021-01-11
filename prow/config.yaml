@@ -22,7 +22,7 @@ plank:
         initupload: gcr.io/k8s-prow/initupload:v20201228-15d664642a
         sidecar: gcr.io/k8s-prow/sidecar:v20201228-15d664642a
       gcs_configuration:
-        bucket: "ouzidev-testinfra-252513-prow-artefacts"
+        bucket: gs://ouzidev-testinfra-252513-prow-artefacts
         path_strategy: "explicit"
       gcs_credentials_secret: gcs-credentials
       ssh_key_secrets:
