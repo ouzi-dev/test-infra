@@ -22,8 +22,8 @@ plank:
         initupload: gcr.io/k8s-prow/initupload:v20201228-15d664642a
         sidecar: gcr.io/k8s-prow/sidecar:v20201228-15d664642a
       gcs_configuration:
-        bucket: gs://ouzidev-testinfra-252513-prow-artefacts
-        path_strategy: "explicit"
+        bucket: ouzidev-testinfra-252513-prow-artefacts
+        path_strategy: "legacy"
       gcs_credentials_secret: gcs-credentials
       ssh_key_secrets:
         - github-ssh-key # name of the secret that stores the bot's ssh keys for GitHub, doesn't matter what the key of the map is and it will just uses the values
@@ -40,7 +40,6 @@ deck:
         optional_files:
           - podinfo.json
       - lens:
-          config: 
           name: buildlog
         required_files:
           - build-log.txt
