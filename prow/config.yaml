@@ -2,18 +2,25 @@ prowjob_namespace: prow
 pod_namespace: prow-test-pods
 
 plank:
-  job_url_template: 'https://prow.test-infra.ouzi.io/view/gcs/ouzidev-testinfra-252513-prow-artefacts/{{if eq .Spec.Type "presubmit"}}pr-logs/pull{{else if eq .Spec.Type "batch"}}pr-logs/pull{{else}}logs{{end}}/{{if eq .Spec.Type "presubmit"}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}/{{end}}{{else if eq .Spec.Type "batch"}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/batch/{{end}}{{.Spec.Job}}/{{.Status.BuildID}}/'
-  report_template: "[Full PR test history](https://prow.test-infra.ouzi.io/pr-history?org={{.Spec.Refs.Org}}&repo={{.Spec.Refs.Repo}}&pr={{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}})"
   pod_pending_timeout: 60m
+  job_url_prefix_config:
+    # TODO: Remove the gcs suffix once https://github.com/kubernetes/test-infra/pull/17779 is in
+    "*": https://prow.test-infra.ouzi.io/view/
+  report_templates:
+    '*': >-
+        [Full PR test history](https://prow.test-infra.ouzi.io/pr-history?org={{.Spec.Refs.Org}}&repo={{.Spec.Refs.Repo}}&pr={{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}).
+        [Your PR dashboard](https://prow.test-infra.ouzi.io/pr?query=is:pr+state:open+author:{{with
+        index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).
+
   default_decoration_configs:
     "*":
       timeout: 2h
       grace_period: 15s
       utility_images:
-        clonerefs: "gcr.io/k8s-prow/clonerefs:v20200203-cae3cccf8"
-        initupload: "gcr.io/k8s-prow/initupload:v20200203-cae3cccf8"
-        entrypoint: "gcr.io/k8s-prow/entrypoint:v20200203-cae3cccf8"
-        sidecar: "gcr.io/k8s-prow/sidecar:v20200203-cae3cccf8"
+        clonerefs: gcr.io/k8s-prow/clonerefs:v20201228-15d664642a
+        entrypoint: gcr.io/k8s-prow/entrypoint:v20201228-15d664642a
+        initupload: gcr.io/k8s-prow/initupload:v20201228-15d664642a
+        sidecar: gcr.io/k8s-prow/sidecar:v20201228-15d664642a
       gcs_configuration:
         bucket: "ouzidev-testinfra-252513-prow-artefacts"
         path_strategy: "explicit"
@@ -33,6 +40,7 @@ deck:
         optional_files:
           - podinfo.json
       - lens:
+          config: 
           name: buildlog
         required_files:
           - build-log.txt
