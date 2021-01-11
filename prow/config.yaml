@@ -13,7 +13,7 @@ plank:
         index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).
 
   default_decoration_configs:
-    "*":
+    "ouzi-dev":
       timeout: 2h
       grace_period: 15s
       utility_images:
