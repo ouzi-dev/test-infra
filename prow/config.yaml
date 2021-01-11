@@ -38,6 +38,8 @@ plank:
       gcs_configuration:
         bucket: ouzidev-testinfra-252513-prow-artefacts
         path_strategy: "legacy"
+        default_org: "ouzi-dev"
+        default_repo: "test-infra"
       gcs_credentials_secret: gcs-credentials
       ssh_key_secrets:
         - github-ssh-key # name of the secret that stores the bot's ssh keys for GitHub, doesn't matter what the key of the map is and it will just uses the values
