@@ -60,6 +60,10 @@ deck:
         required_files:
           - podinfo.json
   tide_update_period: 1s
+  rerun_auth_configs: # https://github.com/kubernetes/test-infra/blob/4b5c7c99a851eb427f5c77bd0c8d11526f7b63c4/prow/apis/prowjobs/v1/types.go#L186
+    'ouzi-dev':
+      github_team_ids:
+      - 3359879 # ouzi team
 
 sinker:
   resync_period: 1m
