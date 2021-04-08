@@ -63,7 +63,7 @@ prow:
   github:
     token:
       credstash:
-        key: github_bot_personal_access_token_prow
+        key: github_bot_personal_access_token_prow_newformat
     sshkey:
       credstash:
         key: github_bot_ssh_private_key
