@@ -120,7 +120,7 @@ branch-protection:
                   - ouzibot
         avro-kedavro:
           branches:
-            master:
+            main:
               protect: true # enable protection
               enforce_admins: true # rules apply to admins
               restrictions: # restrict who can push to the repo
