@@ -1,6 +1,6 @@
 .PHONY: deploy-cluster
 deploy-cluster:
-	@$(MAKE) -C cluster deploy
+	@$(MAKE) -C ../cluster deploy
 
 .PHONY: deploy-prow-config
 deploy-prow-config: 
@@ -10,4 +10,4 @@ deploy-prow-config:
 
 .PHONY: get-cluster-credentials
 get-cluster-credentials:
-	@$(MAKE) -C cluster get-cluster-credentials
+	@$(MAKE) -C ../cluster get-cluster-credentials
