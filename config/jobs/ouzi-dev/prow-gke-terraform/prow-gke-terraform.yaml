@@ -25,6 +25,7 @@ presubmits:
               - --plugin-config=../test-infra/prow/plugins.yaml
               - --config-path=../test-infra/prow/config.yaml
               - --prow-yaml-repo-name=$(REPO_OWNER)/$(REPO_NAME)
+              - --exclude-warning=unknown-fields
     - name: validate-no-creds
       always_run: true
       decorate: true

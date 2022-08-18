@@ -85,7 +85,7 @@ buildsecrets:
     - name: github-token
       keys:
         - name: oauth
-          key: github_bot_personal_access_token_prow
+          key: github_bot_personal_access_token_prow_newformat
 # Ouzi
     - name: ouzi-bot-dockerconfig
       type: "kubernetes.io/dockerconfigjson"

@@ -7,38 +7,24 @@ terraform {
 provider "google" {
   region      = var.gcloud_region
   project     = var.gcloud_project
-  version     = "3.17.0"
   credentials = file(var.google_credentials_file_path)
 }
 
 provider "google-beta" {
   region      = var.gcloud_region
   project     = var.gcloud_project
-  version     = "3.17.0"
   credentials = file(var.google_credentials_file_path)
 }
 
 provider "aws" {
   region  = var.aws_region
-  version = "2.24"
 }
 
 provider "credstash" {
   region  = "eu-west-1"
-  version = "0.4"
 }
 
-provider "kubernetes" {
-  host                   = module.gke-cluster.cluster_endpoint
-  cluster_ca_certificate = base64decode(module.gke-cluster.cluster_ca_certificate)
-  token                  = data.google_client_config.current.access_token
-  load_config_file       = false
-  version                = "1.9"
-}
-
-provider "random" {
-  version = "2.2"
-}
+provider "random" {}
 
 data "google_project" "project" {}
 

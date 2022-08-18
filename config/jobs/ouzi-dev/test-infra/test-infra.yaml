@@ -43,6 +43,7 @@ presubmits:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
               - --job-config-path=config/jobs
+              - --exclude-warning=unknown-fields
             image: gcr.io/k8s-prow/checkconfig:v20201228-15d664642a
     - name: monitoring-dry-run
       context: monitoring-dry-run
@@ -68,7 +69,7 @@ presubmits:
               - make
             args:
               - monitoring-dry-run
-            image: quay.io/ouzi/toolbox:0.1.16
+            image: quay.io/ouzi/toolbox:0.2.1
     - name: test-infra
       context: test-infra
       decorate: true 
@@ -95,7 +96,7 @@ presubmits:
             args:
               - infra-setup
               - infra-plan
-            image: quay.io/ouzi/toolbox:0.1.16
+            image: quay.io/ouzi/toolbox:0.2.1
     - name: test-manifests
       context: test-manifests
       decorate: true 
@@ -122,7 +123,7 @@ presubmits:
               - make
             args:
               -  deploy-dry-run
-            image: quay.io/ouzi/toolbox:0.1.16
+            image: quay.io/ouzi/toolbox:0.2.1
 postsubmits:
   ouzi-dev/test-infra:
     - name: test-config-postsubmit
@@ -169,7 +170,7 @@ postsubmits:
               - make
             args:
               - monitoring-apply
-            image: quay.io/ouzi/toolbox:0.1.16
+            image: quay.io/ouzi/toolbox:0.2.1
     - name: apply-infra
       context: apply-infra
       decorate: true 
@@ -198,7 +199,7 @@ postsubmits:
             args:
               - infra-setup
               - infra-apply
-            image: quay.io/ouzi/toolbox:0.1.16
+            image: quay.io/ouzi/toolbox:0.2.1
     - name: deploy-prow
       context: deploy-prow
       decorate: true 
@@ -227,4 +228,4 @@ postsubmits:
               - make
             args:
               -  deploy
-            image: quay.io/ouzi/toolbox:0.1.16
+            image: quay.io/ouzi/toolbox:0.2.1
