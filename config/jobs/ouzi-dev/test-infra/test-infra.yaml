@@ -44,7 +44,7 @@ presubmits:
               - --plugin-config=prow/plugins.yaml
               - --job-config-path=config/jobs
               - --exclude-warning=unknown-fields
-            image: gcr.io/k8s-prow/checkconfig:v20201228-15d664642a
+            image: gcr.io/k8s-prow/checkconfig:v20220810-4ab15cddef
     - name: monitoring-dry-run
       context: monitoring-dry-run
       decorate: true 
@@ -148,7 +148,7 @@ postsubmits:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
               - --job-config-path=config/jobs
-            image: gcr.io/k8s-prow/checkconfig:v20201228-15d664642a
+            image: gcr.io/k8s-prow/checkconfig:v20220810-4ab15cddef
     - name: monitoring
       decorate: true 
       clone_uri: "git@github.com:ouzi-dev/test-infra.git"
