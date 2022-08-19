@@ -21,9 +21,9 @@ presubmits:
         - command:
             - checkconfig
           args:
-            - --config-path=prow/config.yaml
-            - --plugin-config=prow/plugins.yaml
-            - --job-config-path=config/jobs
+            - --plugin-config=../test-infra/prow/plugins.yaml
+            - --config-path=../test-infra/prow/config.yaml
+            - --prow-yaml-repo-name=$(REPO_OWNER)/$(REPO_NAME)
           image: gcr.io/k8s-prow/checkconfig:v20220810-4ab15cddef
     - name: validate-no-creds
       always_run: true
