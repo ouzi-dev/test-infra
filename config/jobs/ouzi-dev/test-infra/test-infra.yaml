@@ -37,8 +37,6 @@ presubmits:
         containers:
           - name: "test-config"
             imagePullPolicy: IfNotPresent
-            command:
-              - /app/prow/cmd/checkconfig/app.binary
             args:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
@@ -142,8 +140,6 @@ postsubmits:
         containers:
           - name: "test-config"
             imagePullPolicy: IfNotPresent
-            command:
-              - /app/prow/cmd/checkconfig/app.binary
             args:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
