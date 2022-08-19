@@ -37,11 +37,12 @@ presubmits:
         containers:
           - name: "test-config"
             imagePullPolicy: IfNotPresent
+            command:
+              - checkconfig
             args:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
               - --job-config-path=config/jobs
-              - --exclude-warning=unknown-fields
             image: gcr.io/k8s-prow/checkconfig:v20220810-4ab15cddef
     - name: monitoring-dry-run
       context: monitoring-dry-run
@@ -140,6 +141,8 @@ postsubmits:
         containers:
           - name: "test-config"
             imagePullPolicy: IfNotPresent
+            command:
+              - checkconfig
             args:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
