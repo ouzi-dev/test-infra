@@ -18,7 +18,7 @@ presubmits:
             operator: Equal
             value: "true"
         containers:
-        - image: gcr.io/k8s-prow/checkconfig:v20201228-15d664642a
+        - image: gcr.io/k8s-prow/checkconfig:v20220810-4ab15cddef
           command:
           - /app/prow/cmd/checkconfig/app.binary
           args:
