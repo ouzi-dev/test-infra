@@ -38,7 +38,7 @@ presubmits:
             operator: Equal
             value: "true"
         containers:
-        - image: quay.io/ouzi/git-secret-scanner:0.0.3
+        - image: quay.io/ouzi/git-secret-scanner:0.0.4
           command:
           - git-secrets
           args:
