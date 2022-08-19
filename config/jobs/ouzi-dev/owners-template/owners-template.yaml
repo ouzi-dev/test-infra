@@ -19,6 +19,8 @@ presubmits:
             value: "true"
         containers:
         - image: gcr.io/k8s-prow/checkconfig:v20220810-4ab15cddef
+          command:
+            - checkconfig
           args:
           - --plugin-config=../test-infra/prow/plugins.yaml
           - --config-path=../test-infra/prow/config.yaml
@@ -37,7 +39,7 @@ presubmits:
             operator: Equal
             value: "true"
         containers:
-        - image: quay.io/ouzi/git-secret-scanner:0.0.3
+        - image: quay.io/ouzi/git-secret-scanner:0.0.4
           command:
           - git-secrets
           args:
