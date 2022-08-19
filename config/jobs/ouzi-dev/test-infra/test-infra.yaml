@@ -37,12 +37,13 @@ presubmits:
         containers:
           - name: "test-config"
             imagePullPolicy: IfNotPresent
+            command:
+              - /app/prow/cmd/checkconfig/app.binary
             args:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
               - --job-config-path=config/jobs
-              - --exclude-warning=unknown-fields
-            image: gcr.io/k8s-prow/checkconfig:v20220810-4ab15cddef
+            image: gcr.io/k8s-prow/checkconfig:v20200610-6c96a0a6ed
     - name: monitoring-dry-run
       context: monitoring-dry-run
       decorate: true 
@@ -140,11 +141,13 @@ postsubmits:
         containers:
           - name: "test-config"
             imagePullPolicy: IfNotPresent
+            command:
+              - /app/prow/cmd/checkconfig/app.binary
             args:
               - --config-path=prow/config.yaml
               - --plugin-config=prow/plugins.yaml
               - --job-config-path=config/jobs
-            image: gcr.io/k8s-prow/checkconfig:v20220810-4ab15cddef
+            image: gcr.io/k8s-prow/checkconfig:v20200610-6c96a0a6ed
     - name: monitoring
       decorate: true 
       clone_uri: "git@github.com:ouzi-dev/test-infra.git"
